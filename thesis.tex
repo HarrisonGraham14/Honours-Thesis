@@ -1,0 +1,296 @@
+%===============================================================================================================================%
+%                                                            PREAMBLE                                                           %
+%===============================================================================================================================%
+
+\documentclass[honours,12pt]{unswthesis}
+\linespread{1}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{latexsym,amsmath}
+\usepackage{graphicx}
+\usepackage{afterpage}
+\usepackage{cite}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[many]{tcolorbox}
+
+% Macros
+\newcommand{\N}{\mathbb{N}} % Natural numbers
+\renewcommand{\P}{\mathbb{P}} % Prime numbers
+\newcommand{\Z}{\mathbb{Z}} % Integers
+\newcommand{\Q}{\mathbb{Q}} % Rational numbers
+\newcommand{\A}{\mathbb{A}} % Algebraic numbers
+\newcommand{\B}{\mathbb{B}} % Algebraic integers
+\newcommand{\R}{\mathbb{R}} % Real numbers
+\newcommand{\C}{\mathbb{C}} % Complex numbers
+\newcommand{\T}{\mathbb{T}} % Circle group
+\newcommand{\F}{\mathbb{F}} % Field
+
+\newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+\newcommand{\lnote}[1]{\llap{$#1$\hspace{2cm}}}
+\newcommand{\rnote}[1]{\rlap{\hspace{2cm}$#1$}}
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\todo}[1]{\red{to do: #1}}
+
+\newcommand{\blankpage}{\null\thispagestyle{empty}\addtocounter{page}{-1}\newpage}
+
+
+% Environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{notation}[theorem]{Notation}
+\numberwithin{equation}{section}
+
+
+% Code
+\definecolor{codeblue}{rgb}{0, 0, 0}
+\definecolor{backgroundcolor}{rgb}{0.8, 0.8, 0.8}
+
+\lstdefinestyle{pystyle}{
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\newtcolorbox{pybox}{
+    spartan,
+    frame empty,
+    boxsep = 0mm,
+    left = 1mm,
+    right = 1mm,
+    top = -1mm,
+    bottom = -1mm,
+    colback = backgroundcolor
+}
+
+\lstset{style=pystyle}
+
+\newcommand{\pyfile}[2][3]{
+    \begin{pybox}
+    \lstinputlisting[language=python, firstline=#1]{#2}
+    \end{pybox}
+}
+
+
+%===============================================================================================================================%
+%                                                            PREFACE                                                            %
+%===============================================================================================================================%
+
+% Title page
+\title{Honours Thesis}
+\authornameonly{Harrison Graham}
+\author{\Authornameonly\\{\bigskip}Supervisor: Professor David Harvey}
+\copyrightfalse
+\figurespagefalse
+\tablespagefalse
+
+
+% Plagiarism statement
+\begin{document}
+\beforepreface
+
+\prefacesection{Plagiarism statement}
+\bigskip \noindent I declare that this thesis is my
+own work, except where acknowledged, and has not been submitted for
+academic credit elsewhere. 
+
+\bigskip \noindent I acknowledge that the assessor of this
+thesis may, for the purpose of assessing it:
+\begin{itemize}
+\item Reproduce it and provide a copy to another member of the University; and/or,
+\item Communicate a copy of it to a plagiarism checking service (which may then retain a copy of it on its database for the purpose of future plagiarism checking).
+\end{itemize}
+
+\bigskip \noindent I certify that I have read and understood the University Rules in
+respect of Student Academic Misconduct, and am aware of any potential plagiarism penalties which may 
+apply.\vspace{24pt}
+
+\bigskip \noindent By signing 
+this declaration I am
+agreeing to the statements and conditions above.
+
+\bigskip \noindent
+Signed: \rule{7cm}{0.25pt} \hfill Date: \rule{4cm}{0.25pt} 
+
+
+% Acknowledgements
+% \pagebreak
+% \prefacesection{Acknowledgements}
+% \bigskip \noindent Body text
+
+
+% Abstract
+% \pagebreak
+% \prefacesection{Abstract}
+% \bigskip \noindent Body text
+
+\afterpreface
+
+
+%===============================================================================================================================%
+%                                                           CHAPTER 1                                                           %
+%===============================================================================================================================%
+
+\pagebreak
+\chapter{Introduction}\label{s-intro}
+
+\red{to do}
+
+
+%===============================================================================================================================%
+%                                                           CHAPTER 2                                                           %
+%===============================================================================================================================%
+
+\pagebreak
+\chapter{Binary Quadratic Forms}\label{s-forms}
+
+A \textbf{binary quadratic form} (or simply a \textbf{form}) is a function of the form
+$$f(x, y) = ax^2 + bxy + cy^2$$
+
+It is called ``binary'' because it is a function of two variables, and ``quadratic'' because the degree of each term is 2.
+For our purposes, we are concerned with integer solutions of forms with integer coefficients. 
+Since $x$ and $y$ are variables, the behaviour of a given form is wholly dependent on the values of $a$, $b$ and $c$,
+which motivates a shorthand notation of the same form; $(a, b, c)$.
+
+
+\section{Representation}\label{s-forms-rep}
+
+A form $f(x, y)$ is said to \textbf{represent} a number $n$ if there exists an integer solution
+$$f(x_0, y_0) = n \rnote{x_0, y_0 \in \Z}$$
+
+For example, consider the form $(2, 1, 5)$, or $f(x, y) = 2x^2 + xy + 5y^2$. 
+This form represents the number 2, since $f(1, 0) = 2$.
+It can be shown that this form does not represent the number 1, though it is not immediately clear how to prove this.
+
+The questions which motivated the early study of these forms were as follows;
+which numbers can be represented by a given form and, conversely, which forms can represent a given number?
+These questions will not be our primary concern, but they will help to motivate the development of the theory that we need.
+
+
+\section{Equivalence}\label{s-forms-eq}
+Two forms are called \textbf{equivalent} if they represent exactly the same numbers.
+Given a form $f(x, y) = ax^2 + bxy + cy^2$, one can generate equivalent forms by effectively changing the input space;
+take some invertable function $\phi : \Z^2 \rightarrow \Z^2$, and let $g(x, y) = f \circ \phi(x, y)$.
+It would seem that $g$ is equivalent to $f$, since for any $x_0, y_0 \in \Z$
+$$ f(x_0, y_0) = n \implies g(\phi(x_0, y_0)) = n $$
+$$ g(x_0, y_0) = m \implies f(\phi^{-1}(x_0, y_0)) = m $$
+
+That is, all solutions of $f$ are solutions of $g$, and vice versa. 
+However, we must also ensure that our choice of $\phi$ gives $g$ to be a form.
+Consider the choice $\phi(x, y) = (x+1, y)$.
+This is an invertible function on $\Z^2$, but notice what happens when it is composed with our usual choice of $f$;
+\begin{align*}
+    g(x, y) &= f \circ \phi(x, y) \\
+    &= f(x+1, y) \\
+    &= a(x+1)^2 + b(x+1)y + cy^2 \\
+    &= ax^2 + 2ax + a + bxy + by + cy^2
+\end{align*}
+
+This is no longer a quadratic form, so this choice of $\phi$ should clearly not be allowed. 
+Instead, consider a function of the form $\phi(x, y) = (px+qy, rx+sy)$.
+This gives
+\begin{align*}
+    g(x, y) &= f \circ \phi(x, y) \\
+    &= f(px+qy, rx+sy) \\
+    &= a(px+qy)^2 + b(px+qy)(rx+sy) + c(rx+sy)^2 \\
+    &= a \left[ p^2x^2 + 2pqxy + q^2y^2 \right] 
+        + b \left[ prx^2 + (ps + qr)xy + qsy^2 \right]
+        + c \left[ r^2x^2 + rsxy + s^2y^2 \right] \\
+    &= \left[ap^2 + bpr + cr^2 \right] x^2
+        + \left[ 2apq + b(ps + qr) + crs \right] xy
+        + \left[ aq^2 + bqs + cs^2 \right] y^2
+\end{align*}
+
+This gives $g$ to be a binary quadratic form, we now require that $\phi$ is invertible.
+Consider that $\phi$ can be understood as a matrix multiplication;
+$$\phi \left( \bmat{x \\ y} \right) = \bmat{p & q \\ r & s} \bmat{x \\ y}$$
+
+So it is clear to see that the valid choices of $\phi$ are the invertible elements of $M_2(\Z)$. 
+These are the elements of $GL_2(\Z)$, also known as the \textbf{unimodular} matrices (of size 2).
+
+\todo{show that all equivalent forms can be found this way}
+
+\todo{distinguish between proper/improper equivalence}
+
+\todo{show that this is an equivalence relation}
+
+\todo{decide where to put determinants}
+
+
+\section{Reduction}\label{s-forms-red}
+Now that we have a well-defined equivalence relation, we would like to be able to find a suitable representative element of 
+a given class.
+This will not only prove useful for simplifying computations by choosing a representative with small values of $a$, $b$, and $c$,
+but will also give us a method for checking whether two forms belong to the same class by evaluating and comparing their
+canonical representatives.
+
+\todo{finish}
+
+
+\section{Composition}\label{s-forms-comp}
+Now that we have the means to properly understand equivalence classes of forms, 
+it seems desirable to assign a binary operation to the set of forms, in the hopes that they take on the structure of a group.
+
+\todo{finish}
+
+
+%===============================================================================================================================%
+%                                                           CHAPTER 3                                                           %
+%===============================================================================================================================%
+
+\chapter{Factoring}\label{s-factor}
+A key practical application of number theory is the factoring algorithms that its theory allows.
+Factoring is a deceptively difficult task to perform efficiently.
+As a baseline for comparison, let us consider the most primitive factoring algorithm - trial division.
+
+\pyfile[1]{algorithms/trial-division.py}
+
+Note that all code samples will be provided in python, using numpy for mathematical functions - 
+the import will be omitted going forward.
+
+We will use big-$O$ notation to analyse the complexity of factoring algorithms.
+It might seem natural to class this algorithm as $O(\sqrt{n})$, but the standard convention for measuring the complexity
+of factoring algorithms is not that $n$ measures the size of the number being factored -
+rather, it measures the size of the number being factored, in binary digits.
+Therefore, the time complexity of the trial division algorithm is $O(2^{n/2})$
+
+
+\section{Ambiguous forms}\label{s-factor-amb}
+The key insight which bridges the theory of binary quadratic forms into the realm of factoring comes from considering
+forms of order 2 - that is, forms which are their own inverses. 
+Such forms are called \textbf{ambiguous forms}, since they are properly equivalent to the same forms that they are improperly
+equivalent to, so it is ``ambiguous'' which proper equivalence class they belong to (\red{check}).
+
+
+
+
+
+%===============================================================================================================================%
+%                                                           REFERENCES                                                          %
+%===============================================================================================================================%
+
+\nocite{*}
+
+\pagebreak
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{apalike}
+\bibliography{references}
+\end{document}
