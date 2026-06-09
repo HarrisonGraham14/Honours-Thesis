@@ -35,6 +35,7 @@
 
 \newcommand{\red}[1]{\textcolor{red}{#1}}
 \newcommand{\todo}[1]{\red{to do: #1}}
+\newcommand{\tocheck}{(\red{check})}
 
 \newcommand{\blankpage}{\null\thispagestyle{empty}\addtocounter{page}{-1}\newpage}
 
@@ -186,7 +187,7 @@ These questions will not be our primary concern, but they will help to motivate 
 
 
 \section{Equivalence}\label{s-forms-eq}
-Two forms are called \textbf{equivalent} if they represent exactly the same numbers.
+Two forms are called \textbf{equivalent} if they represent exactly the same numbers. (\red{check})
 Given a form $f(x, y) = ax^2 + bxy + cy^2$, one can generate equivalent forms by effectively changing the input space;
 take some invertable function $\phi : \Z^2 \rightarrow \Z^2$, and let $g(x, y) = f \circ \phi(x, y)$.
 It would seem that $g$ is equivalent to $f$, since for any $x_0, y_0 \in \Z$
@@ -244,6 +245,8 @@ canonical representatives.
 
 \todo{finish}
 
+\todo{bound on terms for brute force finding reduced algorithms}
+
 
 \section{Composition}\label{s-forms-comp}
 Now that we have the means to properly understand equivalence classes of forms, 
@@ -271,6 +274,7 @@ It might seem natural to class this algorithm as $O(\sqrt{n})$, but the standard
 of factoring algorithms is not that $n$ measures the size of the number being factored -
 rather, it measures the size of the number being factored, in binary digits.
 Therefore, the time complexity of the trial division algorithm is $O(2^{n/2})$
+\red{correct: "exponential" notation}
 
 
 \section{Ambiguous forms}\label{s-factor-amb}
@@ -288,9 +292,11 @@ equivalent to, so it is ``ambiguous'' which proper equivalence class they belong
 %===============================================================================================================================%
 
 \nocite{*}
+\cite[Ch.\,3]{buchmann}
+\cite[Thm.\,III.3.5]{buchmann}
 
 \pagebreak
 \addcontentsline{toc}{chapter}{References}
-\bibliographystyle{apalike}
+\bibliographystyle{amsalpha}
 \bibliography{references}
 \end{document}
