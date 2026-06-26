@@ -27,11 +27,13 @@
 \newcommand{\T}{\mathbb{T}} % Circle group
 \newcommand{\F}{\mathbb{F}} % Field
 
+\newcommand{\disc}{\triangle}
+
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
 
-\newcommand{\lnote}[1]{\llap{$#1$\hspace{2cm}}}
-\newcommand{\rnote}[1]{\rlap{\hspace{2cm}$#1$}}
+\newcommand{\lnote}[1]{\llap{$#1$\hspace{1.25cm}}}
+\newcommand{\rnote}[1]{\rlap{\hspace{1.25cm}$#1$}}
 
 \newcommand{\red}[1]{\textcolor{red}{#1}}
 \newcommand{\todo}[1]{\red{to do: #1}}
@@ -167,9 +169,16 @@ A \textbf{binary quadratic form} (or simply a \textbf{form}) is a function of th
 $$f(x, y) = ax^2 + bxy + cy^2$$
 
 It is called ``binary'' because it is a function of two variables, and ``quadratic'' because the degree of each term is 2.
-For our purposes, we are concerned with integer solutions of forms with integer coefficients. 
+For our purposes, we are usually working over the integers. 
 Since $x$ and $y$ are variables, the behaviour of a given form is wholly dependent on the values of $a$, $b$ and $c$,
 which motivates a shorthand notation of the same form; $(a, b, c)$.
+
+We will impose that $a, c \neq 0$, or else $x$ or $y$ would be reduced to a linear factor.
+Allowing this would serve no purpose beyond comlicating proofs with the added work of edge case considerations.
+
+A form is called \textbf{primitive} if $\text{gcd}(a, b, c) = 1$. 
+Primitive forms are of primary concern, as he behaviour of a nonprimitive form can be more simply understood by
+removing the common factor to work with simpler coefficients.
 
 
 \section{Representation}\label{s-forms-rep}
@@ -179,11 +188,49 @@ $$f(x_0, y_0) = n \rnote{x_0, y_0 \in \Z}$$
 
 For example, consider the form $(2, 1, 5)$, or $f(x, y) = 2x^2 + xy + 5y^2$. 
 This form represents the number 2, since $f(1, 0) = 2$.
-It can be shown that this form does not represent the number 1, though it is not immediately clear how to prove this.
+The form does not represent the number 1, though it is not immediately clear how to prove a result of this kind.
 
-The questions which motivated the early study of these forms were as follows;
+The questions which historically motivated the study of forms were as follows;
 which numbers can be represented by a given form and, conversely, which forms can represent a given number?
 These questions will not be our primary concern, but they will help to motivate the development of the theory that we need.
+
+
+\section{Discriminant}\label{s-forms-disc}
+
+The form $x^2 + y^2$ clearly exclusively represents non-negative integers. 
+The same property holds for the previous example, $2x^2 + xy + 5y^2$, though this is harder to see.
+On the other hand, the form $x^2 - y^2$ clearly represents both positive and negative integers.
+A reasonable first step to understanding a form's representations is to classify whether they can be positive, negative, or both.
+
+To do this, let us consider a form as a continuous real-valued function, and seek to find its zeroes
+$$f(x, y) = ax^2 + bxy + cy^2 = 0$$
+
+Notice that we can parameterise this equation by dividing by $y^2$ and setting $t = \tfrac{x}{y}$.
+Then we can define
+\begin{gather*}
+    g(t) = at^2 + bt + c \\
+    g(\tfrac{x}{y}) = \frac{f(x, y)}{y^2}
+\end{gather*}
+
+This may seem problematic for finding roots of the form $(x_0, 0)$, 
+but substituting $y = 0$ into $f$ makes it clear that the only such zero is $(0, 0)$.
+Except for this line, it is clear that $t(\tfrac{x}{y})$ agrees with $f(x, y)$ on zeroes and sign.
+Hence, consider
+\begin{gather*}
+    at^2 + bt + c = 0 \\
+    t = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+\end{gather*}
+
+If $b^2 -4ac$ is negative, then $g$ has no real zeroes, 
+so $g$ (and hence $f$) must be either positive everywhere or negative everywhere (except the origin).
+We call such forms \textbf{positive definite} and \textbf{negative definite}, respectively.
+If $b^2 - 4ac$ is positive, then $g$ has two distinct real zeroes, so $g$ (and hence $f$) can be either positive or negative.
+Such forms are called \textbf{indefinite}.
+Similar reasoning shows that forms with $b^2 -4ac = 0$ are strictly non-negative or non-positive, 
+but such forms are of little intereest.
+
+This motivates defining the \textbf{discriminant} of a form $ax^2 + bxy + cy^2$ to be $\disc = b^2 - 4ac$.
+We will come to see that this classification is far more powerful than simply being able to classify forms as definite/indefinite.
 
 
 \section{Equivalence}\label{s-forms-eq}
