@@ -177,8 +177,7 @@ We will impose that $a, c \neq 0$, or else $x$ or $y$ would be reduced to a line
 Allowing this would serve no purpose beyond comlicating proofs with the added work of edge case considerations.
 
 A form is called \textbf{primitive} if $\text{gcd}(a, b, c) = 1$. 
-Primitive forms are of primary concern, as he behaviour of a nonprimitive form can be more simply understood by
-removing the common factor to work with simpler coefficients.
+Primitive forms are of primary concern, as he behaviour of a nonprimitive form can be more simply understood by removing the common factor to work with simpler coefficients.
 
 
 \section{Representation}\label{s-forms-rep}
@@ -234,17 +233,16 @@ We will come to see that this classification is far more powerful than simply be
 
 
 \section{Equivalence}\label{s-forms-eq}
-Two forms are called \textbf{equivalent} if they represent exactly the same numbers. (\red{check})
-Given a form $f(x, y) = ax^2 + bxy + cy^2$, one can generate equivalent forms by effectively changing the input space;
-take some invertable function $\phi : \Z^2 \rightarrow \Z^2$, and let $g(x, y) = f \circ \phi(x, y)$.
-It would seem that $g$ is equivalent to $f$, since for any $x_0, y_0 \in \Z$
+Given a form $f(x, y) = ax^2 + bxy + cy^2$, one can generate new forms which represent the same set of integers by changing the input space;
+take some invertible function $\phi : \Z^2 \rightarrow \Z^2$, and let $g(x, y) = f \circ \phi(x, y)$.
+Then for any $x_0, y_0 \in \Z$
 $$ f(x_0, y_0) = n \implies g(\phi(x_0, y_0)) = n $$
 $$ g(x_0, y_0) = m \implies f(\phi^{-1}(x_0, y_0)) = m $$
 
-That is, all solutions of $f$ are solutions of $g$, and vice versa. 
+That is, all integers represented by $f$ are also represented by $g$, and vice versa. 
 However, we must also ensure that our choice of $\phi$ gives $g$ to be a form.
 Consider the choice $\phi(x, y) = (x+1, y)$.
-This is an invertible function on $\Z^2$, but notice what happens when it is composed with our usual choice of $f$;
+This is an invertible function on $\Z^2$, but when it is composed with our usual choice of $f$ we have
 \begin{align*}
     g(x, y) &= f \circ \phi(x, y) \\
     &= f(x+1, y) \\
@@ -252,43 +250,39 @@ This is an invertible function on $\Z^2$, but notice what happens when it is com
     &= ax^2 + 2ax + a + bxy + by + cy^2
 \end{align*}
 
-This is no longer a quadratic form, so this choice of $\phi$ should clearly not be allowed. 
+This is no longer a quadratic form, so this choice of $\phi$ should not be allowed. 
 Instead, consider a function of the form $\phi(x, y) = (px+qy, rx+sy)$.
 This gives
 \begin{align*}
     g(x, y) &= f \circ \phi(x, y) \\
     &= f(px+qy, rx+sy) \\
     &= a(px+qy)^2 + b(px+qy)(rx+sy) + c(rx+sy)^2 \\
-    &= a \left[ p^2x^2 + 2pqxy + q^2y^2 \right] 
-        + b \left[ prx^2 + (ps + qr)xy + qsy^2 \right]
-        + c \left[ r^2x^2 + rsxy + s^2y^2 \right] \\
     &= \left[ap^2 + bpr + cr^2 \right] x^2
         + \left[ 2apq + b(ps + qr) + crs \right] xy
         + \left[ aq^2 + bqs + cs^2 \right] y^2
 \end{align*}
 
-This gives $g$ to be a binary quadratic form, we now require that $\phi$ is invertible.
-Consider that $\phi$ can be understood as a matrix multiplication;
+This gives $g$ to be a binary quadratic form, as required. 
+We now require that $\phi$ is invertible, so that this is a symmetric relationship.
+Consider that $\phi$ can be understood as a matrix multiplication
 $$\phi \left( \bmat{x \\ y} \right) = \bmat{p & q \\ r & s} \bmat{x \\ y}$$
 
 So it is clear to see that the valid choices of $\phi$ are the invertible elements of $M_2(\Z)$. 
 These are the elements of $GL_2(\Z)$, also known as the \textbf{unimodular} matrices (of size 2).
+The determinant of such a matrix will always be $\pm 1$ 
+(since the determinant is a result of sums and products of the integer coefficients, 
+and the product of determinants of a matrix and its inverse is 1).
 
-\todo{show that all equivalent forms can be found this way}
-
-\todo{distinguish between proper/improper equivalence}
-
-\todo{show that this is an equivalence relation}
-
-\todo{decide where to put determinants}
+We define forms to be \textbf{improperly equivalent} if there is a $GL_2(\Z)$ transformation between them.
+It is easy to see that this is an equivalence realtion.
+If we restrict the discriminant of the transformation to be strictly positive 1, we split the equivalence classes further-
+we call such forms \textbf{properly equivalent}, which is also an equivalence relation.
 
 
 \section{Reduction}\label{s-forms-red}
-Now that we have a well-defined equivalence relation, we would like to be able to find a suitable representative element of 
-a given class.
+Now that we have an equivalence relation, we would like to be able to find a suitable representative element of a given class.
 This will not only prove useful for simplifying computations by choosing a representative with small values of $a$, $b$, and $c$,
-but will also give us a method for checking whether two forms belong to the same class by evaluating and comparing their
-canonical representatives.
+but will also give us a method for checking whether two forms belong to the same class by evaluating and comparing their canonical representatives.
 
 \todo{finish}
 
