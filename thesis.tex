@@ -32,8 +32,8 @@
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
 
-\newcommand{\lnote}[1]{\llap{$#1$\hspace{1.25cm}}}
-\newcommand{\rnote}[1]{\rlap{\hspace{1.25cm}$#1$}}
+\newcommand{\lnote}[1]{\llap{$#1$\hspace{0.75cm}}}
+\newcommand{\rnote}[1]{\rlap{\hspace{0.75cm}$#1$}}
 
 \newcommand{\red}[1]{\textcolor{red}{#1}}
 \newcommand{\todo}[1]{\red{to do: #1}}
@@ -231,6 +231,8 @@ but such forms are of little intereest.
 This motivates defining the \textbf{discriminant} of a form $ax^2 + bxy + cy^2$ to be $\disc = b^2 - 4ac$.
 We will come to see that this classification is far more powerful than simply being able to classify forms as definite/indefinite.
 
+\todo{show that discriminants must be 0 or 1 mod 4}
+
 
 \section{Equivalence}\label{s-forms-eq}
 Given a form $f(x, y) = ax^2 + bxy + cy^2$, one can generate new forms which represent the same set of integers by changing the input space;
@@ -418,9 +420,57 @@ Therefore, the time complexity of the trial division algorithm is $O(2^{n/2})$
 The key insight which bridges the theory of binary quadratic forms into the realm of factoring comes from considering
 forms of order 2 - that is, forms which are their own inverses. 
 Such forms are called \textbf{ambiguous forms}, since they are properly equivalent to the same forms that they are improperly
-equivalent to, so it is ``ambiguous'' which proper equivalence class they belong to (\red{check}).
+equivalent to, so it is ``ambiguous'' which proper equivalence class they belong to.
+
+For a reduced form to be properly equivalent to its inverse, we have
+$$(a, b, c) = (a, -b, c)$$
+
+When is this possible?
+The clearest case where the equility holds is when $b = 0$, but there are other possibilities.
+If $b \neq 0$, the only way for the equivalence to hold is if $(a, -b, c)$ is not fully reduced.
+Since $(a, b, c)$ is reduced, we know that $|b| \leq a \leq c$, 
+so the only way for $(a, -b, c)$ not to be reduced is if $-b < 0$ and $a = |-b|$ or $a = c$.
+Since $(a, b, c)$ is reduced, either of the latter conditions would imply $b > 0$, so we can now write the three cases
+\begin{gather*}
+    \textbf{(1)} \hspace{2mm} b = 0 \implies (a, 0, c) \\
+    \textbf{(2)} \hspace{2mm} a = b \implies (a, a, c) \\
+    \textbf{(3)} \hspace{2mm} a = c \implies (a, b, a)
+\end{gather*}
+
+An ambiguous form must necessarily meet one of these conditions, and it is easy to show that each consition is sufficient:
+\begin{align*}
+    \textbf{(1)} \hspace{2mm}
+    (a, 0, c) \cdot (a, 0, c) &= (a, 0, c) \cdot (a, -0, c) \\
+    &= id_\disc
+\end{align*}
+\begin{align*}
+    \textbf{(2)} \hspace{2mm}
+    (a, a, c) \cdot (a, a, c) &= (a, a, c) \cdot (a, -a, a - a + c) \rnote{\text{using $T^{-1}$}} \\
+    &= (a, a, c) \cdot (a, -a, c) \\
+    &= id_\disc
+\end{align*}
+\begin{align*}
+    \textbf{(3)} \hspace{2mm}
+    (a, b, a) \cdot (a, b, a) &= (a, b, a) \cdot (a, -b, a) \rnote{\text{using $S$}} \\
+    &= id_\disc
+\end{align*}
+
+So these cases are necessary and sufficient to classify a form as ambiguous.
+Notice that each case reduces the three variables $a, b, c$ to only two - 
+this is of particular note when one considers how each case affects the formula $\disc = b^2 - 4ac$
+\begin{gather*}
+    \textbf{(1)} \hspace{2mm} \disc = 0 - 4ac = -4ac \\
+    \textbf{(2)} \hspace{2mm} \disc = a^2 - 4ac = a(a-4c) \\
+    \textbf{(3)} \hspace{2mm} \disc = b^2 - 4a^2 = (b + 2a)(b - 2a)
+\end{gather*}
+
+Notice that every case gives a factorisation of the discriminant.
+Therefore, if we want to find a factorisiation of some number $D$, we can do this by finding amabiguous forms of discriminant $\disc = D$
+(or $\disc = 4D$ if $D$ is congruent to 2 or 3 modulo 4).
 
 \todo{add references}
+\cite[Ch.\,3]{buchmann}
+\cite[Thm.\,III.3.5]{buchmann}
 
 \todo{add roadmap}
 
@@ -428,10 +478,6 @@ equivalent to, so it is ``ambiguous'' which proper equivalence class they belong
 %===============================================================================================================================%
 %                                                           REFERENCES                                                          %
 %===============================================================================================================================%
-
-\nocite{*}
-\cite[Ch.\,3]{buchmann}
-\cite[Thm.\,III.3.5]{buchmann}
 
 \pagebreak
 \addcontentsline{toc}{chapter}{References}
