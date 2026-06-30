@@ -284,9 +284,53 @@ Now that we have an equivalence relation, we would like to be able to find a sui
 This will not only prove useful for simplifying computations by choosing a representative with small values of $a$, $b$, and $c$,
 but will also give us a method for checking whether two forms belong to the same class by evaluating and comparing their canonical representatives.
 
-\todo{finish}
+A basis for $SL_2(\Z)$ is given by
+$$S = \pmat{0 & -1 \\ 1 & 0}, \hspace{5mm} T = \pmat{1 & 1 \\ 0 & 1}$$
 
-\todo{bound on terms for brute force finding reduced algorithms}
+Note that
+$$S^4 = I, \hspace{5mm} T^k = \pmat{1 & k \\ 0 & 1}$$
+
+So we see that any properly equivalent forms must be related by some series of applications of $S$ and $T^k$.
+Let us observe the results of these transformations on a generic form $f(x, y) = (a, b, c)$
+\begin{align*}
+    f \circ S (x, y) &= f \circ \pmat{0 & -1 \\ 1 & 0} \pmat{x \\ y} \\
+    &= f(-y, x) \\
+    &= a(-y)^2 + b(-y)x + cx^2 \\
+    &= ay^2 - bxy + cx^2
+\end{align*}
+\begin{align*}
+    f \circ T^k (x, y) &= f \circ \pmat{1 & k \\ 0 & 1} \pmat{x \\ y} \\
+    &= f(x + ky, y) \\
+    &= a(x + ky)^2 + b(x + ky)y + cy^2 \\
+    &= a(x^2 + 2kxy + k^2y^2) + b(xy + ky^2) + cy^2 \\
+    &= ax^2 + (2ak + b)xy + (ak^2 + bk + c)y^2
+\end{align*}
+
+So we have
+\begin{gather*}
+    S : (a, b, c) \mapsto (c, -b, a) \\
+    T^k : (a, b, c) \mapsto (a, 2ak + b, ak^2 + bk + c)
+\end{gather*}
+
+Let us use these for constructing a redution algorithm, which turns any form into a canonical class representative.
+For now, we will only consider positive definite forms, as the result is simpler.
+Note that in this case, $a$ and $c$ must both be positive, as their signs must be equal for $\disc = b^2 - 4ac < 0$,
+and they must be positive to represent positive integers.
+
+A natural way to use $S$ and $T$ to reduce a form is to attempt to minimise $|b|$.
+Whenever $|b| > a$, we can use $T$ to reduce $b$ to be in the range $[-a, a]$.
+Then, if $c < a$, we can use $S$ to swap $a$ and $c$, then return to step 1 to reduce $b$ further.
+
+Eventually, we reach a form with $|b| \leq a \leq c$.
+This algorithm can easily be shown to terminate, as $|b|$ decreases with each repetition, so there can be at most $|b|$ repetitions.
+
+\todo{fix this part}
+In the case that $a = |b|$ or $a = c$, the above criteria is satisfied by both $(a, b, c)$ and $(a, -b, c)$, 
+so we will choose $(a, |b|, c)$ to be the canonical representative.
+
+\pyfile[1]{algorithms/definite-reduction.py}
+
+\todo{prove the reduced representatives are canonical}
 
 
 %===============================================================================================================================%
