@@ -280,6 +280,8 @@ It is easy to see that this is an equivalence realtion.
 If we restrict the discriminant of the transformation to be strictly positive 1, we split the equivalence classes further-
 we call such forms \textbf{properly equivalent}, which is also an equivalence relation.
 
+\todo{show invariance of discriminant under equivalence}
+
 
 \section{Reduction}\label{s-forms-red}
 Now that we have an equivalence relation, we would like to be able to find a suitable representative element of a given class.
@@ -334,8 +336,6 @@ so we will choose $(a, |b|, c)$ to be the canonical representative.
 
 \todo{prove the reduced representatives are canonical}
 
-\todo{highlight that equivalent forms have the same discriminant}
-
 
 %===============================================================================================================================%
 %                                                           CHAPTER 3                                                           %
@@ -351,14 +351,17 @@ under which the ideal multiplication structure gives a multiplicative structure 
 As was established in \ref{s-forms-disc}, a form $(a, b, c$) when considered as a continuous function has zeroes at
 $$t = \frac{x}{y} = \frac{b^2 \pm \sqrt\disc}{2a}$$
 
-From this, we can define a ring given by
+From this, we can define a ring
 $$\Z\left[\frac{b^2 \pm \sqrt\disc}{2a}\right] = \Z + \frac{b^2 - \sqrt\disc}{2a}\Z$$
 
-But this isn't quite the formulation that we need - it's not immediately clear how to understand these rings as ideals of some common larger ring.
-However, if we multiply by $a$, we get a much more useful result:
+This can be thought of as a free $\Z$-module of rank 2 or a 2d lattice.
+But this isn't quite the formulation that we need - 
+the desired behaviour is that these rings would naturally sit inside of a common, larger ring, where they could be extended to ideals and multiplied with one another.
+The issue is that the denominator containing $a$ makes this difficult, so let us multiply by $a$.
+The result is an isomorphic ring, but when we consider aligning several such rings, this result is much more useful
 $$a\Z + \frac{b^2 - \sqrt\disc}{2}\Z$$
 
-A ring of this form is an ideal of the ring
+A ring of this form sits inside of the ring
 $$\Z\left[\frac{b - \sqrt\disc}{2}\right] = 
 \begin{cases}
     b \equiv 0 \hspace{2mm} \text{(mod 2)} & \Z + \frac{0 - \sqrt\disc}{2} \\
@@ -367,19 +370,21 @@ $$\Z\left[\frac{b - \sqrt\disc}{2}\right] =
 
 Noting that $\disc = b^2 - 4ac$ requires $\disc \equiv b^2 \hspace{2mm} \text{(mod 4)}$, 
 then we also have $\disc \equiv b \hspace{2mm} \text{(mod 2)}$.
-So the ideals we defined are contained within
+So the rings we defined sit inside
 $$\Z + \frac{\disc - \sqrt\disc}{2}\Z$$
 
-This depends only on the discriminant, so forms of the same discriminant correspond to ideals of the same ring, which we will denote $\mathcal{O}_\disc$.
-We have defined a map from forms of discriminant $\disc$ to ideals of $\mathcal{O}_\disc$
-$$\varphi : (a, b, c) \mapsto a\Z + \frac{b - \sqrt\disc}{2}\Z$$
+This depends only on the discriminant, not the particular form, so we will denote the larger ring as $\mathcal{O}_\disc$.
+To ensure that the smaller rings that we started with are truly ideals, 
+we will use the same generators to generate an ideal of $\mathcal{O}$ instead of taking them as generators of $\Z$-modules.
+This gives a map from forms of discriminant $\disc$ to ideals of $\mathcal{O}_\disc$
+$$\varphi : (a, b, c) \mapsto \left\langle a, \frac{b - \sqrt\disc}{2} \right\rangle$$
 
 For this to give any meaningful structure, we must show that equivalence of forms corresponds to some notion of equivalence of ideals.
 Consider how $\varphi$ acts on forms which vary by an action of $T$
 \begin{align*}
     \varphi \circ f \circ T(x, y) &= \varphi(ax^2 + (2a + b)xy + (a + b + c)y^2) \\
-    &= a\Z + \frac{2a + b - \sqrt\disc}{2} \\
-    &= a\Z + \frac{b - \sqrt\disc}{2} \\
+    &= \left\langle a, \frac{2a + b - \sqrt\disc}{2} \right\rangle \\
+    &= \left\langle a, \frac{b - \sqrt\disc}{2} \right\rangle \\
     &= \varphi \circ f(x, y)
 \end{align*}
 
@@ -387,11 +392,18 @@ So we see that $\varphi$ is invariant under actions of $T$.
 Now consider actions of $S$
 \begin{align*}
     \varphi \circ f \circ S(x, y) &= \varphi(cx^2 -bxy + ay^2) \\
-    &= c\Z + \frac{-b - \sqrt\disc}{2} \\
+    &= \left\langle c, \frac{-b - \sqrt\disc}{2} \right\rangle \\
 \end{align*}
 
-
 \todo{finish}
+
+
+\section{Composition Formula}\label{s-comp-formula}
+\red{to do}
+
+
+\section{Identity and Inverses}\label{s-comp-idinv}
+\red{to do}
 
 
 %===============================================================================================================================%
