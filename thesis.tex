@@ -332,6 +332,8 @@ so we will choose $(a, |b|, c)$ to be the canonical representative.
 
 \todo{prove the reduced representatives are canonical}
 
+\todo{highlight that equivalent forms have the same discriminant}
+
 
 %===============================================================================================================================%
 %                                                           CHAPTER 3                                                           %
@@ -339,8 +341,52 @@ so we will choose $(a, |b|, c)$ to be the canonical representative.
 
 \chapter{Composition}\label{s-comp}
 Now that we have the means to properly understand equivalence classes of forms, we seek to equip them with a binary operation to form a group.
+We acheive this by showing a bijection between classes of forms and classes of ideals, 
+under which the ideal multiplication structure gives a multiplicative structure to the corresponding classes of forms.
 
-\section{Ideals}\label{s-comp-ideals}
+
+\section{Ideal Correspondence}\label{s-comp-ideals}
+As was established in \ref{s-forms-disc}, a form $(a, b, c$) when considered as a continuous function has zeroes at
+$$t = \frac{x}{y} = \frac{b^2 \pm \sqrt\disc}{2a}$$
+
+From this, we can define a ring given by
+$$\Z\left[\frac{b^2 \pm \sqrt\disc}{2a}\right] = \Z + \frac{b^2 - \sqrt\disc}{2a}\Z$$
+
+But this isn't quite the formulation that we need - it's not immediately clear how to understand these rings as ideals of some common larger ring.
+However, if we multiply by $a$, we get a much more useful result:
+$$a\Z + \frac{b^2 - \sqrt\disc}{2}\Z$$
+
+A ring of this form is an ideal of the ring
+$$\Z\left[\frac{b - \sqrt\disc}{2}\right] = 
+\begin{cases}
+    b \equiv 0 \hspace{2mm} \text{(mod 2)} & \Z + \frac{0 - \sqrt\disc}{2} \\
+    b \equiv 1 \hspace{2mm} \text{(mod 2)} & \Z + \frac{1 - \sqrt\disc}{2}
+\end{cases}$$
+
+Noting that $\disc = b^2 - 4ac$ requires $\disc \equiv b^2 \hspace{2mm} \text{(mod 4)}$, 
+then we also have $\disc \equiv b \hspace{2mm} \text{(mod 2)}$.
+So the ideals we defined are contained within
+$$\Z + \frac{\disc - \sqrt\disc}{2}\Z$$
+
+This depends only on the discriminant, so forms of the same discriminant correspond to ideals of the same ring, which we will denote $\mathcal{O}_\disc$.
+We have defined a map from forms of discriminant $\disc$ to ideals of $\mathcal{O}_\disc$
+$$\varphi : (a, b, c) \mapsto a\Z + \frac{b - \sqrt\disc}{2}\Z$$
+
+For this to give any meaningful structure, we must show that equivalence of forms corresponds to some notion of equivalence of ideals.
+Consider how $\varphi$ acts on forms which vary by an action of $T$
+\begin{align*}
+    \varphi \circ f \circ T(x, y) &= \varphi(ax^2 + (2a + b)xy + (a + b + c)y^2) \\
+    &= a\Z + \frac{2a + b - \sqrt\disc}{2} \\
+    &= a\Z + \frac{b - \sqrt\disc}{2} \\
+    &= \varphi \circ f(x, y)
+\end{align*}
+
+So we see that $\varphi$ is invariant under actions of $T$.
+Now consider actions of $S$
+\begin{align*}
+    \varphi \circ f \circ S(x, y) &= \varphi(cx^2 -bxy + ay^2) \\
+    &= c\Z + \frac{-b - \sqrt\disc}{2} \\
+\end{align*}
 
 
 \todo{finish}
