@@ -231,7 +231,8 @@ but such forms are of little intereest.
 This motivates defining the \textbf{discriminant} of a form $ax^2 + bxy + cy^2$ to be $\disc = b^2 - 4ac$.
 We will come to see that this classification is far more powerful than simply being able to classify forms as definite/indefinite.
 
-\todo{show that discriminants must be 0 or 1 mod 4}
+Note that the only possible values for a perfect square modulo 4 are 1 and 0, and $\disc \equiv b^2 \hspace{2mm} \text{(mod 4)}$.
+Therefore, we must have $\disc$ equivalent to 1 or 0 modulo 4.
 
 
 \section{Equivalence}\label{s-forms-eq}
@@ -280,7 +281,17 @@ It is easy to see that this is an equivalence realtion.
 If we restrict the discriminant of the transformation to be strictly positive 1, we split the equivalence classes further-
 we call such forms \textbf{properly equivalent}, which is also an equivalence relation.
 
-\todo{show invariance of discriminant under equivalence}
+Let us consider the effect of $SL_2(\Z)$ transformations on forms;
+for $f \circ S = (c, -b, a)$, the discriminant is clearly unchanged.
+For $f \circ T = (a, 2a + b, a + b + c)$, we have
+\begin{align*}
+    \disc &= (2a + b)^2 - 4a(a + b + c) \\
+    &= 4a^2 - 4ab + b^2 - 4a^2 + 4ab - 4ac \\
+    &= b^2 - 4ac
+\end{align*}
+
+So the discriminant is also unchanged under the action of $T$.
+Hence we see that properly equivalent forms have equal discriminants.
 
 
 \section{Reduction}\label{s-forms-red}
