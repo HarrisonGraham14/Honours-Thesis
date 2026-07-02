@@ -14,6 +14,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage[many]{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=blue,draft=false]{hyperref}
 
 % Macros
 \newcommand{\N}{\mathbb{N}} % Natural numbers
@@ -26,8 +27,6 @@
 \newcommand{\C}{\mathbb{C}} % Complex numbers
 \newcommand{\T}{\mathbb{T}} % Circle group
 \newcommand{\F}{\mathbb{F}} % Field
-
-\newcommand{\disc}{\triangle}
 
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
@@ -228,14 +227,14 @@ Such forms are called \textbf{indefinite}.
 Similar reasoning shows that forms with $b^2 -4ac = 0$ are strictly non-negative or non-positive, 
 but such forms are of little intereest.
 
-This motivates defining the \textbf{discriminant} of a form $ax^2 + bxy + cy^2$ to be $\disc = b^2 - 4ac$.
+This motivates defining the \textbf{discriminant} of a form $ax^2 + bxy + cy^2$ to be $\Delta = b^2 - 4ac$.
 We will come to see that this classification is far more powerful than simply being able to classify forms as definite/indefinite.
 
-Note that the only possible values for a perfect square modulo 4 are 1 and 0, and $\disc \equiv b^2 \hspace{2mm} \text{(mod 4)}$.
+Note that the only possible values for a perfect square modulo 4 are 1 and 0, and $\Delta \equiv b^2 \hspace{2mm} \text{(mod 4)}$.
 Therefore, we must have 
 
 \begin{remark}
-    $\disc$ is equivalent to 1 or 0 modulo 4. 
+    $\Delta$ is equivalent to 1 or 0 modulo 4. 
 \end{remark}
 
 
@@ -289,7 +288,7 @@ Let us consider the effect of $SL_2(\Z)$ transformations on forms;
 for $f \circ S = (c, -b, a)$, the discriminant is clearly unchanged.
 For $f \circ T = (a, 2a + b, a + b + c)$, we have
 \begin{align*}
-    \disc &= (2a + b)^2 - 4a(a + b + c) \\
+    \Delta &= (2a + b)^2 - 4a(a + b + c) \\
     &= 4a^2 - 4ab + b^2 - 4a^2 + 4ab - 4ac \\
     &= b^2 - 4ac
 \end{align*}
@@ -339,7 +338,7 @@ So we have
 
 Let us use these for constructing a redution algorithm, which turns any form into a canonical class representative.
 For now, we will only consider positive definite forms, as the result is simpler.
-Note that in this case, $a$ and $c$ must both be positive, as their signs must be equal for $\disc = b^2 - 4ac < 0$,
+Note that in this case, $a$ and $c$ must both be positive, as their signs must be equal for $\Delta = b^2 - 4ac < 0$,
 and they must be positive to represent positive integers.
 
 A natural way to use $S$ and $T$ to reduce a form is to attempt to minimise $|b|$.
@@ -380,43 +379,43 @@ under which the ideal multiplication structure gives a multiplicative structure 
 
 
 \section{Ideal Correspondence}\label{s-comp-ideals}
-As was established in \ref{s-forms-disc}, a form $(a, b, c$) when considered as a continuous function has zeroes at
-$$t = \frac{x}{y} = \frac{b^2 \pm \sqrt\disc}{2a}$$
+As was established in \autoref{s-forms-disc}, a form $(a, b, c$) when considered as a continuous function has zeroes at
+$$t = \frac{x}{y} = \frac{b^2 \pm \sqrt\Delta}{2a}$$
 
 From this, we can define a ring
-$$\Z\left[\frac{b^2 \pm \sqrt\disc}{2a}\right] = \Z + \frac{b^2 - \sqrt\disc}{2a}\Z$$
+$$\Z\left[\frac{b^2 \pm \sqrt\Delta}{2a}\right] = \Z + \frac{b^2 - \sqrt\Delta}{2a}\Z$$
 
 This can be thought of as a free $\Z$-module of rank 2 or a 2d lattice.
 But this isn't quite the formulation that we need - 
 the desired behaviour is that these rings would naturally sit inside of a common, larger ring, where they could be extended to ideals and multiplied with one another.
 The issue is that the denominator containing $a$ makes this difficult, so let us multiply by $a$.
 The result is an isomorphic ring, but when we consider aligning several such rings, this result is much more useful
-$$a\Z + \frac{b^2 - \sqrt\disc}{2}\Z$$
+$$a\Z + \frac{b^2 - \sqrt\Delta}{2}\Z$$
 
 A ring of this form sits inside of the ring
-$$\Z\left[\frac{b - \sqrt\disc}{2}\right] = 
+$$\Z\left[\frac{b - \sqrt\Delta}{2}\right] = 
 \begin{cases}
-    b \equiv 0 \hspace{2mm} \text{(mod 2)} & \Z + \frac{0 - \sqrt\disc}{2} \\
-    b \equiv 1 \hspace{2mm} \text{(mod 2)} & \Z + \frac{1 - \sqrt\disc}{2}
+    b \equiv 0 \hspace{2mm} \text{(mod 2)} & \Z + \frac{0 - \sqrt\Delta}{2} \\
+    b \equiv 1 \hspace{2mm} \text{(mod 2)} & \Z + \frac{1 - \sqrt\Delta}{2}
 \end{cases}$$
 
-Noting that $\disc = b^2 - 4ac$ requires $\disc \equiv b^2 \hspace{2mm} \text{(mod 4)}$, 
-then we also have $\disc \equiv b \hspace{2mm} \text{(mod 2)}$.
+Noting that $\Delta = b^2 - 4ac$ requires $\Delta \equiv b^2 \hspace{2mm} \text{(mod 4)}$, 
+then we also have $\Delta \equiv b \hspace{2mm} \text{(mod 2)}$.
 So the rings we defined sit inside
-$$\Z + \frac{\disc - \sqrt\disc}{2}\Z$$
+$$\Z + \frac{\Delta - \sqrt\Delta}{2}\Z$$
 
-This depends only on the discriminant, not the particular form, so we will denote the larger ring as $\mathcal{O}_\disc$.
+This depends only on the discriminant, not the particular form, so we will denote the larger ring as $\mathcal{O}_\Delta$.
 To ensure that the smaller rings that we started with are truly ideals, 
 we will use the same generators to generate an ideal of $\mathcal{O}$ instead of taking them as generators of $\Z$-modules.
-This gives a map from forms of discriminant $\disc$ to ideals of $\mathcal{O}_\disc$
-$$\varphi : (a, b, c) \mapsto \left\langle a, \frac{b - \sqrt\disc}{2} \right\rangle$$
+This gives a map from forms of discriminant $\Delta$ to ideals of $\mathcal{O}_\Delta$
+$$\varphi : (a, b, c) \mapsto \left\langle a, \frac{b - \sqrt\Delta}{2} \right\rangle$$
 
 For this to give any meaningful structure, we must show that equivalence of forms corresponds to some notion of equivalence of ideals.
 Consider how $\varphi$ acts on forms which vary by an action of $T$
 \begin{align*}
     \varphi \circ f \circ T(x, y) &= \varphi(ax^2 + (2a + b)xy + (a + b + c)y^2) \\
-    &= \left\langle a, \frac{2a + b - \sqrt\disc}{2} \right\rangle \\
-    &= \left\langle a, \frac{b - \sqrt\disc}{2} \right\rangle \\
+    &= \left\langle a, \frac{2a + b - \sqrt\Delta}{2} \right\rangle \\
+    &= \left\langle a, \frac{b - \sqrt\Delta}{2} \right\rangle \\
     &= \varphi \circ f(x, y)
 \end{align*}
 
@@ -424,7 +423,7 @@ So we see that $\varphi$ is invariant under actions of $T$.
 Now consider actions of $S$
 \begin{align*}
     \varphi \circ f \circ S(x, y) &= \varphi(cx^2 -bxy + ay^2) \\
-    &= \left\langle c, \frac{-b - \sqrt\disc}{2} \right\rangle \\
+    &= \left\langle c, \frac{-b - \sqrt\Delta}{2} \right\rangle \\
 \end{align*}
 
 \todo{we need to introduce ideal equivalence via principal forms (scalar multiplication). How does this arise naturally?}
@@ -435,12 +434,12 @@ Now consider actions of $S$
 \section{Composition Formula}\label{s-comp-formula}
 Having seen that forms of the same discriminant correspond to ideals of the same ring, 
 we now seek to find a general formula for an operation corresponding to ideal multipication.
-Let us begin by considering forms $f = (a, b, c)$ and $g = (a', b', c')$, both of discriminant $\disc$.
-These correspond to ideals of $\mathcal{O}_\disc$
-$$I_f = \left\langle a, \frac{b - \sqrt\disc}{2} \right\rangle, \hspace{5mm} I_g = \left\langle a', \frac{b' - \sqrt\disc}{2} \right\rangle$$
+Let us begin by considering forms $f = (a, b, c)$ and $g = (a', b', c')$, both of discriminant $\Delta$.
+These correspond to ideals of $\mathcal{O}_\Delta$
+$$I_f = \left\langle a, \frac{b - \sqrt\Delta}{2} \right\rangle, \hspace{5mm} I_g = \left\langle a', \frac{b' - \sqrt\Delta}{2} \right\rangle$$
 
 The product of these ideals is the ideal generated by the pairwise products of their generators
-$$I_f \cdot I_g = \left\langle aa', a\frac{b' - \sqrt\disc}{2}, a'\frac{b - \sqrt\disc}{2}, \frac{bb' + \disc - (b + b')\sqrt\disc}{4} \right\rangle$$
+$$I_f \cdot I_g = \left\langle aa', a\frac{b' - \sqrt\Delta}{2}, a'\frac{b - \sqrt\Delta}{2}, \frac{bb' + \Delta - (b + b')\sqrt\Delta}{4} \right\rangle$$
 
 It is known that such an ideal can be expressed using at most two generators \cite[Thm.\,5.9]{stewart}.
 This can be easily found computationally using an algorithm for ideal reduction such as is provided by Cohen \cite[Ch.\,2.4.2]{cohen}.
@@ -455,25 +454,27 @@ $$f \equiv (a_1, B, c_1), \hspace{5mm} g \equiv (a_2, B, c_2)$$
 
 Using the fact that these forms share the same discriminant
 \begin{gather*}
-    \disc = B^2 - 4a_1c_1 = B^2 - 4a_2c_2 \\
-    \frac{\disc - B^2}{4} = a_1c_1 = a_2c_2 \\
-    \frac{\disc - B^2}{4a_1a_2} = \frac{c_1}{a_2} = \frac{c_2}{a_1} \rnote{\text{$\in \Z$ if $(a_1, a_2) = 1$}}
+    \Delta = B^2 - 4a_1c_1 = B^2 - 4a_2c_2 \\
+    \frac{\Delta - B^2}{4} = a_1c_1 = a_2c_2 \\
+    \frac{\Delta - B^2}{4a_1a_2} = \frac{c_1}{a_2} = \frac{c_2}{a_1} \rnote{\text{$\in \Z$ if $(a_1, a_2) = 1$}}
 \end{gather*}
 
-So by letting $C = \tfrac{\disc - B^2}{4a_1a_2}$, we can express the forms as
+So by letting $C = \tfrac{\Delta - B^2}{4a_1a_2}$, we can express the forms as
 $$f \equiv (a_1, B, a_2 C), \hspace{5mm} g \equiv (a_2, B, a_1 C)$$
 
 This gives the product of ideals to be
-$$I_f \cdot I_g = \left\langle a_1a_2, a_1\frac{B - \sqrt\disc}{2}, a_2\frac{B - \sqrt\disc}{2}, \frac{B^2 + \disc - 2B\sqrt\disc}{4} \right\rangle$$
+$$I_f \cdot I_g = \left\langle a_1a_2, a_1\frac{B - \sqrt\Delta}{2}, a_2\frac{B - \sqrt\Delta}{2}, \frac{B^2 + \Delta - 2B\sqrt\Delta}{4} \right\rangle$$
 
 This final term is
 \begin{align*}
-    \frac{B^2 + \disc - 2B\sqrt\disc}{4} &= \frac{B^2 + B^2 - 4a_1a_2C - 2B\sqrt\disc}{4} \\
-    &= B\frac{B - \sqrt\disc}{2} - a_1a_2C
+    \frac{B^2 + \Delta - 2B\sqrt\Delta}{4} &= \frac{B^2 + B^2 - 4a_1a_2C - 2B\sqrt\Delta}{4} \\
+    &= B\frac{B - \sqrt\Delta}{2} - a_1a_2C
 \end{align*}
 
 This reduces to
-$$I_f \cdot I_g = \left\langle a_1a_2, \hspace{2mm} \text{gcd}(a_1, a_2, B) \frac{B - \sqrt\disc}{2}\right\rangle$$
+$$I_f \cdot I_g = \left\langle a_1a_2, \hspace{2mm} \text{gcd}(a_1, a_2, B) \frac{B - \sqrt\Delta}{2}\right\rangle$$
+
+\todo{declare gcd(a1, a2, B) = 1 as f is primitive}
 
 \todo{express $B$, $a_1$, and $a_2$ as functions of $a, a', b, b'$. Consider the case when a and a' have a common divisor. Can c/c' be used instead? Can this always be adapted to work?}
 
@@ -528,32 +529,32 @@ An ambiguous form must necessarily meet one of these conditions, and it is easy 
 \begin{align*}
     \textbf{(1)} \hspace{2mm}
     (a, 0, c) \cdot (a, 0, c) &= (a, 0, c) \cdot (a, -0, c) \\
-    &= id_\disc
+    &= id_\Delta
 \end{align*}
 \begin{align*}
     \textbf{(2)} \hspace{2mm}
     (a, a, c) \cdot (a, a, c) &= (a, a, c) \cdot (a, -a, a - a + c) \rnote{\text{using $T^{-1}$}} \\
     &= (a, a, c) \cdot (a, -a, c) \\
-    &= id_\disc
+    &= id_\Delta
 \end{align*}
 \begin{align*}
     \textbf{(3)} \hspace{2mm}
     (a, b, a) \cdot (a, b, a) &= (a, b, a) \cdot (a, -b, a) \rnote{\text{using $S$}} \\
-    &= id_\disc
+    &= id_\Delta
 \end{align*}
 
 So these cases are necessary and sufficient to classify a form as ambiguous.
 Notice that each case reduces the three variables $a, b, c$ to only two - 
-this is of particular note when one considers how each case affects the formula $\disc = b^2 - 4ac$
+this is of particular note when one considers how each case affects the formula $\Delta = b^2 - 4ac$
 \begin{gather*}
-    \textbf{(1)} \hspace{2mm} \disc = 0 - 4ac = -4ac \\
-    \textbf{(2)} \hspace{2mm} \disc = a^2 - 4ac = a(a-4c) \\
-    \textbf{(3)} \hspace{2mm} \disc = b^2 - 4a^2 = (b + 2a)(b - 2a)
+    \textbf{(1)} \hspace{2mm} \Delta = 0 - 4ac = -4ac \\
+    \textbf{(2)} \hspace{2mm} \Delta = a^2 - 4ac = a(a-4c) \\
+    \textbf{(3)} \hspace{2mm} \Delta = b^2 - 4a^2 = (b + 2a)(b - 2a)
 \end{gather*}
 
 Notice that every case gives a factorisation of the discriminant.
-Therefore, if we want to find a factorisiation of some number $D$, we can do this by finding amabiguous forms of discriminant $\disc = D$
-(or $\disc = 4D$ if $D$ is congruent to 2 or 3 modulo 4).
+Therefore, if we want to find a factorisiation of some number $D$, we can do this by finding amabiguous forms of discriminant $\Delta = D$
+(or $\Delta = 4D$ if $D$ is congruent to 2 or 3 modulo 4).
 
 \todo{add more references}
 
