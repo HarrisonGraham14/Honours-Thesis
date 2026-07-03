@@ -148,22 +148,68 @@ Signed: \rule{7cm}{0.25pt} \hfill Date: \rule{4cm}{0.25pt}
 
 
 %===============================================================================================================================%
-%                                                           CHAPTER 1                                                           %
+%                                                          INTRODUTION                                                          %
 %===============================================================================================================================%
 
 \pagebreak
-\chapter{Introduction}\label{s-intro}
+\chapter*{Introduction}\label{s-intro}
+\addcontentsline{toc}{chapter}{Introduction}
 
-\red{to do}
+The goal of this paper is to develop methods for factoring large integers using the theory of binary quadratic forms.
+The paper is written with the intention of providing motivated explanations to the reader,
+as the existing resources often give proofs of theorems without explaining how such a result would be formulated without prior knowledge of its truth.
+This poses a particular challenge in \autoref{s-comp}, 
+as I'm yet to find a paper that approaches composition in the style of a derivation instead of stating it as a result and then proving that it works.
+
+\vspace{2mm}
+\noindent
+For the chapter draft, 
+\begin{itemize}
+    \item A completed draft of \autoref{s-forms} is included, where some of the basic definitions are established.
+    Here, we establish that forms of a fixed discriminant can be partitioned into a finite set of equivalence classes.
+
+    \item A bare-bones version of \autoref{s-comp} is included.
+    Here, important results are given, and the direction of the proofs are in place, but many of the details have not yet been formalised.
+    Notes have been left in \red{red text} to indicate work that is needed.
+
+    \item The beginning of \autoref{s-factor} is also included.
+    Here, the usefulness of binary quadratic forms for factoring is realised.
+    The key result that the previous chapters have built towards is provided in \autoref{s-factor-amb};
+    ``ambiguous forms'' immediately provide a factorisation of the discriminant.
+\end{itemize}
+
+The tasks for the remainder of the project are to finish formalising the derivations in \autoref{s-comp},
+and to develop methods for finding ambiguous forms efficiently.
+
+So far, the paper has focuseed on definite forms (negative discriminant), 
+as they have a simpler structure and are sufficient to develop factoring algorithms.
+However, at some point we will likely want to use definite forms (positive discriminant), as they give rise to different algorithms \cite[\S\,8.7]{cohen}.
+This will require adding to the content of \autoref{s-forms}, and possibly adjusting the arguments in \autoref{s-comp}.
+
+Beyond this, if time allows, 
+we could move to an investigation of factoring algorithms which leverage larger number fields than the quadratic fields which underpin binary quadratic forms.
+
+Alternatively, we could move to a discussion of cryptography \cite[Ch.\,12]{buchmann};
+if finding ambiguous forms leads immediately to factoring the discriminant, then mapping the class group is at least as computationally complex as factoring.
+Since existing cryptographic methods depend on the assumption that factoring is difficult,
+cryptographic methods which depend on the structure of the class group should, in principal, be secure.
+Developing a novel encryption method may be an interesting way to continue the narrative of the paper,
+but whether this will be an appropriate use of time remains to be seen.
 
 
 %===============================================================================================================================%
-%                                                           CHAPTER 2                                                           %
+%                                                           CHAPTER 1                                                           %
 %===============================================================================================================================%
 
 \pagebreak
 \chapter{Binary Quadratic Forms}\label{s-forms}
 
+\textit{
+    In this chapter, we establish standard definitions and results on binary quadratic forms,
+    as can be found in \cite[Ch.\,1,\,2,\,5]{buchmann}, \cite[Ch.\,1-2]{buell}, \cite[\S\,2]{cox}.
+}
+
+\vspace{2mm}
 A \textbf{binary quadratic form} (or simply a \textbf{form}) is a function of the form
 $$f(x, y) = ax^2 + bxy + cy^2$$
 
@@ -188,7 +234,7 @@ For example, consider the form $(2, 1, 5)$, or $f(x, y) = 2x^2 + xy + 5y^2$.
 This form represents the number 2, since $f(1, 0) = 2$.
 The form does not represent the number 1, though it is not immediately clear how to prove a result of this kind.
 
-The questions which historically motivated the study of forms were as follows;
+The questions which historically motivated the study of forms were as follows \cite[Ch.\,1]{buell};
 which numbers can be represented by a given form and, conversely, which forms can represent a given number?
 These questions will not be our primary concern, but they will help to motivate the development of the theory that we need.
 
@@ -233,9 +279,10 @@ We will come to see that this classification is far more powerful than simply be
 Note that the only possible values for a perfect square modulo 4 are 1 and 0, and $\Delta \equiv b^2 \hspace{2mm} \text{(mod 4)}$.
 Therefore, we must have 
 
-\begin{remark}
+\vspace{2mm}
+\begin{lemma}
     $\Delta$ is equivalent to 1 or 0 modulo 4. 
-\end{remark}
+\end{lemma}
 
 
 \section{Equivalence}\label{s-forms-eq}
@@ -296,11 +343,35 @@ For $f \circ T = (a, 2a + b, a + b + c)$, we have
 So the discriminant is also unchanged under the action of $T$.
 Hence we have
 
-\begin{remark}
+\vspace{2mm}
+\begin{lemma}
     Properly equivalent forms have equal discriminants.
+\end{lemma}
+
+\vspace{2mm}
+\begin{remark}
+    Properly/improperly equivalent forms represent exactly the same set of integers.
 \end{remark}
 
-\red{Do I add a proof that equivalent forms represent the same integers?}
+\begin{proof}
+    This is by design of our formulation of equivalence.
+    Let us now prove it formally.
+    We will prove the case of improper equivalence, as any forms which are properly equivalent are also improperly equivalent.
+
+    Suppose $f = (a, b, c)$ and $g = (a', b', c')$ are improperly equivalent forms.
+    That is, we have some $\phi \in GL_2(\Z)$ such that
+    $$f \circ \phi(x, y) = g(x, y)$$
+
+    If $g$ represents $n$, then there exist integers $x_0, y_0 \in \Z$ such that
+    \begin{align*}
+        g(x_0, y_0) &= n \\
+        \implies f \circ \phi(x, y) &= n
+    \end{align*}
+
+    But $\phi$ is a function from $\Z^2 \rightarrow \Z^2$, so we see that $f$ also represents $n$.
+    The converse argument, $f$ represents $n$ $\implies$ $g$ represesnts $n$, is identical.
+    Hence, $f$ represents $n$ if and only if $g$ represents $n$.
+\end{proof}
 
 
 \section{Reduction}\label{s-forms-red}
@@ -355,21 +426,110 @@ and applying $S$ not only if $a > c$, but if $a = c$ and $b$ is negative.
 The full reduction algorithm is as follows
 
 \pyfile[1]{algorithms/definite-reduction.py}
+\todo{convert to pseudocode}
 
 It remains to prove that this is truly a canonical representative.
 
+\vspace{2mm}
 \begin{theorem}
-    Exactly one form exists in a given equivalence class of positive definite forms satisfying $|b| \leq a \leq c$ and $b \geq 0$ if $a = |b|$ or $a = c$.
+    Every positive definite form is properly equivalent to exactly one reduced form. 
+    That is, a form satisfying $|b| \leq a \leq c$ and $b \geq 0$ if $a = |b|$ or $a = c$.
 \end{theorem}
 
 \begin{proof}
-    We adapt the proof of Cohen \cite[Prop.\,5.3.3]{cohen}.
-    \todo{adapt proof}
+    The fact that any form is equivalent to at least one reduced form follows immediately from the existence of the reduction algorithm.
+    To prove uniqueness, we adapt the proof of Cohen \cite[Prop.\,5.3.3]{cohen}.
+    Suppose $(a, b, c)$ is a reduced form.
+    We claim that $a$ is the minimal coefficient of $x^2$ for all forms in its equivalence class.
+    Consider a general transformation
+    $$\phi = \pmat{p & q \\ r & s} \in SL_2(\Z)$$
+
+    In \autoref{s-forms-eq}, we showed that the result of this acting on our form is
+    $$\left[ap^2 + bpr + cr^2 \right] x^2
+        + \left[ 2apq + b(ps + qr) + crs \right] xy
+        + \left[ aq^2 + bqs + cs^2 \right] y^2$$
+
+    We can bound the coefficient of $x^2$ using the fact that $(a, b, c)$ is reduced, hence $c \geq a$ and $b \in (a, a]$
+    \begin{align*}
+        ap^2 + bpr + cr^2 &\leq ap^2 - a|pr| + ar^2 \\
+        &= a \left[ |p|^2 - |pr| + |r|^2 \right] \\
+        &= a \left[ (|p| - |r|)^2 + |pr| \right]
+    \end{align*}
+
+    It's impossible for both $pr$ and $|p| - |r|$ to be zero, as this would require $p = r = 0$,
+    which would cause the determinant of $\phi$ to be zero.
+    But the determinant of $\phi$ is known to be 1, so the coefficient of $x^2$ is at least $a$.
+    Any other reduced form would also have this property, so a reduced form equivalent to this one must also have $a$ as its first coefficient.
+
+    So we must now consider when the above inequality acheives equality.
+    First note that we can only achieve equality if $pr = 0$, as $b > -a$ in a reduced form.
+    Hence, we must have $p^2 + r^2 = 1$. This gives two possible cases
+    \begin{gather*}
+        \textbf{(1)} \hspace{2mm} p = \pm 1, r = 0 \\
+        \textbf{(2)} \hspace{2mm} p = 0, r = \pm 1
+    \end{gather*}
+
+    Consider the first case.
+    We can infer more information about the coefficients of $\phi$ based on the knowledge that its discriminant is 1.
+    \begin{align*}
+        \text{det}(\phi) &= ps - qr \\
+        1 &= \pm s - 0 \\
+        s &= \pm 1
+    \end{align*}
+
+    Hence we have
+    $$\phi = \pmat{\pm 1 & q \\ 0 & \pm 1} = \pmat{\pm 1 & 0 \\ 0 & \pm 1} T^q$$
+
+    Note the action of the matrix
+    $$\pmat{-1 & 0 \\ 0 & -1} : ax^2 + bxy + cy^2 \mapsto ax^2 + bxy + cy^2$$
+
+    So $\phi$ has the same action as $T^q$. 
+    Since this fixes $a$ and shifts $b$ by $2qa$, any choice for $q$ other than 0 (which gives the identity)
+    shifts $b$ outside of the range $(-a, a]$, giving a form which is no longer reduced.
+
+    In the second case, equality is only acheived if $c = a$.
+    Again investigating $\phi$, we have
+    \begin{align*}
+        \text{det}(\phi) &= ps - qr \\
+        1 &= 0 - \pm q \\
+        q &= \mp 1
+    \end{align*}
 \end{proof}
+
+It seems natural to ask, how many reduced forms of a given discriminant exist?
+That is, how many equivalence classes of a fixed discriminant are there?
+For a reduced form, we have a bound on $b$ given by $|b| \leq a \leq c$.
+Does this truly allow us to bound $b$?
+We need to use the fact that the choices for $a$ and $c$ are constrained by the discriminant:
+\begin{align*}
+    b^2 - 4ac &= \Delta \\
+    b^2 - 4 \cdot |b| \cdot |b| &\geq \Delta \\
+    -3b^2 &\geq \Delta \\
+    b^2 &\leq -\tfrac{\Delta}{3} \\
+    |b| &\leq \sqrt{-\tfrac{\Delta}{3}}
+\end{align*}
+
+So there are only finitely many choices for $b$ in a reduced positive definite form.
+If we fix a value of $b$, then can we bound the number of choices for $a$ and $c$?
+Consider
+\begin{align*}
+    b^2 - 4ac &= \Delta \\
+    -4ac &= \Delta - b^2 \\
+    ac &= \frac{b^2 - \Delta}{4}
+\end{align*}
+
+So we have finitely many choices for $a$ and $c$ --- each corresponding to a factorisation of $\tfrac{b^2 - \Delta}{4}$.
+Hence, we see that there are only finitely many choices for $a$, $b$, and $c$ when constructing a reduced positive definite form of a fixed discriminant.
+We have proved
+
+\vspace{2mm}
+\begin{theorem}
+    The set of equivalence classes of positive definite forms of fixed discriminant $\Delta < 0$ is finite.
+\end{theorem}
 
 
 %===============================================================================================================================%
-%                                                           CHAPTER 3                                                           %
+%                                                           CHAPTER 2                                                           %
 %===============================================================================================================================%
 
 \chapter{Composition}\label{s-comp}
@@ -379,6 +539,9 @@ under which the ideal multiplication structure gives a multiplicative structure 
 
 
 \section{Ideal Correspondence}\label{s-comp-ideals}
+\red{It has become apparent that this section has mistakes, having attempted to approach the proof from the opposite direction to usual.
+The proof will likely have to be adapted to assume the form of $\mathcal{O}_\Delta$, then prove the correspondence from there.}
+
 As was established in \autoref{s-forms-disc}, a form $(a, b, c$) when considered as a continuous function has zeroes at
 $$t = \frac{x}{y} = \frac{b^2 \pm \sqrt\Delta}{2a}$$
 
@@ -420,7 +583,7 @@ Consider how $\varphi$ acts on forms which vary by an action of $T$
 \end{align*}
 
 So we see that $\varphi$ is invariant under actions of $T$.
-Now consider actions of $S$
+[Now consider actions of $S$
 \begin{align*}
     \varphi \circ f \circ S(x, y) &= \varphi(cx^2 -bxy + ay^2) \\
     &= \left\langle c, \frac{-b - \sqrt\Delta}{2} \right\rangle \\
@@ -484,7 +647,7 @@ $$I_f \cdot I_g = \left\langle a_1a_2, \hspace{2mm} \text{gcd}(a_1, a_2, B) \fra
 
 
 %===============================================================================================================================%
-%                                                           CHAPTER 4                                                           %
+%                                                           CHAPTER 3                                                           %
 %===============================================================================================================================%
 
 \chapter{Factoring}\label{s-factor}
@@ -566,7 +729,7 @@ Therefore, if we want to find a factorisiation of some number $D$, we can do thi
 %===============================================================================================================================%
 
 \pagebreak
-\addcontentsline{toc}{chapter}{References}
 \bibliographystyle{amsalpha}
 \bibliography{references}
+\addcontentsline{toc}{chapter}{References}
 \end{document}
