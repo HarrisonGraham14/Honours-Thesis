@@ -481,7 +481,7 @@ It remains to prove that this is truly a canonical representative.
     $$\phi = \pmat{\pm 1 & q \\ 0 & \pm 1} = \pmat{\pm 1 & 0 \\ 0 & \pm 1} T^q$$
 
     Note the action of the matrix
-    $$\pmat{-1 & 0 \\ 0 & -1} : ax^2 + bxy + cy^2 \mapsto ax^2 + bxy + cy^2$$
+    $$\pmat{-1 & 0 \\ 0 & -1} : (a, b, c) \mapsto (a, b, c)$$
 
     So $\phi$ has the same action as $T^q$. 
     Since this fixes $a$ and shifts $b$ by $2qa$, any choice for $q$ other than 0 (which gives the identity)
@@ -494,6 +494,36 @@ It remains to prove that this is truly a canonical representative.
         1 &= 0 - \pm q \\
         q &= \mp 1
     \end{align*}
+
+    This gives
+    \begin{align*}
+        \phi &= \pmat{0 & \mp 1 \\ \pm 1 & s} \\ 
+        &= \pmat{0 & -1 \\ -1 & 0} \pmat{\pm 1 & 0 \\ 0 & \pm 1} \pmat{1 & s \\ 0 & 1} \\
+        &= S \cdot \pmat{1 & k \\ 0 & 1} \cdot T^s
+    \end{align*}
+
+    As before, we can ignore the action of the negative identity matrix.
+    Hence we see that the action of $\phi$ is given by
+    $$ST^s : (a, b, c) \mapsto (as^2 + bs + a, - 2as - b, a)$$
+    
+    Recall that the leading term must be equal to $a$ in order for this form to be reduced.
+    Then we have
+    \begin{align*}
+        as^2 + bs + a &= a \\
+        as^2 + bs &= 0 \\
+        s(as + b) &= 0
+    \end{align*}
+
+    So $s = 0$, in which case $\phi = S$, or $as + b = 0$. 
+    In the former case, the action of $\phi$ flips the sign of the second coefficient, which turns a reduced form into one that is no longer reduced 
+    (unless $b = 0$, but in this case, $\phi$ acts tivially on the form).
+    
+    In the latter case, since $(a, b, a)$ is reduced, we have $a \geq b$ and $|b| \geq 0$.
+    We must therefore have $a = b$, $s = -1$.
+    The action of $\phi$ is therefore
+    $$\phi : (a, a, a) \mapsto (a, a, a)$$
+
+    Hence we see that the only reduced form which is properly equivalent to $(a, b, c)$ is itself.
 \end{proof}
 
 It seems natural to ask, how many reduced forms of a given discriminant exist?
@@ -536,6 +566,43 @@ We have proved
 Now that we have the means to properly understand equivalence classes of forms, we seek to equip them with a binary operation to form a group.
 We acheive this by showing a bijection between classes of forms and classes of ideals, 
 under which the ideal multiplication structure gives a multiplicative structure to the corresponding classes of forms.
+
+
+\section{Historical Background}
+\emph{In this chapter, we draw from \cite[\S2D-\S3A]{cox}.}
+
+Consider the equiality
+$$(2x^2 + 2xy + 3y^2)(2z^2 + 2zw + 3w^2) = (2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2$$
+
+We see that for any two numbers which can be represented by the form $(2, 2, 3)$, their product can be represented by the form $(1, 0, 5)$.
+That is, if we have representations of $n$ and $m$
+\begin{gather*}
+    2x^2 + 2xy + 3y^2 = n \\
+    2z^2 + 2zw + 3w^2 = m
+\end{gather*}
+
+Then the form $(1, 0, 5)$ represents $nm$ via
+$$(2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2 = nm$$
+
+This result was used by Lagrange for a specific number-theoretic proof, but Legendre sought to generalise results of this kind.
+He defined a form $F$ to be the \textbf{composition} of $f$ and $g$ if there exist bilinear forms $B_1$ and $B_2$ such that
+\begin{gather*}
+    (x, y)g(z, w) = F(B_1(x, y; z, w), B_2(x, y; z, w)) \\
+    B_i = a_i xz + b_i xw + c_i yz + d_i yw
+\end{gather*}
+
+Legendre was able to show that any two forms of the same discriminant can always be composed, but his formulation was not well-defined as a function, as it was multi-valued.
+This was finally rectified by Gauss in his \emph{Disquisitiones Arithmaticae} [\red{cite?}], where he altered Legendre's formulation to obtain a single-valued function.
+This notion of composition gave a group structure to the set of proper equivalence classes of forms of a fixed discriminant.
+This group is called the \textbf{class group}.
+
+Due to the complexity of Gauss' methods, Dirichlet presented a simpler but less general approach to composition.
+We will acquire a similar formulation of composition in this chapter.
+
+However, as the theory of ideals developed, it became apparent that there exists a bijection between certain ideals of quadratic number fields and the class group of quadratic forms.
+This provides us a new and perhaps more intuitive way to derive composition of forms;
+we first outline this bijection, then we can leverage the multiplicative structure of ideals to define an analogous operation on forms.
+We will then show that this operation precisely fits the desired definition of composition given by Legendre.
 
 
 \section{Ideal Correspondence}\label{s-comp-ideals}
