@@ -433,7 +433,11 @@ It remains to prove that this is truly a canonical representative.
 \vspace{2mm}
 \begin{theorem}
     Every positive definite form is properly equivalent to exactly one reduced form. 
-    That is, a form satisfying $|b| \leq a \leq c$ and $b \geq 0$ if $a = |b|$ or $a = c$.
+    That is, a form satisfying \todo{remove from theorem and add to definition}
+    \begin{itemize}
+        \item $|b| \leq a \leq c$
+        \item $b \geq 0$ if $a = |b|$ or $a = c$.
+    \end{itemize}
 \end{theorem}
 
 \begin{proof}
@@ -449,9 +453,9 @@ It remains to prove that this is truly a canonical representative.
         + \left[ 2apq + b(ps + qr) + crs \right] xy
         + \left[ aq^2 + bqs + cs^2 \right] y^2$$
 
-    We can bound the coefficient of $x^2$ using the fact that $(a, b, c)$ is reduced, hence $c \geq a$ and $b \in (a, a]$
+    We can bound the coefficient of $x^2$ using the fact that $(a, b, c)$ is reduced, hence $c \geq a$ and $b \in (-a, a]$
     \begin{align*}
-        ap^2 + bpr + cr^2 &\leq ap^2 - a|pr| + ar^2 \\
+        ap^2 + bpr + cr^2 &\geq ap^2 - a|pr| + ar^2 \\
         &= a \left[ |p|^2 - |pr| + |r|^2 \right] \\
         &= a \left[ (|p| - |r|)^2 + |pr| \right]
     \end{align*}
@@ -498,13 +502,13 @@ It remains to prove that this is truly a canonical representative.
     This gives
     \begin{align*}
         \phi &= \pmat{0 & \mp 1 \\ \pm 1 & s} \\ 
-        &= \pmat{0 & -1 \\ -1 & 0} \pmat{\pm 1 & 0 \\ 0 & \pm 1} \pmat{1 & s \\ 0 & 1} \\
-        &= S \cdot \pmat{1 & k \\ 0 & 1} \cdot T^s
+        &= \pmat{0 & -1 \\ 1 & 0} \pmat{\pm 1 & 0 \\ 0 & \pm 1} \pmat{1 & s \\ 0 & 1} \\
+        &= S \cdot \pmat{\pm 1 & 0 \\ 0 & \pm 1} \cdot T^s
     \end{align*}
 
     As before, we can ignore the action of the negative identity matrix.
     Hence we see that the action of $\phi$ is given by
-    $$ST^s : (a, b, c) \mapsto (as^2 + bs + a, - 2as - b, a)$$
+    $$ST^s : (a, b, a) \mapsto (as^2 + bs + a, - 2as - b, a)$$
     
     Recall that the leading term must be equal to $a$ in order for this form to be reduced.
     Then we have
@@ -569,9 +573,9 @@ under which the ideal multiplication structure gives a multiplicative structure 
 
 
 \section{Historical Background}
-\emph{In this chapter, we draw from \cite[\S2D-\S3A]{cox}.}
+\emph{In this section, we draw from \cite[\S2D-\S3A]{cox}.}
 
-Consider the equiality
+Consider the identity
 $$(2x^2 + 2xy + 3y^2)(2z^2 + 2zw + 3w^2) = (2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2$$
 
 We see that for any two numbers which can be represented by the form $(2, 2, 3)$, their product can be represented by the form $(1, 0, 5)$.
@@ -587,7 +591,7 @@ $$(2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2 = nm$$
 This result was used by Lagrange for a specific number-theoretic proof, but Legendre sought to generalise results of this kind.
 He defined a form $F$ to be the \textbf{composition} of $f$ and $g$ if there exist bilinear forms $B_1$ and $B_2$ such that
 \begin{gather*}
-    (x, y)g(z, w) = F(B_1(x, y; z, w), B_2(x, y; z, w)) \\
+    f(x, y)g(z, w) = F(B_1(x, y; z, w), B_2(x, y; z, w)) \\
     B_i = a_i xz + b_i xw + c_i yz + d_i yw
 \end{gather*}
 
@@ -599,7 +603,7 @@ This group is called the \textbf{class group}.
 Due to the complexity of Gauss' methods, Dirichlet presented a simpler but less general approach to composition.
 We will acquire a similar formulation of composition in this chapter.
 
-However, as the theory of ideals developed, it became apparent that there exists a bijection between certain ideals of quadratic number fields and the class group of quadratic forms.
+However, as the theory of ideals developed, it became apparent that there exists a bijection between certain ideals of quadratic number fields and the class group of quadratic forms \cite[Ch.\,1]{buell}.
 This provides us a new and perhaps more intuitive way to derive composition of forms;
 we first outline this bijection, then we can leverage the multiplicative structure of ideals to define an analogous operation on forms.
 We will then show that this operation precisely fits the desired definition of composition given by Legendre.
@@ -650,7 +654,7 @@ Consider how $\varphi$ acts on forms which vary by an action of $T$
 \end{align*}
 
 So we see that $\varphi$ is invariant under actions of $T$.
-[Now consider actions of $S$
+Now consider actions of $S$
 \begin{align*}
     \varphi \circ f \circ S(x, y) &= \varphi(cx^2 -bxy + ay^2) \\
     &= \left\langle c, \frac{-b - \sqrt\Delta}{2} \right\rangle \\
