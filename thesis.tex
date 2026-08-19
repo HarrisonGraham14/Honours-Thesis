@@ -15,6 +15,10 @@
 \usepackage{xcolor}
 \usepackage[many]{tcolorbox}
 \usepackage[colorlinks=true,linkcolor=blue,draft=false]{hyperref}
+\usepackage[nameinlink]{cleveref}
+\usepackage[ruled,vlined]{algorithm2e}
+
+\hypersetup{citecolor=[rgb]{0, 0.5, 0}}
 
 % Macros
 \newcommand{\N}{\mathbb{N}} % Natural numbers
@@ -27,6 +31,11 @@
 \newcommand{\C}{\mathbb{C}} % Complex numbers
 \newcommand{\T}{\mathbb{T}} % Circle group
 \newcommand{\F}{\mathbb{F}} % Field
+
+\newcommand{\order}{\mathcal{O}} % Order
+
+\newcommand{\GL}{\text{GL}} % General linear group
+\newcommand{\SL}{\text{SL}} % Special linear group
 
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
@@ -53,43 +62,6 @@
 \newtheorem{question}[theorem]{Question}
 \newtheorem{notation}[theorem]{Notation}
 \numberwithin{equation}{section}
-
-
-% Code
-\definecolor{codeblue}{rgb}{0, 0, 0}
-\definecolor{backgroundcolor}{rgb}{0.8, 0.8, 0.8}
-
-\lstdefinestyle{pystyle}{
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2
-}
-
-\newtcolorbox{pybox}{
-    spartan,
-    frame empty,
-    boxsep = 0mm,
-    left = 1mm,
-    right = 1mm,
-    top = -1mm,
-    bottom = -1mm,
-    colback = backgroundcolor
-}
-
-\lstset{style=pystyle}
-
-\newcommand{\pyfile}[2][3]{
-    \begin{pybox}
-    \lstinputlisting[language=python, firstline=#1]{#2}
-    \end{pybox}
-}
 
 
 %===============================================================================================================================%
@@ -158,33 +130,33 @@ Signed: \rule{7cm}{0.25pt} \hfill Date: \rule{4cm}{0.25pt}
 The goal of this paper is to develop methods for factoring large integers using the theory of binary quadratic forms.
 The paper is written with the intention of providing motivated explanations to the reader,
 as the existing resources often give proofs of theorems without explaining how such a result would be formulated without prior knowledge of its truth.
-This poses a particular challenge in \autoref{s-comp}, 
+This poses a particular challenge in \Cref{s-comp}, 
 as I'm yet to find a paper that approaches composition in the style of a derivation instead of stating it as a result and then proving that it works.
 
 \vspace{2mm}
 \noindent
 For the chapter draft, 
 \begin{itemize}
-    \item A completed draft of \autoref{s-forms} is included, where some of the basic definitions are established.
+    \item A completed draft of \Cref{s-forms} is included, where some of the basic definitions are established.
     Here, we establish that forms of a fixed discriminant can be partitioned into a finite set of equivalence classes.
 
-    \item A bare-bones version of \autoref{s-comp} is included.
+    \item A bare-bones version of \Cref{s-comp} is included.
     Here, important results are given, and the direction of the proofs are in place, but many of the details have not yet been formalised.
     Notes have been left in \red{red text} to indicate work that is needed.
 
-    \item The beginning of \autoref{s-factor} is also included.
+    \item The beginning of \Cref{s-factor} is also included.
     Here, the usefulness of binary quadratic forms for factoring is realised.
-    The key result that the previous chapters have built towards is provided in \autoref{s-factor-amb};
+    The key result that the previous chapters have built towards is provided in \Cref{s-factor-amb};
     ``ambiguous forms'' immediately provide a factorisation of the discriminant.
 \end{itemize}
 
-The tasks for the remainder of the project are to finish formalising the derivations in \autoref{s-comp},
+The tasks for the remainder of the project are to finish formalising the derivations in \Cref{s-comp},
 and to develop methods for finding ambiguous forms efficiently.
 
 So far, the paper has focuseed on definite forms (negative discriminant), 
 as they have a simpler structure and are sufficient to develop factoring algorithms.
 However, at some point we will likely want to use definite forms (positive discriminant), as they give rise to different algorithms \cite[\S\,8.7]{cohen}.
-This will require adding to the content of \autoref{s-forms}, and possibly adjusting the arguments in \autoref{s-comp}.
+This will require adding to the content of \Cref{s-forms}, and possibly adjusting the arguments in \Cref{s-comp}.
 
 Beyond this, if time allows, 
 we could move to an investigation of factoring algorithms which leverage larger number fields than the quadratic fields which underpin binary quadratic forms.
@@ -258,7 +230,7 @@ Then we can define
 
 This may seem problematic for finding roots of the form $(x_0, 0)$, 
 but substituting $y = 0$ into $f$ makes it clear that the only such zero is $(0, 0)$.
-Except for this line, it is clear that $t(\tfrac{x}{y})$ agrees with $f(x, y)$ on zeroes and sign.
+Except for this line, it is clear that $g(\tfrac{x}{y})$ agrees with $f(x, y)$ on zeroes and sign.
 Hence, consider
 \begin{gather*}
     at^2 + bt + c = 0 \\
@@ -321,17 +293,17 @@ Consider that $\phi$ can be understood as a matrix multiplication
 $$\phi \left( \bmat{x \\ y} \right) = \bmat{p & q \\ r & s} \bmat{x \\ y}$$
 
 So it is clear to see that the valid choices of $\phi$ are the invertible elements of $M_2(\Z)$. 
-These are the elements of $GL_2(\Z)$, also known as the \textbf{unimodular} matrices (of size 2).
+These are the elements of $\GL_2(\Z)$, also known as the \textbf{unimodular} matrices (of size 2).
 The determinant of such a matrix will always be $\pm 1$ 
 (since the determinant is a result of sums and products of the integer coefficients, 
 and the product of determinants of a matrix and its inverse is 1).
 
-We define forms to be \textbf{improperly equivalent} if there is a $GL_2(\Z)$ transformation between them.
+We define forms to be \textbf{improperly equivalent} if there is a $\GL_2(\Z)$ transformation between them.
 It is easy to see that this is an equivalence realtion.
 If we restrict the discriminant of the transformation to be strictly positive 1, we split the equivalence classes further-
 we call such forms \textbf{properly equivalent}, which is also an equivalence relation.
 
-Let us consider the effect of $SL_2(\Z)$ transformations on forms;
+Let us consider the effect of $\SL_2(\Z)$ transformations on forms;
 for $f \circ S = (c, -b, a)$, the discriminant is clearly unchanged.
 For $f \circ T = (a, 2a + b, a + b + c)$, we have
 \begin{align*}
@@ -359,7 +331,7 @@ Hence we have
     We will prove the case of improper equivalence, as any forms which are properly equivalent are also improperly equivalent.
 
     Suppose $f = (a, b, c)$ and $g = (a', b', c')$ are improperly equivalent forms.
-    That is, we have some $\phi \in GL_2(\Z)$ such that
+    That is, we have some $\phi \in \GL_2(\Z)$ such that
     $$f \circ \phi(x, y) = g(x, y)$$
 
     If $g$ represents $n$, then there exist integers $x_0, y_0 \in \Z$ such that
@@ -379,7 +351,7 @@ Now that we have an equivalence relation, we would like to be able to find a sui
 This will not only prove useful for simplifying computations by choosing a representative with small values of $a$, $b$, and $c$,
 but will also give us a method for checking whether two forms belong to the same class by evaluating and comparing their canonical representatives.
 
-A basis for $SL_2(\Z)$ is given by
+A basis for $\SL_2(\Z)$ is given by
 $$S = \pmat{0 & -1 \\ 1 & 0}, \hspace{5mm} T = \pmat{1 & 1 \\ 0 & 1}$$
 
 Note that
@@ -417,27 +389,38 @@ Whenever $|b| > a$, we can use $T$ to reduce $b$ to be in the range $[-a, a]$.
 Then, if $c < a$, we can use $S$ to swap $a$ and $c$, then return to step 1 to reduce $b$ further.
 
 Eventually, we reach a form with $|b| \leq a \leq c$, at which point the algorithm terminates.
-This can easily be shown to happen in finite time, as $|b|$ decreases with each repetition, so there can be at most $|b|$ repetitions.
+This algorithm must terminate in finite time, as $|b|$ decreases with each repetition, so there can be at most $|b|$ repetitions.
 
-In the case that $a = |b|$ or $a = c$, a form has two representations which satisfy $a \leq b \leq c$ - one with positive $b$, and one with negative $b$.
+In the case that $a = |b|$ or $a = c$, a form has two representations which satisfy $a \leq b \leq c$ --- one with positive $b$, and one with negative $b$.
 This can be fixed by taking $b$ to be positive in these cases.
 We adjust the reduction algorithm such that step 1 moves $b$ into the interval $(-a, a]$ (removing the choice of sign in the case that $|b| = a$),
 and applying $S$ not only if $a > c$, but if $a = c$ and $b$ is negative.
 The full reduction algorithm is as follows
 
-\pyfile[1]{algorithms/definite-reduction.py}
-\todo{convert to pseudocode}
+\begin{algorithm}
+    \caption{Reduction of positive definite forms}
+    \DontPrintSemicolon
+    \KwData{$a, b, c \in \Z$}
+    \While {$b \notin (-a, a]$}{
+        $k \gets \lceil (b - a) / 2a \rceil$\;
+        $c \gets k^2 a + k b + c$\;
+        $b \gets 2ka + b$\;
+        \If {$a > c$ or ($a = c$ and $b < 0$)}{
+            $a \leftrightarrow c$\;
+            $b \gets -b$\;
+        }
+    }
+\end{algorithm}
 
-It remains to prove that this is truly a canonical representative.
+So we say that a positive definite form is \textbf{reduced} if it satisfies
+\begin{itemize}
+    \item $|b| \leq a \leq c$
+    \item $b \geq 0$ if $a = |b|$ or $a = c$.
+\end{itemize}
 
 \vspace{2mm}
 \begin{theorem}
     Every positive definite form is properly equivalent to exactly one reduced form. 
-    That is, a form satisfying \todo{remove from theorem and add to definition}
-    \begin{itemize}
-        \item $|b| \leq a \leq c$
-        \item $b \geq 0$ if $a = |b|$ or $a = c$.
-    \end{itemize}
 \end{theorem}
 
 \begin{proof}
@@ -446,13 +429,11 @@ It remains to prove that this is truly a canonical representative.
     Suppose $(a, b, c)$ is a reduced form.
     We claim that $a$ is the minimal coefficient of $x^2$ for all forms in its equivalence class.
     Consider a general transformation
-    $$\phi = \pmat{p & q \\ r & s} \in SL_2(\Z)$$
-
-    In \autoref{s-forms-eq}, we showed that the result of this acting on our form is
+    $$\phi = \pmat{p & q \\ r & s} \in \SL_2(\Z)$$
+    In \Cref{s-forms-eq}, we showed that the result of this acting on our form is
     $$\left[ap^2 + bpr + cr^2 \right] x^2
         + \left[ 2apq + b(ps + qr) + crs \right] xy
         + \left[ aq^2 + bqs + cs^2 \right] y^2$$
-
     We can bound the coefficient of $x^2$ using the fact that $(a, b, c)$ is reduced, hence $c \geq a$ and $b \in (-a, a]$
     \begin{align*}
         ap^2 + bpr + cr^2 &\geq ap^2 - a|pr| + ar^2 \\
@@ -463,26 +444,36 @@ It remains to prove that this is truly a canonical representative.
     It's impossible for both $pr$ and $|p| - |r|$ to be zero, as this would require $p = r = 0$,
     which would cause the determinant of $\phi$ to be zero.
     But the determinant of $\phi$ is known to be 1, so the coefficient of $x^2$ is at least $a$.
-    Any other reduced form would also have this property, so a reduced form equivalent to this one must also have $a$ as its first coefficient.
-
-    So we must now consider when the above inequality acheives equality.
-    First note that we can only achieve equality if $pr = 0$, as $b > -a$ in a reduced form.
-    Hence, we must have $p^2 + r^2 = 1$. This gives two possible cases
+    By the same argument, any other reduced form $(a', b', c')$ has $a'$ as the minimal leading coefficient among all equivalent forms.
+    Hence we see that $a = a'$ --- ie. equivalent reduced forms must have the same leading coefficient.
+    
+    Now, the inequality above sets a lower bound on the leading coefficient of our new form, which must be $a$ in order for the form to be reduced.
+    But the final expression, $a \left[ (|p| - |r|)^2 + |pr| \right]$, is $a$ times some integer.
+    The only way that the LHS can be $a$ is if this integer is 1, and if the inequality achieves equality.
+    First note that in the first line we used $b > -a \implies bpr \geq -a|pr|$.
+    This only achieves equality if $pr = 0$.
+    Hence, to achieve equality we require
+    \begin{align*}
+        a &= a \left[ |p|^2 - |pr| + |r|^2 \right] \\
+        \implies 1 &= |p|^2 - |pr| + |r|^2 = p^2 + r^2
+    \end{align*}
+    
+    This gives two possible cases
     \begin{gather*}
         \textbf{(1)} \hspace{2mm} p = \pm 1, r = 0 \\
         \textbf{(2)} \hspace{2mm} p = 0, r = \pm 1
     \end{gather*}
 
-    Consider the first case.
+    Consider the first case, letting $p = \delta \in \{1, -1\}$.
     We can infer more information about the coefficients of $\phi$ based on the knowledge that its discriminant is 1.
     \begin{align*}
         \text{det}(\phi) &= ps - qr \\
-        1 &= \pm s - 0 \\
-        s &= \pm 1
+        1 &= \delta s - 0 \\
+        s &= \delta
     \end{align*}
 
     Hence we have
-    $$\phi = \pmat{\pm 1 & q \\ 0 & \pm 1} = \pmat{\pm 1 & 0 \\ 0 & \pm 1} T^q$$
+    $$\phi = \pmat{\delta & q \\ 0 & \delta} = \pmat{\delta & 0 \\ 0 & \delta} T^q$$
 
     Note the action of the matrix
     $$\pmat{-1 & 0 \\ 0 & -1} : (a, b, c) \mapsto (a, b, c)$$
@@ -491,19 +482,19 @@ It remains to prove that this is truly a canonical representative.
     Since this fixes $a$ and shifts $b$ by $2qa$, any choice for $q$ other than 0 (which gives the identity)
     shifts $b$ outside of the range $(-a, a]$, giving a form which is no longer reduced.
 
-    In the second case, equality is only acheived if $c = a$.
+    In the second case, letting $r = \delta \in \{1, -1\}$, equality is only acheived if $c = a$ (since we took $cr^2 \geq ar^2$, and $r \neq 0$).
     Again investigating $\phi$, we have
     \begin{align*}
         \text{det}(\phi) &= ps - qr \\
-        1 &= 0 - \pm q \\
-        q &= \mp 1
+        1 &= 0 - \delta q \\
+        q &= - \delta
     \end{align*}
 
     This gives
     \begin{align*}
-        \phi &= \pmat{0 & \mp 1 \\ \pm 1 & s} \\ 
-        &= \pmat{0 & -1 \\ 1 & 0} \pmat{\pm 1 & 0 \\ 0 & \pm 1} \pmat{1 & s \\ 0 & 1} \\
-        &= S \cdot \pmat{\pm 1 & 0 \\ 0 & \pm 1} \cdot T^s
+        \phi &= \pmat{0 & - \delta \\ \delta & s} \\ 
+        &= \pmat{0 & -1 \\ 1 & 0} \pmat{\delta & 0 \\ 0 & \delta} \pmat{1 & s \\ 0 & 1} \\
+        &= S \cdot \pmat{\delta & 0 \\ 0 & \delta} \cdot T^s
     \end{align*}
 
     As before, we can ignore the action of the negative identity matrix.
@@ -521,7 +512,6 @@ It remains to prove that this is truly a canonical representative.
     So $s = 0$, in which case $\phi = S$, or $as + b = 0$. 
     In the former case, the action of $\phi$ flips the sign of the second coefficient, which turns a reduced form into one that is no longer reduced 
     (unless $b = 0$, but in this case, $\phi$ acts tivially on the form).
-    
     In the latter case, since $(a, b, a)$ is reduced, we have $a \geq b$ and $|b| \geq 0$.
     We must therefore have $a = b$, $s = -1$.
     The action of $\phi$ is therefore
@@ -571,11 +561,10 @@ Now that we have the means to properly understand equivalence classes of forms, 
 We acheive this by showing a bijection between classes of forms and classes of ideals, 
 under which the ideal multiplication structure gives a multiplicative structure to the corresponding classes of forms.
 
-
 \section{Historical Background}
 \emph{In this section, we draw from \cite[\S2D-\S3A]{cox}.}
 
-Consider the identity
+Legendre was the first to develop a notion of composition, inspired by Lagrange's use of the identity
 $$(2x^2 + 2xy + 3y^2)(2z^2 + 2zw + 3w^2) = (2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2$$
 
 We see that for any two numbers which can be represented by the form $(2, 2, 3)$, their product can be represented by the form $(1, 0, 5)$.
@@ -588,15 +577,15 @@ That is, if we have representations of $n$ and $m$
 Then the form $(1, 0, 5)$ represents $nm$ via
 $$(2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2 = nm$$
 
-This result was used by Lagrange for a specific number-theoretic proof, but Legendre sought to generalise results of this kind.
+Legendre sought to generalise results of this kind.
 He defined a form $F$ to be the \textbf{composition} of $f$ and $g$ if there exist bilinear forms $B_1$ and $B_2$ such that
 \begin{gather*}
     f(x, y)g(z, w) = F(B_1(x, y; z, w), B_2(x, y; z, w)) \\
     B_i = a_i xz + b_i xw + c_i yz + d_i yw
 \end{gather*}
 
-Legendre was able to show that any two forms of the same discriminant can always be composed, but his formulation was not well-defined as a function, as it was multi-valued.
-This was finally rectified by Gauss in his \emph{Disquisitiones Arithmaticae} [\red{cite?}], where he altered Legendre's formulation to obtain a single-valued function.
+Legendre was able to show that any two forms of the same discriminant can always be composed in this way, but his formulation was multi-valued, giving several options for the resulting form $F$.
+This was finally rectified by Gauss in his \emph{Disquisitiones Arithmaticae} [\red{cite?}], where he refined Legendre's formulation to turn composition of forms into a well-defined function.
 This notion of composition gave a group structure to the set of proper equivalence classes of forms of a fixed discriminant.
 This group is called the \textbf{class group}.
 
@@ -605,64 +594,146 @@ We will acquire a similar formulation of composition in this chapter.
 
 However, as the theory of ideals developed, it became apparent that there exists a bijection between certain ideals of quadratic number fields and the class group of quadratic forms \cite[Ch.\,1]{buell}.
 This provides us a new and perhaps more intuitive way to derive composition of forms;
-we first outline this bijection, then we can leverage the multiplicative structure of ideals to define an analogous operation on forms.
+we first outline this bijection in \Cref{s-comp-ideals}, then we can leverage the multiplicative structure of ideals to define an analogous operation on forms in \Cref{s-comp-formula}.
 We will then show that this operation precisely fits the desired definition of composition given by Legendre.
+
+\section{Algebraic Number Theory Preliminaries}\label{s-comp-algebraic}
+For a finite field extension of the rational numbers, $K/\Q$, an \textbf{order} in $K$ is some $\order \subseteq K$ if \cite[Def.\,4.6.1]{cohen}
+\begin{itemize}
+    \item $\order$ is a subring of $K$
+    \item $\order$ is a finitely generated $\Z$-module
+    \item the $\Q$-span of $\order$ is $K$ (ie. $\text{rank}(\order) = \deg(K:\Q)$)
+\end{itemize}
+
+\todo{remark that we are working with the definition that rings must include multiplicative identities, and that subrings must have the same multiplicative}
+
+\todo{introduce disriminant with mod 4 conditions}
+
+\vspace{2mm}
+\noindent
+Let $K_\Delta = \Q(\sqrt\Delta)$, and define the \textbf{order of discriminant} $\mathbf{\Delta}$ to be 
+$$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
+
+\begin{lemma}
+    $\order_\Delta$ is an order in $K_\Delta$.
+\end{lemma}
+
+\begin{proof}
+    The latter two conditions of being an order are met by definition, so we need only show that $\order_\Delta$ is a subring of $K_\Delta$. 
+    It is also clear that $\order_\Delta \subseteq K_\Delta$, so if we show that $\order_\Delta$ is closed under ring operations, then we can conclude that it is an order in $K_\Delta$.
+    Closure under addition is obvious - as for closure under multiplication, let us show closure of the generators, 1 and $\frac{\Delta + \sqrt\Delta}{2}$, from which closure of all other elements can be inferred.
+    Closure under multiplication by 1 is obvious, so we need only check
+    \begin{align*}
+        \frac{\Delta + \sqrt\Delta}{2} \cdot \frac{\Delta + \sqrt\Delta}{2} &= \frac{\Delta^2 + 2\Delta\sqrt\Delta + \Delta}{4} \\
+        &= \frac{\Delta - \Delta^2}{4} + \Delta\frac{\Delta + \sqrt\Delta}{2} \\
+        &= \frac{\Delta (1 - \Delta)}{4} + \Delta\frac{\Delta + \sqrt\Delta}{2}
+    \end{align*}
+
+    and since $\Delta \equiv 0, 1 \pmod{4}$, [\red{ref}] this is in $\order_\Delta$.
+\end{proof}
+
+\begin{lemma}
+    A nonzero ideal $I \trianglelefteq \order_\Delta$ is of the form
+    $$I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$$
+\end{lemma}
+
+\begin{proof}
+    Consider a nonzero element $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$. We have
+    $$x + \frac{\Delta - \sqrt\Delta}{2}y = x + y\Delta - \frac{\Delta + \sqrt\Delta}{2}y \in \order_\Delta$$
+
+    so, since $I$ is an ideal of $\order_\Delta$
+    \begin{align*}
+        \left( x + \frac{\Delta + \sqrt\Delta}{2}y \right) \left( x + \frac{\Delta - \sqrt\Delta}{2}y \right)
+        &= \left( x + \frac{\Delta}{2}y \right)^2 -  \left( \frac{\sqrt\Delta}{2}y \right)^2 \\
+        &= x + \Delta xy + \frac{\Delta^2 y^2}{4} - \frac{\Delta y^2}{4} \\
+        &= x + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4} \in I
+    \end{align*}
+
+    This is an integer, so there is at least one integer in $I$.
+    Multiplying this by $\frac{\Delta + \sqrt\Delta}{2} \in \order_\Delta$, we get that there is at least one element in $I$ with a nonzero $\frac{\Delta + \sqrt\Delta}{2}$ component.
+    Let $l$ be the minimum positive integer in $I$, and choose $m$ and $n$ such that $m + n\frac{\Delta + \sqrt\Delta}{2} \in I$, where $|n| \neq 0$ is minimum.
+    Every integer $z \in I \cap \Z$ must satisfy $l | z$, or else $\gcd(l, z) \in \Z$ would cause a contradiction with the choice of $l$.
+    For any $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$ we must also have $n | y$, or else the choice of $n$ would be contradicted.
+    Letting $y = y_0 n$, we can write
+    \begin{align*}
+        x + \frac{\Delta + \sqrt\Delta}{2}y &= x + \frac{\Delta + \sqrt\Delta}{2}y_0 n + y_0 m - y_0 m \\
+        &= x - y_0 m + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) y_0
+    \end{align*}
+    and $(m + n\frac{\Delta + \sqrt\Delta}{2}) y_0 \in I$, so $x - y_0 m$ must also be in $I$, which means $l | x - y_0 m$.
+    Hence $x + \frac{\Delta + \sqrt\Delta}{2}y \in l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2}\Z)$, so $I = l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2}\Z)$.
+\end{proof}
+
+Finally, we must define the norm of an element. 
+For any quadratic number field $K$ (that is, $K = \Q(\sqrt{\Delta})$ where $\Delta$ is not a perfect square), the \textbf{norm} of an element $x + y\sqrt\Delta \in K$ (where $x, y \in \Q$) is given by \cite[Ch.\,6.2]{buell}
+$$N(x + y\sqrt\Delta) = (x + y\sqrt\Delta) \cdot (x - y\sqrt\Delta).$$
+Let us consider the norm of a general element of $I \trianglelefteq \order_\Delta$. We have
+\begin{align*}
+    &\hspace{-5mm} N\left(lx + \left(m + n\frac{\Delta + \sqrt\Delta}{2}\right)y\right) \\
+    &= \left( lx + my + n\frac{\Delta}{2}y + n\frac{\sqrt\Delta}{2}y \right) \cdot \left( lx + my + n\frac{\Delta}{2}y - n\frac{\sqrt\Delta}{2}y \right) \\
+    &= \left( lx + my + n\frac{\Delta}{2}y \right)^2 - \left(n\frac{\sqrt\Delta}{2}y \right)^2 \\
+    &= l^2x^2 + m^2y^2 + n^2\frac{\Delta^2}{4}y^2 + 2lmxy + ln\Delta xy + mn\Delta y^2 - n^2\frac{\Delta}{4}y^2 \\
+    &= l^2x^2 + l(2m + n\Delta)xy + \left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right)y^2 \tag{\theequation}\label{eq-ideal-norm-form}
+\end{align*}
+This is a binary quadratic form. 
 
 
 \section{Ideal Correspondence}\label{s-comp-ideals}
-\red{It has become apparent that this section has mistakes, having attempted to approach the proof from the opposite direction to usual.
-The proof will likely have to be adapted to assume the form of $\mathcal{O}_\Delta$, then prove the correspondence from there.}
-
-As was established in \autoref{s-forms-disc}, a form $(a, b, c$) when considered as a continuous function has zeroes at
-$$t = \frac{x}{y} = \frac{b^2 \pm \sqrt\Delta}{2a}$$
-
-From this, we can define a ring
-$$\Z\left[\frac{b^2 \pm \sqrt\Delta}{2a}\right] = \Z + \frac{b^2 - \sqrt\Delta}{2a}\Z$$
-
-This can be thought of as a free $\Z$-module of rank 2 or a 2d lattice.
-But this isn't quite the formulation that we need - 
-the desired behaviour is that these rings would naturally sit inside of a common, larger ring, where they could be extended to ideals and multiplied with one another.
-The issue is that the denominator containing $a$ makes this difficult, so let us multiply by $a$.
-The result is an isomorphic ring, but when we consider aligning several such rings, this result is much more useful
-$$a\Z + \frac{b^2 - \sqrt\Delta}{2}\Z$$
-
-A ring of this form sits inside of the ring
-$$\Z\left[\frac{b - \sqrt\Delta}{2}\right] = 
-\begin{cases}
-    b \equiv 0 \hspace{2mm} \text{(mod 2)} & \Z + \frac{0 - \sqrt\Delta}{2} \\
-    b \equiv 1 \hspace{2mm} \text{(mod 2)} & \Z + \frac{1 - \sqrt\Delta}{2}
-\end{cases}$$
-
-Noting that $\Delta = b^2 - 4ac$ requires $\Delta \equiv b^2 \hspace{2mm} \text{(mod 4)}$, 
-then we also have $\Delta \equiv b \hspace{2mm} \text{(mod 2)}$.
-So the rings we defined sit inside
-$$\Z + \frac{\Delta - \sqrt\Delta}{2}\Z$$
-
-This depends only on the discriminant, not the particular form, so we will denote the larger ring as $\mathcal{O}_\Delta$.
-To ensure that the smaller rings that we started with are truly ideals, 
-we will use the same generators to generate an ideal of $\mathcal{O}$ instead of taking them as generators of $\Z$-modules.
-This gives a map from forms of discriminant $\Delta$ to ideals of $\mathcal{O}_\Delta$
-$$\varphi : (a, b, c) \mapsto \left\langle a, \frac{b - \sqrt\Delta}{2} \right\rangle$$
-
-For this to give any meaningful structure, we must show that equivalence of forms corresponds to some notion of equivalence of ideals.
-Consider how $\varphi$ acts on forms which vary by an action of $T$
+We now seek to use the findings of \Cref{s-comp-algebraic} to develop a notion of equivalence between ideals of $\order_\Delta$ and binary quadratic forms of discriminant $\Delta$.
+First, note that the discriminant of this form found in \eqref{eq-ideal-norm-form} is given by
 \begin{align*}
-    \varphi \circ f \circ T(x, y) &= \varphi(ax^2 + (2a + b)xy + (a + b + c)y^2) \\
-    &= \left\langle a, \frac{2a + b - \sqrt\Delta}{2} \right\rangle \\
-    &= \left\langle a, \frac{b - \sqrt\Delta}{2} \right\rangle \\
-    &= \varphi \circ f(x, y)
+    &\hspace{-5mm} [l(2m + n\Delta)]^2 - 4l^2\left[ m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4} \right] \\
+    &= l^2(4m^2 + 4mn\Delta + n^2\Delta^2) - l^2(4m^2 + 4mn\Delta + n^2\Delta^2 - n^2\Delta) \\
+    &= (ln)^2\Delta
 \end{align*}
-
-So we see that $\varphi$ is invariant under actions of $T$.
-Now consider actions of $S$
+By \todo{add theorem to discriminant section}, if we can divide the form by $ln$, we will arrive at a form of discriminant $\Delta$.
+Fortunately, the fact that $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$ is an ideal of $\order_\Delta$ constrains $l, m, n$ to certain divisibility conditions.
+First, consider
 \begin{align*}
-    \varphi \circ f \circ S(x, y) &= \varphi(cx^2 -bxy + ay^2) \\
-    &= \left\langle c, \frac{-b - \sqrt\Delta}{2} \right\rangle \\
+    l \cdot \frac{\Delta + \sqrt\Delta}{2} &= \left( n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} \\
+    &= \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} - \frac{ml}{n} \\
+    &= \frac{m}{n}l + \frac{l}{n}\left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \in I
 \end{align*}
+Hence we see that $\frac{m}{n}$ and $\frac{l}{n}$ are integers.
+Next, consider
+\begin{align*}
+    &\hspace{-5mm} \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \left(\left(\frac{m}{n} + \Delta\right) - \frac{\Delta + \sqrt\Delta}{2} \right) \\
+    &= \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \left(\frac{m}{n} + \frac{\Delta - \sqrt\Delta}{2} \right) \\
+    &= \frac{1}{n} \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \left(m + n\frac{\Delta - \sqrt\Delta}{2} \right) \\
+    &= \frac{1}{n} \left[ \left( m + n\frac{\Delta}{2} \right)^2 - \left( n\frac{\sqrt\Delta}{2} \right)^2 \right] \\
+    &= \frac{1}{n} \left[ m^2 + 2mn\Delta + n^2\frac{\Delta^2}{4} - n^2\frac{\Delta}{4} \right] \\
+    &= \frac{1}{ln}\left( m^2 + 2mn\Delta + n^2\frac{\Delta^2 - \Delta}{4} \right) l \in I
+\end{align*}
+Hence, the coefficient of $l$ is an integer. Using these results, consider the form in \eqref{eq-ideal-norm-form} when divided by $ln$;
+$$\frac{l}{n}x^2 + \left(2\frac{m}{n} + \Delta\right)xy + \frac{1}{ln}\left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right)y^2$$
+We have shown each coefficient to be an integer, hence this is a binary quadratic form of discriminant $\Delta$.
 
-\todo{we need to introduce ideal equivalence via principal forms (scalar multiplication). How does this arise naturally?}
+We now have a map from ideals of $\order_\Delta$ to forms of discriminant $\Delta$.
+$$\left\langle l, m + n\frac{\Delta + \sqrt\Delta}{2} \right\rangle \mapsto \left( \frac{l}{n}, 2\frac{m}{n} + \Delta, \frac{1}{ln}\left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right) \right)$$
+\todo{remark that this sends ideals that vary by constant multiples to the same form, so we must define equivalence of ideals up to multiplication by elements of $K$.}
+To establish a bijection, we must show that its inverse exists and is sensible.
+To do this, we must first know what conditions on $l, m, n \in \Z$ are necessary for
+$$I = l\Z + \left( m + n \frac{\Delta + \sqrt\Delta}{2} \right) \Z$$
+to be an ideal of $\order_\Delta$. Certainly $I$ is a subset of $\order_\Delta$ which is closed under addition and multiplication by 1.
+Under multiplication by the other basis element of $\order_\Delta$, we have
+$$l \cdot \frac{\Delta + \sqrt\Delta}{2} = \frac{m}{n}l + \frac{l}{n}\left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)$$
+and
+\begin{align*}
+    &\hspace{-5mm} \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \frac{\Delta + \sqrt\Delta}{2} \\
+    &= m \frac{\Delta + \sqrt\Delta}{2} + n \frac{\Delta^2 + 2\Delta\sqrt\Delta + \Delta}{4} \\
+    &= m \frac{\Delta + \sqrt\Delta}{2} + n \Delta \frac{\sqrt\Delta}{2} + n \frac{\Delta^2 + \Delta}{4} \\
+    &= (m + n\Delta)\frac{\Delta + \sqrt\Delta}{2} - n \frac{\Delta^2}{2} + n \frac{\Delta^2 + \Delta}{4} \\
+    &= n\left( \frac{m + n\Delta}{n} \right)\frac{\Delta + \sqrt\Delta}{2} + n \frac{\Delta - \Delta^2}{4} \\
+    &= \left( \frac{m + n\Delta}{n} \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - m(\frac{m + n\Delta}{n}) + n \frac{\Delta - \Delta^2}{4} \\
+    &= \left( \frac{m}{n} + \Delta \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - \frac{1}{ln}\left( m^2 + mn\Delta + n^2 \frac{\Delta - \Delta^2}{4} \right)l
+\end{align*}
+Hence we see that the necessary conditions for $I \trianglelefteq \order_\Delta$ are
+\begin{itemize}
+    \item $n | m$
+    \item $n | l$
+    \item $ln | \left( m^2 + mn\Delta + n^2 \frac{\Delta - \Delta^2}{4} \right)$
+\end{itemize}
 
-\todo{formalise/prove the bijection, including the formulation from the other side, taking norms of ideals to get the associated form.}
+\todo{finish inverse map}
 
 
 \section{Composition Formula}\label{s-comp-formula}
@@ -726,10 +797,19 @@ A key practical application of number theory is the factoring algorithms that it
 Factoring is a deceptively difficult task to perform efficiently.
 As a baseline for comparison, let us consider the most primitive factoring algorithm - trial division.
 
-\pyfile[1]{algorithms/trial-division.py}
-
-Note that all code samples will be provided in python, using numpy for mathematical functions - 
-the import will be omitted going forward.
+\begin{algorithm}
+    \caption{Factoring by trial division}
+    \DontPrintSemicolon
+    \KwData{$n \in \Z$}
+    $x \gets 2$\;
+    \While {$x \leq \sqrt{n}$}{
+        \eIf {$n \equiv 0 \pmod{x}$}{
+            \Return{$x$}
+        }{
+            $x \gets x + 1$\;
+        }
+    }
+\end{algorithm}
 
 We will use big-$O$ notation to analyse the complexity of factoring algorithms.
 Trial division has a complexity of $O(\sqrt{n})$.
