@@ -20,6 +20,9 @@
 
 \hypersetup{citecolor=[rgb]{0, 0.5, 0}}
 
+\crefname{algocfline}{algorrithm}{algorithms}
+\Crefname{algocfline}{Algorithm}{Algorithms}
+
 % Macros
 \newcommand{\N}{\mathbb{N}} % Natural numbers
 \renewcommand{\P}{\mathbb{P}} % Prime numbers
@@ -176,20 +179,20 @@ but whether this will be an appropriate use of time remains to be seen.
 \pagebreak
 \chapter{Binary Quadratic Forms}\label{s-forms}
 
+\hspace{-3.5mm}
 \textit{
     In this chapter, we establish standard definitions and results on binary quadratic forms,
     as can be found in \cite[Ch.\,1,\,2,\,5]{buchmann}, \cite[Ch.\,1-2]{buell}, \cite[\S\,2]{cox}.
 }
 
 \vspace{2mm}
+\noindent
 A \textbf{binary quadratic form} (or simply a \textbf{form}) is a function of the form
-$$f(x, y) = ax^2 + bxy + cy^2$$
-
+$$f(x, y) = ax^2 + bxy + cy^2.$$
 It is called ``binary'' because it is a function of two variables, and ``quadratic'' because the degree of each term is 2.
 For our purposes, we are usually working over the integers. 
 Since $x$ and $y$ are variables, the behaviour of a given form is wholly dependent on the values of $a$, $b$ and $c$,
 which motivates a shorthand notation of the same form; $(a, b, c)$.
-
 We will impose that $a, c \neq 0$, or else $x$ or $y$ would be reduced to a linear factor.
 Allowing this would serve no purpose beyond comlicating proofs with the added work of edge case considerations.
 
@@ -200,8 +203,7 @@ Primitive forms are of primary concern, as he behaviour of a nonprimitive form c
 \section{Representation}\label{s-forms-rep}
 
 A form $f(x, y)$ is said to \textbf{represent} a number $n$ if there exists an integer solution
-$$f(x_0, y_0) = n \rnote{x_0, y_0 \in \Z}$$
-
+$$f(x_0, y_0) = n \rnote{x_0, y_0 \in \Z.}$$
 For example, consider the form $(2, 1, 5)$, or $f(x, y) = 2x^2 + xy + 5y^2$. 
 This form represents the number 2, since $f(1, 0) = 2$.
 The form does not represent the number 1, though it is not immediately clear how to prove a result of this kind.
@@ -211,59 +213,55 @@ which numbers can be represented by a given form and, conversely, which forms ca
 These questions will not be our primary concern, but they will help to motivate the development of the theory that we need.
 
 
+\pagebreak
 \section{Discriminant}\label{s-forms-disc}
 
 The form $x^2 + y^2$ clearly exclusively represents non-negative integers. 
 The same property holds for the previous example, $2x^2 + xy + 5y^2$, though this is harder to see.
 On the other hand, the form $x^2 - y^2$ clearly represents both positive and negative integers.
 A reasonable first step to understanding a form's representations is to classify whether they can be positive, negative, or both.
+To do this, let us consider a related continuous, real-valued function, 
+$$g(t) = at^2 + bt + c.$$
+Notice that
+\begin{align*}
+    g\left(\frac{x}{y}\right) &= a\left(\frac{x}{y}\right)^2 + b\left(\frac{x}{y}\right) + c \\
+    &= \left(ax^2 + bxy + cy^2\right)\frac{1}{y^2} \\
+    &= f(x, y) \frac{1}{y^2}.
+\end{align*}
+Hence we see that $f(x, y)$ and $g(\tfrac{x}{y})$ agree up to sign, with the exception of when $y=0$.
+Now, the zeroes of $g(t)$ are given by
+$$t = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.$$
+If $b^2 -4ac$ is negative, then $g$ has no real zeroes, meaning that $g$ must be either positive everywhere or negative everywhere (except the origin).
+Since $f(x, y)$ agrees up with $g(\tfrac{x}{y})$ up to sign, then $f$ must also have a fixed sign for its entire range of outputs - except possibly when $y=0$.
+However, note that $f$ can be extended to a continuous function over $\R^2$ and that $f(x, 0) = x^2$, which can only be zero when $x$ is zero.
+Combining these facts, we can argue that the line $y=0$ must have the same sign as the rest of function, with the exception of the trivial zero.
 
-To do this, let us consider a form as a continuous real-valued function, and seek to find its zeroes
-$$f(x, y) = ax^2 + bxy + cy^2 = 0$$
-
-Notice that we can parameterise this equation by dividing by $y^2$ and setting $t = \tfrac{x}{y}$.
-Then we can define
-\begin{gather*}
-    g(t) = at^2 + bt + c \\
-    g(\tfrac{x}{y}) = \frac{f(x, y)}{y^2}
-\end{gather*}
-
-This may seem problematic for finding roots of the form $(x_0, 0)$, 
-but substituting $y = 0$ into $f$ makes it clear that the only such zero is $(0, 0)$.
-Except for this line, it is clear that $g(\tfrac{x}{y})$ agrees with $f(x, y)$ on zeroes and sign.
-Hence, consider
-\begin{gather*}
-    at^2 + bt + c = 0 \\
-    t = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
-\end{gather*}
-
-If $b^2 -4ac$ is negative, then $g$ has no real zeroes, 
-so $g$ (and hence $f$) must be either positive everywhere or negative everywhere (except the origin).
-We call such forms \textbf{positive definite} and \textbf{negative definite}, respectively.
+We call forms with $b^2 -4ac < 0$ \textbf{positive definite} and \textbf{negative definite}, depending on whether they output positive or negative values.
 If $b^2 - 4ac$ is positive, then $g$ has two distinct real zeroes, so $g$ (and hence $f$) can be either positive or negative.
 Such forms are called \textbf{indefinite}.
-Similar reasoning shows that forms with $b^2 -4ac = 0$ are strictly non-negative or non-positive, 
-but such forms are of little intereest.
+Similar reasoning shows that forms with $b^2 -4ac = 0$ are strictly non-negative or non-positive, but such forms are of little intereest.
 
 This motivates defining the \textbf{discriminant} of a form $ax^2 + bxy + cy^2$ to be $\Delta = b^2 - 4ac$.
 We will come to see that this classification is far more powerful than simply being able to classify forms as definite/indefinite.
 
-Note that the only possible values for a perfect square modulo 4 are 1 and 0, and $\Delta \equiv b^2 \hspace{2mm} \text{(mod 4)}$.
-Therefore, we must have 
-
 \vspace{2mm}
 \begin{lemma}
-    $\Delta$ is equivalent to 1 or 0 modulo 4. 
+    The discriminant of a form, $\Delta$, is equivalent to 1 or 0 modulo 4. 
 \end{lemma}
+
+\begin{proof}
+    The definition of the discriminant gives
+    $$\Delta \equiv b^2 \pmod{4}$$
+    and the only possible values for a perfect square modulo 4 are 1 and 0.
+\end{proof}
 
 
 \section{Equivalence}\label{s-forms-eq}
 Given a form $f(x, y) = ax^2 + bxy + cy^2$, one can generate new forms which represent the same set of integers by changing the input space;
 take some invertible function $\phi : \Z^2 \rightarrow \Z^2$, and let $g(x, y) = f \circ \phi(x, y)$.
 Then for any $x_0, y_0 \in \Z$
-$$ f(x_0, y_0) = n \implies g(\phi(x_0, y_0)) = n $$
-$$ g(x_0, y_0) = m \implies f(\phi^{-1}(x_0, y_0)) = m $$
-
+$$f(x_0, y_0) = n \implies g(\phi(x_0, y_0)) = n$$
+$$g(x_0, y_0) = m \implies f(\phi^{-1}(x_0, y_0)) = m.$$
 That is, all integers represented by $f$ are also represented by $g$, and vice versa. 
 However, we must also ensure that our choice of $\phi$ gives $g$ to be a form.
 Consider the choice $\phi(x, y) = (x+1, y)$.
@@ -272,9 +270,8 @@ This is an invertible function on $\Z^2$, but when it is composed with our usual
     g(x, y) &= f \circ \phi(x, y) \\
     &= f(x+1, y) \\
     &= a(x+1)^2 + b(x+1)y + cy^2 \\
-    &= ax^2 + 2ax + a + bxy + by + cy^2
+    &= ax^2 + 2ax + a + bxy + by + cy^2.
 \end{align*}
-
 This is no longer a quadratic form, so this choice of $\phi$ should not be allowed. 
 Instead, consider a function of the form $\phi(x, y) = (px+qy, rx+sy)$.
 This gives
@@ -286,12 +283,10 @@ This gives
         + \left[ 2apq + b(ps + qr) + crs \right] xy
         + \left[ aq^2 + bqs + cs^2 \right] y^2
 \end{align*}
-
-This gives $g$ to be a binary quadratic form, as required. 
+which gives $g$ to be a binary quadratic form, as required. 
 We now require that $\phi$ is invertible, so that this is a symmetric relationship.
 Consider that $\phi$ can be understood as a matrix multiplication
-$$\phi \left( \bmat{x \\ y} \right) = \bmat{p & q \\ r & s} \bmat{x \\ y}$$
-
+$$\phi \left( \bmat{x \\ y} \right) = \bmat{p & q \\ r & s} \bmat{x \\ y}.$$
 So it is clear to see that the valid choices of $\phi$ are the invertible elements of $M_2(\Z)$. 
 These are the elements of $\GL_2(\Z)$, also known as the \textbf{unimodular} matrices (of size 2).
 The determinant of such a matrix will always be $\pm 1$ 
@@ -303,15 +298,15 @@ It is easy to see that this is an equivalence realtion.
 If we restrict the discriminant of the transformation to be strictly positive 1, we split the equivalence classes further-
 we call such forms \textbf{properly equivalent}, which is also an equivalence relation.
 
+\pagebreak
 Let us consider the effect of $\SL_2(\Z)$ transformations on forms;
 for $f \circ S = (c, -b, a)$, the discriminant is clearly unchanged.
 For $f \circ T = (a, 2a + b, a + b + c)$, we have
 \begin{align*}
     \Delta &= (2a + b)^2 - 4a(a + b + c) \\
     &= 4a^2 - 4ab + b^2 - 4a^2 + 4ab - 4ac \\
-    &= b^2 - 4ac
+    &= b^2 - 4ac.
 \end{align*}
-
 So the discriminant is also unchanged under the action of $T$.
 Hence we have
 
@@ -332,31 +327,28 @@ Hence we have
 
     Suppose $f = (a, b, c)$ and $g = (a', b', c')$ are improperly equivalent forms.
     That is, we have some $\phi \in \GL_2(\Z)$ such that
-    $$f \circ \phi(x, y) = g(x, y)$$
-
+    $$f \circ \phi(x, y) = g(x, y).$$
     If $g$ represents $n$, then there exist integers $x_0, y_0 \in \Z$ such that
     \begin{align*}
         g(x_0, y_0) &= n \\
-        \implies f \circ \phi(x, y) &= n
+        \implies f \circ \phi(x_0, y_0) &= n.
     \end{align*}
-
     But $\phi$ is a function from $\Z^2 \rightarrow \Z^2$, so we see that $f$ also represents $n$.
     The converse argument, $f$ represents $n$ $\implies$ $g$ represesnts $n$, is identical.
     Hence, $f$ represents $n$ if and only if $g$ represents $n$.
 \end{proof}
 
 
+\pagebreak
 \section{Reduction}\label{s-forms-red}
 Now that we have an equivalence relation, we would like to be able to find a suitable representative element of a given class.
 This will not only prove useful for simplifying computations by choosing a representative with small values of $a$, $b$, and $c$,
 but will also give us a method for checking whether two forms belong to the same class by evaluating and comparing their canonical representatives.
 
 A basis for $\SL_2(\Z)$ is given by
-$$S = \pmat{0 & -1 \\ 1 & 0}, \hspace{5mm} T = \pmat{1 & 1 \\ 0 & 1}$$
-
+$$S = \pmat{0 & -1 \\ 1 & 0}, \hspace{5mm} T = \pmat{1 & 1 \\ 0 & 1}.$$
 Note that
-$$S^4 = I, \hspace{5mm} T^k = \pmat{1 & k \\ 0 & 1}$$
-
+$$S^4 = I, \hspace{5mm} T^k = \pmat{1 & k \\ 0 & 1}.$$
 So we see that any properly equivalent forms must be related by some series of applications of $S$ and $T^k$.
 Let us observe the results of these transformations on a generic form $f(x, y) = (a, b, c)$
 \begin{align*}
@@ -370,15 +362,13 @@ Let us observe the results of these transformations on a generic form $f(x, y) =
     &= f(x + ky, y) \\
     &= a(x + ky)^2 + b(x + ky)y + cy^2 \\
     &= a(x^2 + 2kxy + k^2y^2) + b(xy + ky^2) + cy^2 \\
-    &= ax^2 + (2ak + b)xy + (ak^2 + bk + c)y^2
+    &= ax^2 + (2ak + b)xy + (ak^2 + bk + c)y^2.
 \end{align*}
-
 So we have
 \begin{gather*}
     S : (a, b, c) \mapsto (c, -b, a) \\
-    T^k : (a, b, c) \mapsto (a, 2ak + b, ak^2 + bk + c)
+    T^k : (a, b, c) \mapsto (a, 2ak + b, ak^2 + bk + c).
 \end{gather*}
-
 Let us use these for constructing a redution algorithm, which turns any form into a canonical class representative.
 For now, we will only consider positive definite forms, as the result is simpler.
 Note that in this case, $a$ and $c$ must both be positive, as their signs must be equal for $\Delta = b^2 - 4ac < 0$,
@@ -387,9 +377,7 @@ and they must be positive to represent positive integers.
 A natural way to use $S$ and $T$ to reduce a form is to attempt to minimise $|b|$.
 Whenever $|b| > a$, we can use $T$ to reduce $b$ to be in the range $[-a, a]$.
 Then, if $c < a$, we can use $S$ to swap $a$ and $c$, then return to step 1 to reduce $b$ further.
-
 Eventually, we reach a form with $|b| \leq a \leq c$, at which point the algorithm terminates.
-This algorithm must terminate in finite time, as $|b|$ decreases with each repetition, so there can be at most $|b|$ repetitions.
 
 In the case that $a = |b|$ or $a = c$, a form has two representations which satisfy $a \leq b \leq c$ --- one with positive $b$, and one with negative $b$.
 This can be fixed by taking $b$ to be positive in these cases.
@@ -397,7 +385,7 @@ We adjust the reduction algorithm such that step 1 moves $b$ into the interval $
 and applying $S$ not only if $a > c$, but if $a = c$ and $b$ is negative.
 The full reduction algorithm is as follows
 
-\begin{algorithm}
+\begin{algorithm}\label{alg-reduction}
     \caption{Reduction of positive definite forms}
     \DontPrintSemicolon
     \KwData{$a, b, c \in \Z$}
@@ -406,12 +394,12 @@ The full reduction algorithm is as follows
         $c \gets k^2 a + k b + c$\;
         $b \gets 2ka + b$\;
         \If {$a > c$ or ($a = c$ and $b < 0$)}{
-            $a \leftrightarrow c$\;
+            $a \leftrightarrow c$ \hspace{2mm} (swap values)\;
             $b \gets -b$\;
         }
     }
 \end{algorithm}
-
+\noindent
 So we say that a positive definite form is \textbf{reduced} if it satisfies
 \begin{itemize}
     \item $|b| \leq a \leq c$
@@ -420,25 +408,36 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
 
 \vspace{2mm}
 \begin{theorem}
+    \Cref{alg-reduction} terminates in a finite number of steps.
+\end{theorem}
+
+\begin{proof}
+    On each iteration of the while loop, the value of $b$ decreases.
+    Since $b$ is initially a finite integer, and only takes on integer values, the initial value of $b$ is an upper bound on how many loops the algorithm can perform before terminating.
+\end{proof}
+
+\vspace{2mm}
+\begin{theorem}
     Every positive definite form is properly equivalent to exactly one reduced form. 
 \end{theorem}
 
 \begin{proof}
+    \todo{improve proof}
     The fact that any form is equivalent to at least one reduced form follows immediately from the existence of the reduction algorithm.
     To prove uniqueness, we adapt the proof of Cohen \cite[Prop.\,5.3.3]{cohen}.
     Suppose $(a, b, c)$ is a reduced form.
     We claim that $a$ is the minimal coefficient of $x^2$ for all forms in its equivalence class.
     Consider a general transformation
-    $$\phi = \pmat{p & q \\ r & s} \in \SL_2(\Z)$$
+    $$\phi = \pmat{p & q \\ r & s} \in \SL_2(\Z).$$
     In \Cref{s-forms-eq}, we showed that the result of this acting on our form is
     $$\left[ap^2 + bpr + cr^2 \right] x^2
         + \left[ 2apq + b(ps + qr) + crs \right] xy
-        + \left[ aq^2 + bqs + cs^2 \right] y^2$$
+        + \left[ aq^2 + bqs + cs^2 \right] y^2.$$
     We can bound the coefficient of $x^2$ using the fact that $(a, b, c)$ is reduced, hence $c \geq a$ and $b \in (-a, a]$
     \begin{align*}
         ap^2 + bpr + cr^2 &\geq ap^2 - a|pr| + ar^2 \\
         &= a \left[ |p|^2 - |pr| + |r|^2 \right] \\
-        &= a \left[ (|p| - |r|)^2 + |pr| \right]
+        &= a \left[ (|p| - |r|)^2 + |pr| \right].
     \end{align*}
 
     It's impossible for both $pr$ and $|p| - |r|$ to be zero, as this would require $p = r = 0$,
@@ -455,15 +454,13 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
     Hence, to achieve equality we require
     \begin{align*}
         a &= a \left[ |p|^2 - |pr| + |r|^2 \right] \\
-        \implies 1 &= |p|^2 - |pr| + |r|^2 = p^2 + r^2
+        \implies 1 &= |p|^2 - |pr| + |r|^2 = p^2 + r^2.
     \end{align*}
-    
     This gives two possible cases
     \begin{gather*}
         \textbf{(1)} \hspace{2mm} p = \pm 1, r = 0 \\
-        \textbf{(2)} \hspace{2mm} p = 0, r = \pm 1
+        \textbf{(2)} \hspace{2mm} p = 0, r = \pm 1.
     \end{gather*}
-
     Consider the first case, letting $p = \delta \in \{1, -1\}$.
     We can infer more information about the coefficients of $\phi$ based on the knowledge that its discriminant is 1.
     \begin{align*}
@@ -471,14 +468,11 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
         1 &= \delta s - 0 \\
         s &= \delta
     \end{align*}
-
     Hence we have
-    $$\phi = \pmat{\delta & q \\ 0 & \delta} = \pmat{\delta & 0 \\ 0 & \delta} T^q$$
-
+    $$\phi = \pmat{\delta & q \\ 0 & \delta} = \pmat{\delta & 0 \\ 0 & \delta} T^q.$$
     Note the action of the matrix
     $$\pmat{-1 & 0 \\ 0 & -1} : (a, b, c) \mapsto (a, b, c)$$
-
-    So $\phi$ has the same action as $T^q$. 
+    so $\phi$ has the same action as $T^q$. 
     Since this fixes $a$ and shifts $b$ by $2qa$, any choice for $q$ other than 0 (which gives the identity)
     shifts $b$ outside of the range $(-a, a]$, giving a form which is no longer reduced.
 
@@ -487,36 +481,31 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
     \begin{align*}
         \text{det}(\phi) &= ps - qr \\
         1 &= 0 - \delta q \\
-        q &= - \delta
+        q &= - \delta.
     \end{align*}
-
     This gives
     \begin{align*}
         \phi &= \pmat{0 & - \delta \\ \delta & s} \\ 
         &= \pmat{0 & -1 \\ 1 & 0} \pmat{\delta & 0 \\ 0 & \delta} \pmat{1 & s \\ 0 & 1} \\
-        &= S \cdot \pmat{\delta & 0 \\ 0 & \delta} \cdot T^s
+        &= S \cdot \pmat{\delta & 0 \\ 0 & \delta} \cdot T^s.
     \end{align*}
-
     As before, we can ignore the action of the negative identity matrix.
     Hence we see that the action of $\phi$ is given by
-    $$ST^s : (a, b, a) \mapsto (as^2 + bs + a, - 2as - b, a)$$
-    
+    $$ST^s : (a, b, a) \mapsto (as^2 + bs + a, - 2as - b, a).$$
     Recall that the leading term must be equal to $a$ in order for this form to be reduced.
     Then we have
     \begin{align*}
         as^2 + bs + a &= a \\
         as^2 + bs &= 0 \\
-        s(as + b) &= 0
+        s(as + b) &= 0.
     \end{align*}
-
     So $s = 0$, in which case $\phi = S$, or $as + b = 0$. 
     In the former case, the action of $\phi$ flips the sign of the second coefficient, which turns a reduced form into one that is no longer reduced 
     (unless $b = 0$, but in this case, $\phi$ acts tivially on the form).
     In the latter case, since $(a, b, a)$ is reduced, we have $a \geq b$ and $|b| \geq 0$.
     We must therefore have $a = b$, $s = -1$.
     The action of $\phi$ is therefore
-    $$\phi : (a, a, a) \mapsto (a, a, a)$$
-
+    $$\phi : (a, a, a) \mapsto (a, a, a).$$
     Hence we see that the only reduced form which is properly equivalent to $(a, b, c)$ is itself.
 \end{proof}
 
@@ -532,8 +521,7 @@ We need to use the fact that the choices for $a$ and $c$ are constrained by the 
     b^2 &\leq -\tfrac{\Delta}{3} \\
     |b| &\leq \sqrt{-\tfrac{\Delta}{3}}
 \end{align*}
-
-So there are only finitely many choices for $b$ in a reduced positive definite form.
+so there are only finitely many choices for $b$ in a reduced positive definite form.
 If we fix a value of $b$, then can we bound the number of choices for $a$ and $c$?
 Consider
 \begin{align*}
@@ -541,8 +529,7 @@ Consider
     -4ac &= \Delta - b^2 \\
     ac &= \frac{b^2 - \Delta}{4}
 \end{align*}
-
-So we have finitely many choices for $a$ and $c$ --- each corresponding to a factorisation of $\tfrac{b^2 - \Delta}{4}$.
+so we have finitely many choices for $a$ and $c$ --- each corresponding to a factorisation of $\tfrac{b^2 - \Delta}{4}$.
 Hence, we see that there are only finitely many choices for $a$, $b$, and $c$ when constructing a reduced positive definite form of a fixed discriminant.
 We have proved
 
@@ -564,26 +551,24 @@ under which the ideal multiplication structure gives a multiplicative structure 
 \section{Historical Background}
 \emph{In this section, we draw from \cite[\S2D-\S3A]{cox}.}
 
+\vspace{2mm}
+\noindent
 Legendre was the first to develop a notion of composition, inspired by Lagrange's use of the identity
-$$(2x^2 + 2xy + 3y^2)(2z^2 + 2zw + 3w^2) = (2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2$$
-
+$$(2x^2 + 2xy + 3y^2)(2z^2 + 2zw + 3w^2) = (2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2.$$
 We see that for any two numbers which can be represented by the form $(2, 2, 3)$, their product can be represented by the form $(1, 0, 5)$.
 That is, if we have representations of $n$ and $m$
 \begin{gather*}
     2x^2 + 2xy + 3y^2 = n \\
     2z^2 + 2zw + 3w^2 = m
 \end{gather*}
-
-Then the form $(1, 0, 5)$ represents $nm$ via
-$$(2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2 = nm$$
-
+then the form $(1, 0, 5)$ represents $nm$ via
+$$(2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2 = nm.$$
 Legendre sought to generalise results of this kind.
 He defined a form $F$ to be the \textbf{composition} of $f$ and $g$ if there exist bilinear forms $B_1$ and $B_2$ such that
 \begin{gather*}
     f(x, y)g(z, w) = F(B_1(x, y; z, w), B_2(x, y; z, w)) \\
     B_i = a_i xz + b_i xw + c_i yz + d_i yw
 \end{gather*}
-
 Legendre was able to show that any two forms of the same discriminant can always be composed in this way, but his formulation was multi-valued, giving several options for the resulting form $F$.
 This was finally rectified by Gauss in his \emph{Disquisitiones Arithmaticae} [\red{cite?}], where he refined Legendre's formulation to turn composition of forms into a well-defined function.
 This notion of composition gave a group structure to the set of proper equivalence classes of forms of a fixed discriminant.
@@ -591,7 +576,6 @@ This group is called the \textbf{class group}.
 
 Due to the complexity of Gauss' methods, Dirichlet presented a simpler but less general approach to composition.
 We will acquire a similar formulation of composition in this chapter.
-
 However, as the theory of ideals developed, it became apparent that there exists a bijection between certain ideals of quadratic number fields and the class group of quadratic forms \cite[Ch.\,1]{buell}.
 This provides us a new and perhaps more intuitive way to derive composition of forms;
 we first outline this bijection in \Cref{s-comp-ideals}, then we can leverage the multiplicative structure of ideals to define an analogous operation on forms in \Cref{s-comp-formula}.
@@ -604,13 +588,9 @@ For a finite field extension of the rational numbers, $K/\Q$, an \textbf{order} 
     \item $\order$ is a finitely generated $\Z$-module
     \item the $\Q$-span of $\order$ is $K$ (ie. $\text{rank}(\order) = \deg(K:\Q)$)
 \end{itemize}
+Here, we are working with the definition of a ring that requires the existence of a multiplicative identity.
 
-\todo{remark that we are working with the definition that rings must include multiplicative identities, and that subrings must have the same multiplicative}
-
-\todo{introduce disriminant with mod 4 conditions}
-
-\vspace{2mm}
-\noindent
+Now, for $\Delta \equiv 0, 1 \pmod{4}$,
 Let $K_\Delta = \Q(\sqrt\Delta)$, and define the \textbf{order of discriminant} $\mathbf{\Delta}$ to be 
 $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
 
@@ -628,27 +608,26 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
         &= \frac{\Delta - \Delta^2}{4} + \Delta\frac{\Delta + \sqrt\Delta}{2} \\
         &= \frac{\Delta (1 - \Delta)}{4} + \Delta\frac{\Delta + \sqrt\Delta}{2}
     \end{align*}
-
-    and since $\Delta \equiv 0, 1 \pmod{4}$, [\red{ref}] this is in $\order_\Delta$.
+    and since $\Delta \equiv 0, 1 \pmod{4}$, the first term is an integer, so this result is in $\order_\Delta$.
 \end{proof}
 
+\pagebreak
 \begin{lemma}
-    A nonzero ideal $I \trianglelefteq \order_\Delta$ is of the form
-    $$I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$$
+    Any nonzero ideal $I \trianglelefteq \order_\Delta$ can be written in the form
+    $$I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z.$$
 \end{lemma}
 
 \begin{proof}
+    \todo{improve proof}
     Consider a nonzero element $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$. We have
     $$x + \frac{\Delta - \sqrt\Delta}{2}y = x + y\Delta - \frac{\Delta + \sqrt\Delta}{2}y \in \order_\Delta$$
-
     so, since $I$ is an ideal of $\order_\Delta$
     \begin{align*}
         \left( x + \frac{\Delta + \sqrt\Delta}{2}y \right) \left( x + \frac{\Delta - \sqrt\Delta}{2}y \right)
         &= \left( x + \frac{\Delta}{2}y \right)^2 -  \left( \frac{\sqrt\Delta}{2}y \right)^2 \\
         &= x + \Delta xy + \frac{\Delta^2 y^2}{4} - \frac{\Delta y^2}{4} \\
-        &= x + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4} \in I
+        &= x + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4} \in I.
     \end{align*}
-
     This is an integer, so there is at least one integer in $I$.
     Multiplying this by $\frac{\Delta + \sqrt\Delta}{2} \in \order_\Delta$, we get that there is at least one element in $I$ with a nonzero $\frac{\Delta + \sqrt\Delta}{2}$ component.
     Let $l$ be the minimum positive integer in $I$, and choose $m$ and $n$ such that $m + n\frac{\Delta + \sqrt\Delta}{2} \in I$, where $|n| \neq 0$ is minimum.
@@ -663,27 +642,29 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
     Hence $x + \frac{\Delta + \sqrt\Delta}{2}y \in l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2}\Z)$, so $I = l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2}\Z)$.
 \end{proof}
 
+\pagebreak
 Finally, we must define the norm of an element. 
 For any quadratic number field $K$ (that is, $K = \Q(\sqrt{\Delta})$ where $\Delta$ is not a perfect square), the \textbf{norm} of an element $x + y\sqrt\Delta \in K$ (where $x, y \in \Q$) is given by \cite[Ch.\,6.2]{buell}
-$$N(x + y\sqrt\Delta) = (x + y\sqrt\Delta) \cdot (x - y\sqrt\Delta).$$
+$$N(x + y\sqrt\Delta) = (x + y\sqrt\Delta) \cdot (x - y\sqrt\Delta) = x^2 - y^2\Delta.$$
 Let us consider the norm of a general element of $I \trianglelefteq \order_\Delta$. We have
 \begin{align*}
-    &\hspace{-5mm} N\left(lx + \left(m + n\frac{\Delta + \sqrt\Delta}{2}\right)y\right) \\
-    &= \left( lx + my + n\frac{\Delta}{2}y + n\frac{\sqrt\Delta}{2}y \right) \cdot \left( lx + my + n\frac{\Delta}{2}y - n\frac{\sqrt\Delta}{2}y \right) \\
-    &= \left( lx + my + n\frac{\Delta}{2}y \right)^2 - \left(n\frac{\sqrt\Delta}{2}y \right)^2 \\
+    &\hspace{-5mm} N\left(lx + \left(m + n\frac{\Delta + \sqrt\Delta}{2}\right)y\right)
+    =  N \left( \left( lx + my + n\frac{\Delta}{2}y \right) + \frac{ny}{2}\sqrt\Delta \right) \\
+    &= \left( lx + my + n\frac{\Delta}{2}y \right)^2 - \left(\frac{ny}{2} \right)^2 \Delta \\
     &= l^2x^2 + m^2y^2 + n^2\frac{\Delta^2}{4}y^2 + 2lmxy + ln\Delta xy + mn\Delta y^2 - n^2\frac{\Delta}{4}y^2 \\
-    &= l^2x^2 + l(2m + n\Delta)xy + \left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right)y^2 \tag{\theequation}\label{eq-ideal-norm-form}
+    &= l^2x^2 + l(2m + n\Delta)xy + \left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right)y^2. \stepcounter{equation}\tag{\theequation}\label{eq-ideal-norm-form}
 \end{align*}
 This is a binary quadratic form. 
 
 
+\pagebreak
 \section{Ideal Correspondence}\label{s-comp-ideals}
 We now seek to use the findings of \Cref{s-comp-algebraic} to develop a notion of equivalence between ideals of $\order_\Delta$ and binary quadratic forms of discriminant $\Delta$.
 First, note that the discriminant of this form found in \eqref{eq-ideal-norm-form} is given by
 \begin{align*}
     &\hspace{-5mm} [l(2m + n\Delta)]^2 - 4l^2\left[ m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4} \right] \\
     &= l^2(4m^2 + 4mn\Delta + n^2\Delta^2) - l^2(4m^2 + 4mn\Delta + n^2\Delta^2 - n^2\Delta) \\
-    &= (ln)^2\Delta
+    &= (ln)^2\Delta.
 \end{align*}
 By \todo{add theorem to discriminant section}, if we can divide the form by $ln$, we will arrive at a form of discriminant $\Delta$.
 Fortunately, the fact that $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$ is an ideal of $\order_\Delta$ constrains $l, m, n$ to certain divisibility conditions.
@@ -691,7 +672,7 @@ First, consider
 \begin{align*}
     l \cdot \frac{\Delta + \sqrt\Delta}{2} &= \left( n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} \\
     &= \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} - \frac{ml}{n} \\
-    &= \frac{m}{n}l + \frac{l}{n}\left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \in I
+    &= \frac{m}{n}l + \frac{l}{n}\left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \in I.
 \end{align*}
 Hence we see that $\frac{m}{n}$ and $\frac{l}{n}$ are integers.
 Next, consider
@@ -701,14 +682,14 @@ Next, consider
     &= \frac{1}{n} \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \left(m + n\frac{\Delta - \sqrt\Delta}{2} \right) \\
     &= \frac{1}{n} \left[ \left( m + n\frac{\Delta}{2} \right)^2 - \left( n\frac{\sqrt\Delta}{2} \right)^2 \right] \\
     &= \frac{1}{n} \left[ m^2 + 2mn\Delta + n^2\frac{\Delta^2}{4} - n^2\frac{\Delta}{4} \right] \\
-    &= \frac{1}{ln}\left( m^2 + 2mn\Delta + n^2\frac{\Delta^2 - \Delta}{4} \right) l \in I
+    &= \frac{1}{ln}\left( m^2 + 2mn\Delta + n^2\frac{\Delta^2 - \Delta}{4} \right) l \in I.
 \end{align*}
 Hence, the coefficient of $l$ is an integer. Using these results, consider the form in \eqref{eq-ideal-norm-form} when divided by $ln$;
-$$\frac{l}{n}x^2 + \left(2\frac{m}{n} + \Delta\right)xy + \frac{1}{ln}\left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right)y^2$$
+$$\frac{l}{n}x^2 + \left(2\frac{m}{n} + \Delta\right)xy + \frac{1}{ln}\left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right)y^2.$$
 We have shown each coefficient to be an integer, hence this is a binary quadratic form of discriminant $\Delta$.
 
 We now have a map from ideals of $\order_\Delta$ to forms of discriminant $\Delta$.
-$$\left\langle l, m + n\frac{\Delta + \sqrt\Delta}{2} \right\rangle \mapsto \left( \frac{l}{n}, 2\frac{m}{n} + \Delta, \frac{1}{ln}\left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right) \right)$$
+$$l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z \mapsto \left( \frac{l}{n}, 2\frac{m}{n} + \Delta, \frac{1}{ln}\left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right) \right).$$
 \todo{remark that this sends ideals that vary by constant multiples to the same form, so we must define equivalence of ideals up to multiplication by elements of $K$.}
 To establish a bijection, we must show that its inverse exists and is sensible.
 To do this, we must first know what conditions on $l, m, n \in \Z$ are necessary for
@@ -724,66 +705,59 @@ and
     &= (m + n\Delta)\frac{\Delta + \sqrt\Delta}{2} - n \frac{\Delta^2}{2} + n \frac{\Delta^2 + \Delta}{4} \\
     &= n\left( \frac{m + n\Delta}{n} \right)\frac{\Delta + \sqrt\Delta}{2} + n \frac{\Delta - \Delta^2}{4} \\
     &= \left( \frac{m + n\Delta}{n} \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - m(\frac{m + n\Delta}{n}) + n \frac{\Delta - \Delta^2}{4} \\
-    &= \left( \frac{m}{n} + \Delta \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - \frac{1}{ln}\left( m^2 + mn\Delta + n^2 \frac{\Delta - \Delta^2}{4} \right)l
+    &= \left( \frac{m}{n} + \Delta \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - \frac{1}{ln}\left( m^2 + mn\Delta + n^2 \frac{\Delta - \Delta^2}{4} \right)l.
 \end{align*}
 Hence we see that the necessary conditions for $I \trianglelefteq \order_\Delta$ are
 \begin{itemize}
     \item $n | m$
     \item $n | l$
-    \item $ln | \left( m^2 + mn\Delta + n^2 \frac{\Delta - \Delta^2}{4} \right)$
+    \item $ln | \left( m^2 + mn\Delta + n^2 \frac{\Delta - \Delta^2}{4} \right).$
 \end{itemize}
 
 \todo{finish inverse map}
 
 
+\pagebreak
 \section{Composition Formula}\label{s-comp-formula}
 Having seen that forms of the same discriminant correspond to ideals of the same ring, 
 we now seek to find a general formula for an operation corresponding to ideal multipication.
 Let us begin by considering forms $f = (a, b, c)$ and $g = (a', b', c')$, both of discriminant $\Delta$.
 These correspond to ideals of $\mathcal{O}_\Delta$
-$$I_f = \left\langle a, \frac{b - \sqrt\Delta}{2} \right\rangle, \hspace{5mm} I_g = \left\langle a', \frac{b' - \sqrt\Delta}{2} \right\rangle$$
-
+$$I_f = \left\langle a, \frac{b - \sqrt\Delta}{2} \right\rangle, \hspace{5mm} I_g = \left\langle a', \frac{b' - \sqrt\Delta}{2} \right\rangle.$$
 The product of these ideals is the ideal generated by the pairwise products of their generators
-$$I_f \cdot I_g = \left\langle aa', a\frac{b' - \sqrt\Delta}{2}, a'\frac{b - \sqrt\Delta}{2}, \frac{bb' + \Delta - (b + b')\sqrt\Delta}{4} \right\rangle$$
-
+$$I_f \cdot I_g = \left\langle aa', a\frac{b' - \sqrt\Delta}{2}, a'\frac{b - \sqrt\Delta}{2}, \frac{bb' + \Delta - (b + b')\sqrt\Delta}{4} \right\rangle.$$
 It is known that such an ideal can be expressed using at most two generators \cite[Thm.\,5.9]{stewart}.
 This can be easily found computationally using an algorithm for ideal reduction such as is provided by Cohen \cite[Ch.\,2.4.2]{cohen}.
 However, we seek to find a more general closed form.
-
 This task would be made much more simple if we could reduce the number of variables.
 To achieve this, let us assume that we can rewrite the forms such that the $b$ term is equal - this isn't as large of an assumption as it might seem.
 Certainly, if the $a$ terms of either form don't share a common factor, then by applying the correct number of $T$ transformations to each form, their $b$ terms can be made to match.
-
 Hence, let us suppose that the forms can be expressed as
-$$f \equiv (a_1, B, c_1), \hspace{5mm} g \equiv (a_2, B, c_2)$$
-
-Using the fact that these forms share the same discriminant
+$$f \equiv (a_1, B, c_1), \hspace{5mm} g \equiv (a_2, B, c_2).$$
+Using the fact that these forms share the same discriminant, we have
 \begin{gather*}
     \Delta = B^2 - 4a_1c_1 = B^2 - 4a_2c_2 \\
     \frac{\Delta - B^2}{4} = a_1c_1 = a_2c_2 \\
-    \frac{\Delta - B^2}{4a_1a_2} = \frac{c_1}{a_2} = \frac{c_2}{a_1} \rnote{\text{$\in \Z$ if $(a_1, a_2) = 1$}}
+    \frac{\Delta - B^2}{4a_1a_2} = \frac{c_1}{a_2} = \frac{c_2}{a_1} \rnote{\text{$\in \Z$ if $(a_1, a_2) = 1.$}}
 \end{gather*}
-
 So by letting $C = \tfrac{\Delta - B^2}{4a_1a_2}$, we can express the forms as
-$$f \equiv (a_1, B, a_2 C), \hspace{5mm} g \equiv (a_2, B, a_1 C)$$
-
+$$f \equiv (a_1, B, a_2 C), \hspace{5mm} g \equiv (a_2, B, a_1 C).$$
 This gives the product of ideals to be
-$$I_f \cdot I_g = \left\langle a_1a_2, a_1\frac{B - \sqrt\Delta}{2}, a_2\frac{B - \sqrt\Delta}{2}, \frac{B^2 + \Delta - 2B\sqrt\Delta}{4} \right\rangle$$
-
+$$I_f \cdot I_g = \left\langle a_1a_2, a_1\frac{B - \sqrt\Delta}{2}, a_2\frac{B - \sqrt\Delta}{2}, \frac{B^2 + \Delta - 2B\sqrt\Delta}{4} \right\rangle.$$
 This final term is
 \begin{align*}
     \frac{B^2 + \Delta - 2B\sqrt\Delta}{4} &= \frac{B^2 + B^2 - 4a_1a_2C - 2B\sqrt\Delta}{4} \\
-    &= B\frac{B - \sqrt\Delta}{2} - a_1a_2C
+    &= B\frac{B - \sqrt\Delta}{2} - a_1a_2C.
 \end{align*}
-
 This reduces to
-$$I_f \cdot I_g = \left\langle a_1a_2, \hspace{2mm} \text{gcd}(a_1, a_2, B) \frac{B - \sqrt\Delta}{2}\right\rangle$$
+$$I_f \cdot I_g = \left\langle a_1a_2, \hspace{2mm} \text{gcd}(a_1, a_2, B) \frac{B - \sqrt\Delta}{2}\right\rangle.$$
 
 \todo{declare gcd(a1, a2, B) = 1 as f is primitive}
 
 \todo{express $B$, $a_1$, and $a_2$ as functions of $a, a', b, b'$. Consider the case when a and a' have a common divisor. Can c/c' be used instead? Can this always be adapted to work?}
 
 
+\pagebreak
 \section{Identity and Inverses}\label{s-comp-idinv}
 \red{to do}
 
@@ -810,7 +784,7 @@ As a baseline for comparison, let us consider the most primitive factoring algor
         }
     }
 \end{algorithm}
-
+\noindent
 We will use big-$O$ notation to analyse the complexity of factoring algorithms.
 Trial division has a complexity of $O(\sqrt{n})$.
 If one considers the complexity not as a function of the size of the number being factored, but instead by the length of its binary representation,
@@ -825,20 +799,18 @@ Such forms are called \textbf{ambiguous forms}, since they are properly equivale
 equivalent to, so it is ``ambiguous'' which proper equivalence class they belong to.
 
 For a reduced form to be properly equivalent to its inverse, we have
-$$(a, b, c) = (a, -b, c)$$
-
+$$(a, b, c) \equiv (a, -b, c).$$
 When is this possible?
 The clearest case where the equility holds is when $b = 0$, but there are other possibilities.
 If $b \neq 0$, the only way for the equivalence to hold is if $(a, -b, c)$ is not fully reduced.
 Since $(a, b, c)$ is reduced, we know that $|b| \leq a \leq c$, 
 so the only way for $(a, -b, c)$ not to be reduced is if $-b < 0$ and $a = |-b|$ or $a = c$.
 Since $(a, b, c)$ is reduced, either of the latter conditions would imply $b > 0$, so we can now write the three cases
-\begin{gather*}
-    \textbf{(1)} \hspace{2mm} b = 0 \implies (a, 0, c) \\
-    \textbf{(2)} \hspace{2mm} a = b \implies (a, a, c) \\
-    \textbf{(3)} \hspace{2mm} a = c \implies (a, b, a)
-\end{gather*}
-
+\begin{align*}
+    &\textbf{(1)} \hspace{2mm} b = 0 \implies (a, 0, c) \\
+    &\textbf{(2)} \hspace{2mm} a = b \implies (a, a, c) \\
+    &\textbf{(3)} \hspace{2mm} a = c \implies (a, b, a).
+\end{align*}
 An ambiguous form must necessarily meet one of these conditions, and it is easy to show that each consition is sufficient:
 \begin{align*}
     \textbf{(1)} \hspace{2mm}
@@ -847,32 +819,26 @@ An ambiguous form must necessarily meet one of these conditions, and it is easy 
 \end{align*}
 \begin{align*}
     \textbf{(2)} \hspace{2mm}
-    (a, a, c) \cdot (a, a, c) &= (a, a, c) \cdot (a, -a, a - a + c) \rnote{\text{using $T^{-1}$}} \\
+    (a, a, c) \cdot (a, a, c) &= (a, a, c) \cdot (a, -a, a - a + c) \rnote{\text{(using $T^{-1}$)}} \\
     &= (a, a, c) \cdot (a, -a, c) \\
     &= id_\Delta
 \end{align*}
 \begin{align*}
     \textbf{(3)} \hspace{2mm}
-    (a, b, a) \cdot (a, b, a) &= (a, b, a) \cdot (a, -b, a) \rnote{\text{using $S$}} \\
+    (a, b, a) \cdot (a, b, a) &= (a, b, a) \cdot (a, -b, a) \rnote{\text{(using $S$)}} \\
     &= id_\Delta
 \end{align*}
-
-So these cases are necessary and sufficient to classify a form as ambiguous.
+so these cases are necessary and sufficient to classify a form as ambiguous.
 Notice that each case reduces the three variables $a, b, c$ to only two - 
 this is of particular note when one considers how each case affects the formula $\Delta = b^2 - 4ac$
 \begin{gather*}
     \textbf{(1)} \hspace{2mm} \Delta = 0 - 4ac = -4ac \\
     \textbf{(2)} \hspace{2mm} \Delta = a^2 - 4ac = a(a-4c) \\
-    \textbf{(3)} \hspace{2mm} \Delta = b^2 - 4a^2 = (b + 2a)(b - 2a)
+    \textbf{(3)} \hspace{2mm} \Delta = b^2 - 4a^2 = (b + 2a)(b - 2a).
 \end{gather*}
-
 Notice that every case gives a factorisation of the discriminant.
 Therefore, if we want to find a factorisiation of some number $D$, we can do this by finding amabiguous forms of discriminant $\Delta = D$
 (or $\Delta = 4D$ if $D$ is congruent to 2 or 3 modulo 4).
-
-\todo{add more references}
-
-\todo{add roadmap}
 
 
 %===============================================================================================================================%
