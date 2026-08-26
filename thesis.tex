@@ -611,35 +611,47 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
     and since $\Delta \equiv 0, 1 \pmod{4}$, the first term is an integer, so this result is in $\order_\Delta$.
 \end{proof}
 
-\pagebreak
 \begin{lemma}
     Any nonzero ideal $I \trianglelefteq \order_\Delta$ can be written in the form
-    $$I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z.$$
+    $$I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$$
+    where $l, m, n \in \Z$ and $n \neq 0$.
 \end{lemma}
 
+\pagebreak
 \begin{proof}
-    \todo{improve proof}
-    Consider a nonzero element $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$. We have
-    $$x + \frac{\Delta - \sqrt\Delta}{2}y = x + y\Delta - \frac{\Delta + \sqrt\Delta}{2}y \in \order_\Delta$$
-    so, since $I$ is an ideal of $\order_\Delta$
+    We will first show that $I$ contains at least one integer element, and at least one element with a nonzero $\sqrt\Delta$ component.
+    Then, we choose $l, m$ and $n$ according to certain minimum conditions, and argue that their $\Z$-span is all of $I$, or else a contradiction would arise.
+    
+    Consider a nonzero element $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$. 
+    The conjugate of this element is
+    $$x + \frac{\Delta - \sqrt\Delta}{2}y = x + y\Delta - \frac{\Delta + \sqrt\Delta}{2}y \in \order_\Delta.$$
+    Since $I$ is an ideal of $\order_\Delta$, multiplication by an element of $\order_\Delta$ must give a result which is still in $I$.
+    In particular, multiplying our element by its conjugate gives
     \begin{align*}
-        \left( x + \frac{\Delta + \sqrt\Delta}{2}y \right) \left( x + \frac{\Delta - \sqrt\Delta}{2}y \right)
+        I &\ni \left( x + \frac{\Delta + \sqrt\Delta}{2}y \right) \left( x + \frac{\Delta - \sqrt\Delta}{2}y \right) \\
         &= \left( x + \frac{\Delta}{2}y \right)^2 -  \left( \frac{\sqrt\Delta}{2}y \right)^2 \\
         &= x + \Delta xy + \frac{\Delta^2 y^2}{4} - \frac{\Delta y^2}{4} \\
-        &= x + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4} \in I.
+        &= x + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4}.
     \end{align*}
     This is an integer, so there is at least one integer in $I$.
-    Multiplying this by $\frac{\Delta + \sqrt\Delta}{2} \in \order_\Delta$, we get that there is at least one element in $I$ with a nonzero $\frac{\Delta + \sqrt\Delta}{2}$ component.
-    Let $l$ be the minimum positive integer in $I$, and choose $m$ and $n$ such that $m + n\frac{\Delta + \sqrt\Delta}{2} \in I$, where $|n| \neq 0$ is minimum.
-    Every integer $z \in I \cap \Z$ must satisfy $l | z$, or else $\gcd(l, z) \in \Z$ would cause a contradiction with the choice of $l$.
-    For any $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$ we must also have $n | y$, or else the choice of $n$ would be contradicted.
+    Multiplying this by $\frac{\Delta + \sqrt\Delta}{2} \in \order_\Delta$, we see that there is at least one element in $I$ with a nonzero $\frac{\Delta + \sqrt\Delta}{2}$ component.
+    
+    Now, choose $l \in I$ to be an integer such that $|l|$ is minimal.
+    Every integer $z \in I \cap \Z$ must ne a multiple of $l$, or else we would have $l > \gcd(l, z)$ --- a contradiction with the choice of $l$.
+    We can therefore see that the choice of $l$ is unique up to sign.
+
+    Likewise, choose $m + n\frac{\Delta + \sqrt\Delta}{2} \in I$ such that $|n| \neq 0$ is minimum.
+    For any $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$ we must also have $n | y$, or else a linear combination of elements would yield a result whose coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ would be $\gcd(y, n)$, contradicting the choice of $n$.
+
+    Finally, we will show that our general element can be expressed as an element of $l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$.
     Letting $y = y_0 n$, we can write
     \begin{align*}
-        x + \frac{\Delta + \sqrt\Delta}{2}y &= x + \frac{\Delta + \sqrt\Delta}{2}y_0 n + y_0 m - y_0 m \\
-        &= x - y_0 m + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) y_0
+        x + \frac{\Delta + \sqrt\Delta}{2}y &= x - y_0 m + y_0 m + \frac{\Delta + \sqrt\Delta}{2}y_0 n \\
+        &= x - y_0 m + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) y_0.
     \end{align*}
-    and $(m + n\frac{\Delta + \sqrt\Delta}{2}) y_0 \in I$, so $x - y_0 m$ must also be in $I$, which means $l | x - y_0 m$.
-    Hence $x + \frac{\Delta + \sqrt\Delta}{2}y \in l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2}\Z)$, so $I = l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2}\Z)$.
+    Now, $(m + n\frac{\Delta + \sqrt\Delta}{2}) y_0 \in I$, so by closure under addition, $x - y_0 m$ must also be in $I$.
+    This is an integer, so it can be written as a multiple of $l$.
+    Hence $x + \frac{\Delta + \sqrt\Delta}{2}y \in l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2})\Z$, so $I = l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2}\Z)$.
 \end{proof}
 
 \pagebreak
