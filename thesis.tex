@@ -430,52 +430,51 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
 \end{theorem}
 
 \begin{proof}
-    \todo{improve proof}
     The fact that any form is equivalent to at least one reduced form follows immediately from the existence of the reduction algorithm.
     To prove uniqueness, we adapt the proof of Cohen \cite[Prop.\,5.3.3]{cohen}.
-    Suppose $(a, b, c)$ is a reduced form.
-    We claim that $a$ is the minimal coefficient of $x^2$ for all forms in its equivalence class.
-    Consider a general transformation
+    Suppose $f = (a, b, c)$ is a reduced form, and that $f' = (a', b', c')$ is another form, such that these forms are properly equivalent.
+    That is, there exists a transformation 
     $$\phi = \pmat{p & q \\ r & s} \in \SL_2(\Z).$$
-    In \Cref{s-forms-eq}, we showed that the result of this acting on our form is
+    such that $f \circ \phi = f'$.
+    We will show that if $f'$, then it must be equal to $f$.
+
+    First, we claim that $a$ is the minimal coefficient of $x^2$ for all forms in its equivalence class --- that is, $a \leq a'$.
+    In \Cref{s-forms-eq}, we showed that the result of $\phi$ acting on $f$ is
     $$\left[ap^2 + bpr + cr^2 \right] x^2
         + \left[ 2apq + b(ps + qr) + crs \right] xy
         + \left[ aq^2 + bqs + cs^2 \right] y^2.$$
-    We can bound the coefficient of $x^2$ using the fact that $(a, b, c)$ is reduced, hence $c \geq a$ and $b \in (-a, a]$
+    That is, $a' = ap^2 + bpr + cr^2$.
+    Using the fact that $f$ is reduced, we have $c \geq a$ and $b > -a$.
+    Hence, we can bound $a'$;
+    $$a' = ap^2 + bpr + cr^2 \geq ap^2 - a|pr| + ar^2$$
+    Since $b$ is strictly greater than $-a$, equality can only hold when $pr = 0$.
+    Simplifying this result yields
     \begin{align*}
-        ap^2 + bpr + cr^2 &\geq ap^2 - a|pr| + ar^2 \\
-        &= a \left[ |p|^2 - |pr| + |r|^2 \right] \\
+        a' &\geq a \left[ |p|^2 - |pr| + |r|^2 \right] \\
         &= a \left[ (|p| - |r|)^2 + |pr| \right].
     \end{align*}
-
     It's impossible for both $pr$ and $|p| - |r|$ to be zero, as this would require $p = r = 0$,
     which would cause the determinant of $\phi$ to be zero.
-    But the determinant of $\phi$ is known to be 1, so the coefficient of $x^2$ is at least $a$.
-    By the same argument, any other reduced form $(a', b', c')$ has $a'$ as the minimal leading coefficient among all equivalent forms.
-    Hence we see that $a = a'$ --- ie. equivalent reduced forms must have the same leading coefficient.
+    But the determinant of $\phi$ is known to be 1, so, since $p, r \in \Z$, we have that $a'$ is at least $a$.
+
+    Now, consider the case where $f'$ is reduced.
+    Then by the same argument as above, we have that $a' \geq a$ --- together these results imply $a = a'$.
+    That is, properly equivalent reduced forms must have the same leading coefficient.
     
-    Now, the inequality above sets a lower bound on the leading coefficient of our new form, which must be $a$ in order for the form to be reduced.
-    But the final expression, $a \left[ (|p| - |r|)^2 + |pr| \right]$, is $a$ times some integer.
-    The only way that the LHS can be $a$ is if this integer is 1, and if the inequality achieves equality.
-    First note that in the first line we used $b > -a \implies bpr \geq -a|pr|$.
-    This only achieves equality if $pr = 0$.
-    Hence, to achieve equality we require
-    \begin{align*}
-        a &= a \left[ |p|^2 - |pr| + |r|^2 \right] \\
-        \implies 1 &= |p|^2 - |pr| + |r|^2 = p^2 + r^2.
-    \end{align*}
-    This gives two possible cases
+    Now we must show that if $\phi$ fixes $a$, then the action of $\phi$ on $f$ is trivial.
+    Recall that in order for the equality $a' = a$ to hold, we must have $pr = 0$.
+    This gives
+    $$a' = a \left[ p^2 + r^2 \right]$$
+    So we also require $p^2 + r^2 = 1$.
+    This leaves us with two possible cases
     \begin{gather*}
         \textbf{(1)} \hspace{2mm} p = \pm 1, r = 0 \\
         \textbf{(2)} \hspace{2mm} p = 0, r = \pm 1.
     \end{gather*}
     Consider the first case, letting $p = \delta \in \{1, -1\}$.
-    We can infer more information about the coefficients of $\phi$ based on the knowledge that its discriminant is 1.
-    \begin{align*}
-        \text{det}(\phi) &= ps - qr \\
-        1 &= \delta s - 0 \\
-        s &= \delta
-    \end{align*}
+    Since $\phi \in \SL_2(\Z)$, we have
+    $$1 = \text{det}(\phi) = ps - qr = \delta s$$
+    which gives $s = \delta$.
     Hence we have
     $$\phi = \pmat{\delta & q \\ 0 & \delta} = \pmat{\delta & 0 \\ 0 & \delta} T^q.$$
     Note the action of the matrix
@@ -483,15 +482,15 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
     so $\phi$ has the same action as $T^q$. 
     Since this fixes $a$ and shifts $b$ by $2qa$, any choice for $q$ other than 0 (which gives the identity)
     shifts $b$ outside of the range $(-a, a]$, giving a form which is no longer reduced.
+    That is, $f' = f \circ \phi = f$.
 
-    In the second case, letting $r = \delta \in \{1, -1\}$, equality is only acheived if $c = a$ (since we took $cr^2 \geq ar^2$, and $r \neq 0$).
-    Again investigating $\phi$, we have
-    \begin{align*}
-        \text{det}(\phi) &= ps - qr \\
-        1 &= 0 - \delta q \\
-        q &= - \delta.
-    \end{align*}
-    This gives
+    In the second case, let $r = \delta \in \{1, -1\}$. 
+    The equality $a' = a$ depends on $cr^2 \geq ar^2$ acheiving equality. 
+    Since $r$ is nonzero and $c \geq a$, this is only acheived if $c = a$.
+    Again taking the determinant of $\phi$, we have
+    $$1 = \text{det}(\phi) = ps - qr = - \delta q$$
+    which gives $q = - \delta$.
+    Hence we have
     \begin{align*}
         \phi &= \pmat{0 & - \delta \\ \delta & s} \\ 
         &= \pmat{0 & -1 \\ 1 & 0} \pmat{\delta & 0 \\ 0 & \delta} \pmat{1 & s \\ 0 & 1} \\
@@ -502,16 +501,16 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
     $$ST^s : (a, b, a) \mapsto (as^2 + bs + a, - 2as - b, a).$$
     Recall that the leading term must be equal to $a$ in order for this form to be reduced.
     Then we have
-    \begin{align*}
-        as^2 + bs + a &= a \\
-        as^2 + bs &= 0 \\
-        s(as + b) &= 0.
-    \end{align*}
-    So $s = 0$, in which case $\phi = S$, or $as + b = 0$. 
-    In the former case, the action of $\phi$ flips the sign of the second coefficient, which turns a reduced form into one that is no longer reduced 
-    (unless $b = 0$, but in this case, $\phi$ acts tivially on the form).
+    \begin{gather*}
+        as^2 + bs + a = a \\
+        \implies 0 = as^2 + bs = s(as + b)
+    \end{gather*}
+    So either $s = 0$ or $as + b = 0$. 
+    In the former case, the action of $\phi = S$ flips the sign of the second coefficient.
+    If $b \neq 0$, this yields a form that is no longer reduced, and if $b = 0$, it acts trivially.
+    
     In the latter case, since $(a, b, a)$ is reduced, we have $a \geq b$ and $|b| \geq 0$.
-    We must therefore have $a = b$, $s = -1$.
+    To satisfy $as + b = 0$ for $a, b \in \Z$ and $s = \pm 1$, we must therefore have $a = b$, $s = -1$.
     The action of $\phi$ is therefore
     $$\phi : (a, a, a) \mapsto (a, a, a).$$
     Hence we see that the only reduced form which is properly equivalent to $(a, b, c)$ is itself.
