@@ -280,7 +280,7 @@ This gives
     &= f(px+qy, rx+sy) \\
     &= a(px+qy)^2 + b(px+qy)(rx+sy) + c(rx+sy)^2 \\
     &= \left[ap^2 + bpr + cr^2 \right] x^2
-        + \left[ 2apq + b(ps + qr) + crs \right] xy
+        + \left[ 2apq + b(ps + qr) + 2crs \right] xy
         + \left[ aq^2 + bqs + cs^2 \right] y^2
 \end{align*}
 which gives $g$ to be a binary quadratic form, as required. 
@@ -570,7 +570,7 @@ He defined a form $F$ to be the \textbf{composition} of $f$ and $g$ if there exi
     B_i = a_i xz + b_i xw + c_i yz + d_i yw
 \end{gather*}
 Legendre was able to show that any two forms of the same discriminant can always be composed in this way, but his formulation was multi-valued, giving several options for the resulting form $F$.
-This was finally rectified by Gauss in his \emph{Disquisitiones Arithmaticae} [\red{cite?}], where he refined Legendre's formulation to turn composition of forms into a well-defined function.
+This was finally rectified by Gauss in his \emph{Disquisitiones Arithmaticae} \cite{gauss}, where he refined Legendre's formulation to turn composition of forms into a well-defined function.
 This notion of composition gave a group structure to the set of proper equivalence classes of forms of a fixed discriminant.
 This group is called the \textbf{class group}.
 
@@ -601,7 +601,8 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
 \begin{proof}
     The latter two conditions of being an order are met by definition, so we need only show that $\order_\Delta$ is a subring of $K_\Delta$. 
     It is also clear that $\order_\Delta \subseteq K_\Delta$, so if we show that $\order_\Delta$ is closed under ring operations, then we can conclude that it is an order in $K_\Delta$.
-    Closure under addition is obvious - as for closure under multiplication, let us show closure of the generators, 1 and $\frac{\Delta + \sqrt\Delta}{2}$, from which closure of all other elements can be inferred.
+    Closure under addition is obvious - as for closure under multiplication, let us show closure holds when multiplying the generators of $\order_\Delta$ with themselves, from which closure of all elements under multiplication can be inferred.
+    The generators of $\order_\Delta$ are 1 and $\frac{\Delta + \sqrt\Delta}{2}$.
     Closure under multiplication by 1 is obvious, so we need only check
     \begin{align*}
         \frac{\Delta + \sqrt\Delta}{2} \cdot \frac{\Delta + \sqrt\Delta}{2} &= \frac{\Delta^2 + 2\Delta\sqrt\Delta + \Delta}{4} \\
@@ -611,10 +612,10 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
     and since $\Delta \equiv 0, 1 \pmod{4}$, the first term is an integer, so this result is in $\order_\Delta$.
 \end{proof}
 
-\begin{lemma}
+\begin{lemma}\label{lemma-ideal-lattice}
     Any nonzero ideal $I \trianglelefteq \order_\Delta$ can be written in the form
     $$I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$$
-    where $l, m, n \in \Z$ and $n \neq 0$.
+    where $l, m, n \in \Z$ and $l, n > 0$.
 \end{lemma}
 
 \pagebreak
@@ -636,11 +637,11 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
     This is an integer, so there is at least one integer in $I$.
     Multiplying this by $\frac{\Delta + \sqrt\Delta}{2} \in \order_\Delta$, we see that there is at least one element in $I$ with a nonzero $\frac{\Delta + \sqrt\Delta}{2}$ component.
     
-    Now, choose $l \in I$ to be an integer such that $|l|$ is minimal.
+    Now, choose $l$ to be the minimal positive integer in $I$.
     Every integer $z \in I \cap \Z$ must ne a multiple of $l$, or else we would have $l > \gcd(l, z)$ --- a contradiction with the choice of $l$.
     We can therefore see that the choice of $l$ is unique up to sign.
 
-    Likewise, choose $m + n\frac{\Delta + \sqrt\Delta}{2} \in I$ such that $|n| \neq 0$ is minimum.
+    Likewise, choose $m + n\frac{\Delta + \sqrt\Delta}{2} \in I$ such that $n > 0$ is minimum.
     For any $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$ we must also have $n | y$, or else a linear combination of elements would yield a result whose coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ would be $\gcd(y, n)$, contradicting the choice of $n$.
 
     Finally, we will show that our general element can be expressed as an element of $l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$.
@@ -653,6 +654,8 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
     This is an integer, so it can be written as a multiple of $l$.
     Hence $x + \frac{\Delta + \sqrt\Delta}{2}y \in l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2})\Z$, so $I = l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2}\Z)$.
 \end{proof}
+
+Note that $l$ and $n$ are uniquely determined, while the choice of $m$ is only determined up to adding multiples of $l$.
 
 \pagebreak
 Finally, we must define the norm of an element. 
@@ -679,54 +682,89 @@ First, note that the discriminant of this form found in \eqref{eq-ideal-norm-for
     &= (ln)^2\Delta.
 \end{align*}
 By \todo{add theorem to discriminant section}, if we can divide the form by $ln$, we will arrive at a form of discriminant $\Delta$.
-Fortunately, the fact that $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$ is an ideal of $\order_\Delta$ constrains $l, m, n$ to certain divisibility conditions.
-First, consider
-\begin{align*}
-    l \cdot \frac{\Delta + \sqrt\Delta}{2} &= \left( n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} \\
-    &= \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} - \frac{ml}{n} \\
-    &= \frac{m}{n}l + \frac{l}{n}\left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \in I.
-\end{align*}
-Hence we see that $\frac{m}{n}$ and $\frac{l}{n}$ are integers.
-Next, consider
-\begin{align*}
-    &\hspace{-5mm} \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \left(\left(\frac{m}{n} + \Delta\right) - \frac{\Delta + \sqrt\Delta}{2} \right) \\
-    &= \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \left(\frac{m}{n} + \frac{\Delta - \sqrt\Delta}{2} \right) \\
-    &= \frac{1}{n} \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \left(m + n\frac{\Delta - \sqrt\Delta}{2} \right) \\
-    &= \frac{1}{n} \left[ \left( m + n\frac{\Delta}{2} \right)^2 - \left( n\frac{\sqrt\Delta}{2} \right)^2 \right] \\
-    &= \frac{1}{n} \left[ m^2 + 2mn\Delta + n^2\frac{\Delta^2}{4} - n^2\frac{\Delta}{4} \right] \\
-    &= \frac{1}{ln}\left( m^2 + 2mn\Delta + n^2\frac{\Delta^2 - \Delta}{4} \right) l \in I.
-\end{align*}
-Hence, the coefficient of $l$ is an integer. Using these results, consider the form in \eqref{eq-ideal-norm-form} when divided by $ln$;
-$$\frac{l}{n}x^2 + \left(2\frac{m}{n} + \Delta\right)xy + \frac{1}{ln}\left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right)y^2.$$
-We have shown each coefficient to be an integer, hence this is a binary quadratic form of discriminant $\Delta$.
+Since we have chosen $l, m, n$ such that $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$ is an ideal of $\order_\Delta$, there are certain divisibility conditions which will prove helpful.
 
-We now have a map from ideals of $\order_\Delta$ to forms of discriminant $\Delta$.
-$$l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z \mapsto \left( \frac{l}{n}, 2\frac{m}{n} + \Delta, \frac{1}{ln}\left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right) \right).$$
+\vspace{2mm}
+\begin{lemma}\label{lemma-lattice-divisibility-conditions}
+    The $\Z$-module
+    $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$
+    is an ideal of $\order_\Delta$ if and only if the following conditions are met:
+    \begin{enumerate}
+        \item $n | m$
+        \item $n | l$
+        \item $l | \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4}.$
+    \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+    First, we consider the necessary conditions for $I \trianglelefteq \order_\Delta$. 
+    For $I$ to be an ideal, it must be closed over addition and under multiplication by elements of $\order_\Delta$.
+    Closure under addition is obvious, since $I$ is a $\Z$-module.
+    For closure under multiplication, we need only test the generators of $I$ multiplied by the generators of $\order_\Delta$, from which closure of all multiples can be inferred.
+    The generators of $I$ are $l$ and $m + n\frac{\Delta + \sqrt\Delta}{2}$, and the generators of $\order_\Delta$ are $1$ and $\frac{\Delta + \sqrt\Delta}{2}$.
+    Closure under multiplication by 1 is obvious, so we have two conditions remaining to check.
+    First,
+    \begin{align*}
+        l \cdot \frac{\Delta + \sqrt\Delta}{2} &= \left( n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} \\
+        &= \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} - \frac{ml}{n} \\
+        &= \frac{m}{n}l + \frac{l}{n}\left( m + n\frac{\Delta + \sqrt\Delta}{2} \right).
+    \end{align*}
+    Since $I$ is a free $\Q$-module, representation of elements as linear combinations of basis elements are unique.
+    Since this is the only way to write the result as a combination of basis elements, for this to be in $I$ we require that the coefficients be integers.
+    Hence, we require $n | m$ and $n | l$.
+
+    The other condition for closure under multiplication comes from
+    \begin{align*}
+        &\hspace{-5mm} \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \frac{\Delta + \sqrt\Delta}{2} \\
+        &= m \frac{\Delta + \sqrt\Delta}{2} + n \frac{\Delta^2 + 2\Delta\sqrt\Delta + \Delta}{4} \\
+        &= m \frac{\Delta + \sqrt\Delta}{2} + n \Delta \frac{\sqrt\Delta}{2} + n \frac{\Delta^2 + \Delta}{4} \\
+        &= (m + n\Delta)\frac{\Delta + \sqrt\Delta}{2} - n \frac{\Delta^2}{2} + n \frac{\Delta^2 + \Delta}{4} \\
+        &= n\left( \frac{m + n\Delta}{n} \right)\frac{\Delta + \sqrt\Delta}{2} + n \frac{\Delta - \Delta^2}{4} \\
+        &= \left( \frac{m + n\Delta}{n} \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - m(\frac{m + n\Delta}{n}) + n \frac{\Delta - \Delta^2}{4} \\
+        &= \left( \frac{m}{n} + \Delta \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - \frac{1}{l}\left( \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4} \right)l.
+    \end{align*}
+    Again, for this to be in $I$, we require the coefficients on the generators to be integers.
+    Hence we have the added condition $l | \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4}$.
+
+    To prove that these conditions are sufficient, suppose that we have chosen $l, m, n$ satisfying the divisibility conditions.
+    We have already shown that these are the necessary conditions for $l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$ to satisty closure under multiplication by elements of $\order_\Delta$, so we are done.
+\end{proof}
+
+Using this result, consider the form in \eqref{eq-ideal-norm-form} when divided by $ln$;
+$$\frac{l}{n}x^2 + \left(\frac{2m}{n} + \Delta\right)xy + \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right)y^2.$$
+The divisibility conditions of \Cref{lemma-lattice-divisibility-conditions} show each coefficient to be an integer, hence this is a binary quadratic form of discriminant $\Delta$.
+
+We can therefore define a map from ideals of $\order_\Delta$ to forms of discriminant $\Delta$.
+$$l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z \mapsto \left( \frac{l}{n}, \frac{2m}{n} + \Delta, \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right).$$
+Recall that for a given ideal, $m$ is only uniquely determined up to adding multiples of $l$.
+We must therefore consider what effect making different choices for $m$ has on the output of this map in order to ensure it is well defined.
+Given an ideal $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z$, we can also write 
+$$I = l\Z + \left( (m + kl) + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z$$
+where $k \in \Z$. 
+Our map sends this ideal to
+\begin{align*}
+    &\hspace{-5mm} \left( \frac{l}{n}, \frac{2(m + kl)}{n} + \Delta, \frac{1}{l}\left(\frac{(m + kl)^2}{n} + (m + kl)\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right) \\
+    &= \left( \frac{l}{n}, \left[ \frac{2m}{n} + \Delta \right] + 2k\frac{l}{n}, \left[ \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right] + k^2\frac{l}{n} + k(\frac{2m}{n} + \Delta) \right).
+\end{align*}
+This is the same result as a $T^k$ transformation on the previous form.
+Hence we see that different choices of $m$ map to properly equivalent forms, so the map is well defined as a map into equivalence classes of forms.
+
 \todo{remark that this sends ideals that vary by constant multiples to the same form, so we must define equivalence of ideals up to multiplication by elements of $K$.}
-To establish a bijection, we must show that its inverse exists and is sensible.
-To do this, we must first know what conditions on $l, m, n \in \Z$ are necessary for
-$$I = l\Z + \left( m + n \frac{\Delta + \sqrt\Delta}{2} \right) \Z$$
-to be an ideal of $\order_\Delta$. Certainly $I$ is a subset of $\order_\Delta$ which is closed under addition and multiplication by 1.
-Under multiplication by the other basis element of $\order_\Delta$, we have
-$$l \cdot \frac{\Delta + \sqrt\Delta}{2} = \frac{m}{n}l + \frac{l}{n}\left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)$$
-and
-\begin{align*}
-    &\hspace{-5mm} \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \frac{\Delta + \sqrt\Delta}{2} \\
-    &= m \frac{\Delta + \sqrt\Delta}{2} + n \frac{\Delta^2 + 2\Delta\sqrt\Delta + \Delta}{4} \\
-    &= m \frac{\Delta + \sqrt\Delta}{2} + n \Delta \frac{\sqrt\Delta}{2} + n \frac{\Delta^2 + \Delta}{4} \\
-    &= (m + n\Delta)\frac{\Delta + \sqrt\Delta}{2} - n \frac{\Delta^2}{2} + n \frac{\Delta^2 + \Delta}{4} \\
-    &= n\left( \frac{m + n\Delta}{n} \right)\frac{\Delta + \sqrt\Delta}{2} + n \frac{\Delta - \Delta^2}{4} \\
-    &= \left( \frac{m + n\Delta}{n} \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - m(\frac{m + n\Delta}{n}) + n \frac{\Delta - \Delta^2}{4} \\
-    &= \left( \frac{m}{n} + \Delta \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - \frac{1}{ln}\left( m^2 + mn\Delta + n^2 \frac{\Delta - \Delta^2}{4} \right)l.
-\end{align*}
-Hence we see that the necessary conditions for $I \trianglelefteq \order_\Delta$ are
-\begin{itemize}
-    \item $n | m$
-    \item $n | l$
-    \item $ln | \left( m^2 + mn\Delta + n^2 \frac{\Delta - \Delta^2}{4} \right).$
-\end{itemize}
 
-\todo{finish inverse map}
+To show that this map is a bijection, we must find the inverse map, and show that it respects the equivalence classes that we have defined.
+We want a map
+\begin{align*}
+    (a, b, c) &= \left( \frac{l}{n}, \frac{2m}{n} + \Delta, \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right) \\
+    &\mapsto l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z 
+\end{align*}
+where $I = l\Z + \left( m + n \frac{\Delta + \sqrt\Delta}{2} \right) \Z$ is an ideal of $\order_\Delta$ - we showed the necesarry conditions for this in \Cref{lemma-lattice-divisibility-conditions}.
+Choosing $n = 1$ immediately satisfies the conditions $n | m$ and $n | l$, and it immediately forces $l = a$ and $m = \frac{b - \Delta}{2}$ (which is always an integer, as $b \equiv \Delta \pmod{4}$).
+
+Finally, $c = \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right)$ is an integer, which satisfies the final divisibility condition.
+This gives the inverse map
+$$(a, b, c) \mapsto a\Z + \left( \frac{b - \Delta}{2} + \frac{\Delta + \sqrt\Delta}{2} \right) \Z = \left\langle a, \frac{b + \sqrt\Delta}{2} \right\rangle.$$
+
+\todo{show that equivalent forms map to equivalent ideals}
 
 
 \pagebreak
