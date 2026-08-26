@@ -255,6 +255,15 @@ We will come to see that this classification is far more powerful than simply be
     and the only possible values for a perfect square modulo 4 are 1 and 0.
 \end{proof}
 
+\begin{lemma}\label{lemma-discriminant-under-multiple}
+    If the discriminant of the form $(a, b, c)$ is $\Delta$, then the discriminant of the form $(an, bn, cn)$ is $\Delta n^2$.
+\end{lemma}
+
+\begin{proof}
+    The discriminant of $(an, bn, cn)$ is given By
+    $$(bn)^2 - 4(an)(cn) = b^2n^2 - 4acn^2 = \Delta n^2.$$
+\end{proof}
+
 
 \section{Equivalence}\label{s-forms-eq}
 Given a form $f(x, y) = ax^2 + bxy + cy^2$, one can generate new forms which represent the same set of integers by changing the input space;
@@ -276,7 +285,7 @@ This is no longer a quadratic form, so this choice of $\phi$ should not be allow
 Instead, consider a function of the form $\phi(x, y) = (px+qy, rx+sy)$.
 This gives
 \begin{align*}
-    g(x, y) &= f \circ \phi(x, y) \\
+    &\hspace{-5mm} g(x, y) = f \circ \phi(x, y) \\
     &= f(px+qy, rx+sy) \\
     &= a(px+qy)^2 + b(px+qy)(rx+sy) + c(rx+sy)^2 \\
     &= \left[ap^2 + bpr + cr^2 \right] x^2
@@ -298,7 +307,6 @@ It is easy to see that this is an equivalence realtion.
 If we restrict the discriminant of the transformation to be strictly positive 1, we split the equivalence classes further-
 we call such forms \textbf{properly equivalent}, which is also an equivalence relation.
 
-\pagebreak
 Let us consider the effect of $\SL_2(\Z)$ transformations on forms;
 for $f \circ S = (c, -b, a)$, the discriminant is clearly unchanged.
 For $f \circ T = (a, 2a + b, a + b + c)$, we have
@@ -681,7 +689,7 @@ First, note that the discriminant of this form found in \eqref{eq-ideal-norm-for
     &= l^2(4m^2 + 4mn\Delta + n^2\Delta^2) - l^2(4m^2 + 4mn\Delta + n^2\Delta^2 - n^2\Delta) \\
     &= (ln)^2\Delta.
 \end{align*}
-By \todo{add theorem to discriminant section}, if we can divide the form by $ln$, we will arrive at a form of discriminant $\Delta$.
+By \Cref{lemma-discriminant-under-multiple}, if we can divide the form by $ln$, we will arrive at a form of discriminant $\Delta$.
 Since we have chosen $l, m, n$ such that $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$ is an ideal of $\order_\Delta$, there are certain divisibility conditions which will prove helpful.
 
 \vspace{2mm}
@@ -706,8 +714,7 @@ Since we have chosen $l, m, n$ such that $I = l\Z + \left( m + n\frac{\Delta + \
     First,
     \begin{align*}
         l \cdot \frac{\Delta + \sqrt\Delta}{2} &= \left( n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} \\
-        &= \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} - \frac{ml}{n} \\
-        &= \frac{m}{n}l + \frac{l}{n}\left( m + n\frac{\Delta + \sqrt\Delta}{2} \right).
+        &= - \frac{m}{n}l + \frac{l}{n}\left( m + n\frac{\Delta + \sqrt\Delta}{2} \right).
     \end{align*}
     Since $I$ is a free $\Q$-module, representation of elements as linear combinations of basis elements are unique.
     Since this is the only way to write the result as a combination of basis elements, for this to be in $I$ we require that the coefficients be integers.
