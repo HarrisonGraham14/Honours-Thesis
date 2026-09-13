@@ -1,0 +1,19 @@
+Historical questions:
+- Were Legendre and Gauss handling the indefinite case when they definied composition of forms?
+- When was the associated algebraic number theory developed? (good to mention in section 2.1)
+- Was algebraic number theory's development motivated by questions around forms, or was it independently discovered?
+
+Library of examples for testing theorems / results:
+- simple examples
+- Z[i]
+- non-PID
+- various lattices & ideals
+- class groups with elements of order
+    - 2
+    - 4
+    - coprime to 2
+
+Long-term / peace of mind:
+- brute force test theorems on suitable ranges of integers - in particular, those for lattices with l, m, n - Claude can help write code
+- check your algebra against computer algebra systems
+- list all variables and their usages to ensure consistency

@@ -17,6 +17,7 @@
 \usepackage[colorlinks=true,linkcolor=blue,draft=false]{hyperref}
 \usepackage[nameinlink]{cleveref}
 \usepackage[ruled,vlined]{algorithm2e}
+\usepackage{MnSymbol}
 
 \hypersetup{citecolor=[rgb]{0, 0.5, 0}}
 
@@ -219,7 +220,7 @@ These questions will not be our primary concern, but they will help to motivate 
 The form $x^2 + y^2$ clearly exclusively represents non-negative integers. 
 The same property holds for the previous example, $2x^2 + xy + 5y^2$, though this is harder to see.
 On the other hand, the form $x^2 - y^2$ clearly represents both positive and negative integers.
-A reasonable first step to understanding a form's representations is to classify whether they can be positive, negative, or both.
+A reasonable first step to understanding a form's representations is to classify whether they can represent positive, negative, or both positive and negative integers.
 To do this, let us consider a related continuous, real-valued function, 
 $$g(t) = at^2 + bt + c.$$
 Notice that
@@ -233,16 +234,17 @@ Now, the zeroes of $g(t)$ are given by
 $$t = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.$$
 If $b^2 -4ac$ is negative, then $g$ has no real zeroes, meaning that $g$ must be either positive everywhere or negative everywhere (except the origin).
 Since $f(x, y)$ agrees up with $g(\tfrac{x}{y})$ up to sign, then $f$ must also have a fixed sign for its entire range of outputs - except possibly when $y=0$.
-However, note that $f$ can be extended to a continuous function over $\R^2$ and that $f(x, 0) = x^2$, which can only be zero when $x$ is zero.
+However, note that $f$ can be extended to a continuous function over $\R^2$ and that $f(x, 0) = ax^2$, which can only be zero when $x$ is zero (since $a \neq 0$).
 Combining these facts, we can argue that the line $y=0$ must have the same sign as the rest of function, with the exception of the trivial zero.
 
-We call forms with $b^2 -4ac < 0$ \textbf{positive definite} and \textbf{negative definite}, depending on whether they output positive or negative values.
+We call forms with $b^2 -4ac < 0$ \textbf{positive definite} or \textbf{negative definite}, depending on whether they output positive or negative values.
 If $b^2 - 4ac$ is positive, then $g$ has two distinct real zeroes, so $g$ (and hence $f$) can be either positive or negative.
 Such forms are called \textbf{indefinite}.
-Similar reasoning shows that forms with $b^2 -4ac = 0$ are strictly non-negative or non-positive, but such forms are of little intereest.
+Similar reasoning shows that forms with $b^2 -4ac = 0$, called \textbf{degenerate forms}, are strictly non-negative or non-positive, but such forms are of little intereest.
 
-This motivates defining the \textbf{discriminant} of a form $ax^2 + bxy + cy^2$ to be $\Delta = b^2 - 4ac$.
-We will come to see that this classification is far more powerful than simply being able to classify forms as definite/indefinite.
+This motivates defining the \textbf{discriminant} of a form $ax^2 + bxy + cy^2$ to be 
+$$\Delta = b^2 - 4ac.$$
+We will come to see that this classification is far more powerful than simply being able to classify forms as definite or indefinite.
 
 \vspace{2mm}
 \begin{lemma}
@@ -256,12 +258,12 @@ We will come to see that this classification is far more powerful than simply be
 \end{proof}
 
 \begin{lemma}\label{lemma-discriminant-under-multiple}
-    If the discriminant of the form $(a, b, c)$ is $\Delta$, then the discriminant of the form $(an, bn, cn)$ is $\Delta n^2$.
+    If the discriminant of the form $(a, b, c)$ is $\Delta$, then the discriminant of the form $(ak, bk, ck)$ is $\Delta k^2$.
 \end{lemma}
 
 \begin{proof}
-    The discriminant of $(an, bn, cn)$ is given By
-    $$(bn)^2 - 4(an)(cn) = b^2n^2 - 4acn^2 = \Delta n^2.$$
+    The discriminant of $(ak, bk, ck)$ is given By
+    $$(bk)^2 - 4(ak)(ck) = b^2k^2 - 4ack^2 = \Delta k^2.$$
 \end{proof}
 
 
@@ -649,7 +651,7 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
     We can therefore see that the choice of $l$ is unique up to sign.
 
     Likewise, choose $m + n\frac{\Delta + \sqrt\Delta}{2} \in I$ such that $n > 0$ is minimum.
-    For any $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$ we must also have $n | y$, or else a linear combination of elements would yield a result whose coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ would be $\gcd(y, n)$, contradicting the choice of $n$.
+    For any $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$ we must also have $n \divides y$, or else a linear combination of elements would yield a result whose coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ would be $\gcd(y, n)$, contradicting the choice of $n$.
 
     Finally, we will show that our general element can be expressed as an element of $l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$.
     Letting $y = y_0 n$, we can write
@@ -682,7 +684,7 @@ This is a binary quadratic form.
 \pagebreak
 \section{Ideal Correspondence}\label{s-comp-ideals}
 We now seek to use the findings of \Cref{s-comp-algebraic} to develop a notion of equivalence between ideals of $\order_\Delta$ and binary quadratic forms of discriminant $\Delta$.
-First, note that the discriminant of this form found in \eqref{eq-ideal-norm-form} is given by
+First, note that the discriminant of the form found in \eqref{eq-ideal-norm-form} is given by
 \begin{align*}
     &\hspace{-5mm} [l(2m + n\Delta)]^2 - 4l^2\left[ m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4} \right] \\
     &= l^2(4m^2 + 4mn\Delta + n^2\Delta^2) - l^2(4m^2 + 4mn\Delta + n^2\Delta^2 - n^2\Delta) \\
@@ -697,15 +699,15 @@ Since we have chosen $l, m, n$ such that $I = l\Z + \left( m + n\frac{\Delta + \
     $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$
     is an ideal of $\order_\Delta$ if and only if the following conditions are met:
     \begin{enumerate}
-        \item $n | m$
-        \item $n | l$
-        \item $l | \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4}.$
+        \item $n \divides m$
+        \item $n \divides l$
+        \item $l \divides \left( \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4} \right).$
     \end{enumerate}
 \end{lemma}
 
 \begin{proof}
     First, we consider the necessary conditions for $I \trianglelefteq \order_\Delta$. 
-    For $I$ to be an ideal, it must be closed over addition and under multiplication by elements of $\order_\Delta$.
+    For $I$ to be an ideal, it must be closed under addition and under multiplication by elements of $\order_\Delta$.
     Closure under addition is obvious, since $I$ is a $\Z$-module.
     For closure under multiplication, we need only test the generators of $I$ multiplied by the generators of $\order_\Delta$, from which closure of all multiples can be inferred.
     The generators of $I$ are $l$ and $m + n\frac{\Delta + \sqrt\Delta}{2}$, and the generators of $\order_\Delta$ are $1$ and $\frac{\Delta + \sqrt\Delta}{2}$.
@@ -717,7 +719,7 @@ Since we have chosen $l, m, n$ such that $I = l\Z + \left( m + n\frac{\Delta + \
     \end{align*}
     Since $I$ is a free $\Q$-module, representation of elements as linear combinations of basis elements are unique.
     Since this is the only way to write the result as a combination of basis elements, for this to be in $I$ we require that the coefficients be integers.
-    Hence, we require $n | m$ and $n | l$.
+    Hence, we require $n \divides m$ and $n \divides l$.
 
     The other condition for closure under multiplication comes from
     \begin{align*}
@@ -730,7 +732,7 @@ Since we have chosen $l, m, n$ such that $I = l\Z + \left( m + n\frac{\Delta + \
         &= \left( \frac{m}{n} + \Delta \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - \frac{1}{l}\left( \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4} \right)l.
     \end{align*}
     Again, for this to be in $I$, we require the coefficients on the generators to be integers.
-    Hence we have the added condition $l | \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4}$.
+    Hence we have the added condition $l \divides \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4}$.
 
     To prove that these conditions are sufficient, suppose that we have chosen $l, m, n$ satisfying the divisibility conditions.
     We have already shown that these are the necessary conditions for $l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$ to satisty closure under multiplication by elements of $\order_\Delta$, so we are done.
@@ -764,7 +766,7 @@ We want a map
     &\mapsto l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z 
 \end{align*}
 where $I = l\Z + \left( m + n \frac{\Delta + \sqrt\Delta}{2} \right) \Z$ is an ideal of $\order_\Delta$ - we showed the necesarry conditions for this in \Cref{lemma-lattice-divisibility-conditions}.
-Choosing $n = 1$ immediately satisfies the conditions $n | m$ and $n | l$, and it immediately forces $l = a$ and $m = \frac{b - \Delta}{2}$ (which is always an integer, as $b \equiv \Delta \pmod{4}$).
+Choosing $n = 1$ immediately satisfies the conditions $n \divides m$ and $n \divides l$, and  forces $l = a$ and $m = \frac{b - \Delta}{2}$ (which is always an integer, as $b \equiv \Delta \pmod{4}$).
 
 Finally, $c = \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right)$ is an integer, which satisfies the final divisibility condition.
 This gives the inverse map
