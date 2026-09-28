@@ -17,7 +17,7 @@
 \usepackage[colorlinks=true,linkcolor=blue,draft=false]{hyperref}
 \usepackage[nameinlink]{cleveref}
 \usepackage[ruled,vlined]{algorithm2e}
-\usepackage{MnSymbol}
+% \usepackage{MnSymbol}
 
 \hypersetup{citecolor=[rgb]{0, 0.5, 0}}
 
@@ -40,6 +40,8 @@
 
 \newcommand{\GL}{\text{GL}} % General linear group
 \newcommand{\SL}{\text{SL}} % Special linear group
+
+\newcommand{\divides}{\mathrel{|}}
 
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
@@ -602,6 +604,7 @@ Here, we are working with the definition of a ring that requires the existence o
 Now, for $\Delta \equiv 0, 1 \pmod{4}$,
 Let $K_\Delta = \Q(\sqrt\Delta)$, and define the \textbf{order of discriminant} $\mathbf{\Delta}$ to be 
 $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
+\todo{note that this is the integral closure of the expected ring, $\Z(\Delta)$, cite a reference for further reading}
 
 \begin{lemma}
     $\order_\Delta$ is an order in $K_\Delta$.
@@ -624,10 +627,9 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
 \begin{lemma}\label{lemma-ideal-lattice}
     Any nonzero ideal $I \trianglelefteq \order_\Delta$ can be written in the form
     $$I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$$
-    where $l, m, n \in \Z$ and $l, n > 0$ are uniquely determined.
+    where $l, m, n \in \Z$, and $l, n \neq 0$.
 \end{lemma}
 
-\pagebreak
 \begin{proof}
     We will first show that $I$ contains at least one integer element, and at least one element with a nonzero $\sqrt\Delta$ component.
     Then, we choose $l, m$ and $n$ according to certain minimum conditions, and argue that their $\Z$-span is all of $I$, or else a contradiction would arise.
@@ -646,13 +648,13 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
     This is an integer, so there is at least one integer in $I$.
     Multiplying this by $\frac{\Delta + \sqrt\Delta}{2} \in \order_\Delta$, we see that there is at least one element in $I$ with a nonzero $\frac{\Delta + \sqrt\Delta}{2}$ component.
     
-    Now, choose $l$ to be the minimal positive integer in $I$.
-    Every integer $z \in I \cap \Z$ must ne a multiple of $l$, or else we would have $l > \gcd(l, z)$ --- a contradiction with the choice of $l$.
-    We can therefore see that the choice of $l$ is unique (up to sign, but we take $l$ to be positive).
+    Now, choose $l \in I \cap \Z$ such that $|l|$ is minimal.
+    Every integer $z \in I \cap \Z$ must be a multiple of $l$, or else we would have $l > \gcd(l, z)$ --- a contradiction with the choice of $l$.
+    Note that the choice of $l$ is unique (up to sign).
 
-    Likewise, choose $m + n\frac{\Delta + \sqrt\Delta}{2} \in I$ such that $n > 0$ is minimum.
+    Likewise, choose $m + n\frac{\Delta + \sqrt\Delta}{2} \in I$ such that $|n|$ is minimal.
     For any $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$ we must also have $n \divides y$, or else a linear combination of elements would yield a result whose coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ would be $\gcd(y, n)$, contradicting the choice of $n$.
-    This uniquely determines $n$ (again, up to sign, but we take $n > 0$).
+    Again, note that $n$ is uniquely determined (up to sign), but $m$ is not.
 
     Finally, we will show that our general element can be expressed as an element of $l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$.
     Letting $y = y_0 n$, we can write
@@ -665,10 +667,11 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
     Hence $x + \frac{\Delta + \sqrt\Delta}{2}y \in l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2})\Z$, so $I = l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2}\Z)$.
 \end{proof}
 
-\pagebreak
 \begin{remark}
-    We could also choose a canonical value of $m \in [0, l)$, by performing a change of basis, adding a multiple of $l$ to this second generator.
-    However, this would only create further work in later proofs when we'd have to ensure that $m$ is in this interval --- so we don't enforce this condition.
+    In the formulation of an ideal given above, requiring $l, n > 0$ uniquely determines $l$ and $n$.
+    However, for any choice of $m$, one could have also chosen $m + kl$ for any integer $k$.
+    To uniquely determine $m$, we require $0 \leq m < l$.
+    For now, we will take this to be the canonical representation of an ideal.
 \end{remark}
 
 \vspace{2mm}
@@ -726,15 +729,21 @@ $$N(I) = \left| R / I \right|.$$
 
 \begin{lemma}\label{lemma-ideal-norm}
     The norm of $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z \trianglelefteq \order_\Delta$ is given by
-    $$ N(I) = l \cdot n.$$
+    $$ N(I) = \left| l \cdot n \right| .$$
 \end{lemma}
 
 \begin{proof}
     Consider the elements of the quotient $\order_\Delta / I$.
     Claim that these are given by
     $$\order_\Delta / I = \left\{ x + \frac{\Delta + \sqrt\Delta}{2}y \mathrel{:} 0 \leq x < l, 0 \leq y < n \right\}.$$
-    To see that this is the correct formulation, consider a generic element $\order_\Delta$.
-    By subtracting multiples of $m + n\frac{\Delta + \sqrt\Delta}{2}$ and then multiples of $l$, we can uniquely determine representative for this element's class such that $0 \leq y < n$, and $0 \leq x < l$.
+    To see that this is the correct formulation, consider a generic element 
+    $$x + y\frac{\Delta + \sqrt\Delta}{2} \in \order_\Delta.$$
+    By first subtracting multiples of $m + n\frac{\Delta + \sqrt\Delta}{2}$, we can write
+    $$x + y\frac{\Delta + \sqrt\Delta}{2} \equiv x' + y'\frac{\Delta + \sqrt\Delta}{2} \rnote{0 \leq y' < n.}$$
+    Next, by subtracting multiples of $l$, we get
+    $$x + y\frac{\Delta + \sqrt\Delta}{2} \equiv x'' + y'\frac{\Delta + \sqrt\Delta}{2} \rnote{0 \leq x'' < l.}$$
+    So every element is represented by these classes.
+    None of these classes can be equal, since adding any multiple of $m + n\frac{\Delta + \sqrt\Delta}{2}$ would force the coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ to be outside of the allowed range, and hence adding any multiple of $l$ would force the integer part outside of the allowed range.
 \end{proof}
 
 Finally, we will define the norm of an element of a number field.
@@ -746,7 +755,8 @@ $$N(x + y\sqrt\Delta) = (x + y\sqrt\Delta) \cdot (x - y\sqrt\Delta) = x^2 - y^2\
 \pagebreak
 \section{Ideal Correspondence}\label{s-comp-ideals}
 We now seek to use the findings of \Cref{s-comp-algebraic} to develop a notion of equivalence between ideals of $\order_\Delta$ and binary quadratic forms of discriminant $\Delta$.
-To do this, consider the norm of a general element of $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z \trianglelefteq \order_\Delta$: 
+To do this, consider an ideal $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z \trianglelefteq \order_\Delta$, taking $l, n > 0$ and $0 \leq m < l$, so that this representation is canonical.
+The norm of a general element of $I$ is given by
 \begin{align*}
     &\hspace{-5mm} N\left(lx + \left(m + n\frac{\Delta + \sqrt\Delta}{2}\right)y\right)
     =  N \left( \left( lx + my + n\frac{\Delta}{2}y \right) + \frac{ny}{2}\sqrt\Delta \right) \\
@@ -763,11 +773,12 @@ The discriminant of this form is given by
 \end{align*}
 By \Cref{lemma-discriminant-under-multiple}, if we can divide the form by $ln = N(I)$, we will arrive at a form of discriminant $\Delta$.
 That is,
-$$\frac{N \left( lx + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) y \right)}{N \left( l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z \right)} = \frac{l}{n}x^2 + \left(\frac{2m}{n} + \Delta\right)xy + \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right)y^2.$$
+$$\frac{N \left( lx + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) y \right)}{N \left( I \right)} = \frac{l}{n}x^2 + \left(\frac{2m}{n} + \Delta\right)xy + \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right)y^2.$$
 The divisibility conditions of \Cref{lemma-lattice-divisibility-conditions} show each coefficient to be an integer, hence this is a binary quadratic form of discriminant $\Delta$.
-We can therefore define a map $\Theta$ that takes an ideal of $\order_\Delta$ to a corresponding form of discriminant $\Delta$:
+We can therefore define a function $\bar{\Theta}$ from ideals of $\order_\Delta$ to forms of discriminant $\Delta$:
 $$\Theta : l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z \longmapsto \left( \frac{l}{n}, \frac{2m}{n} + \Delta, \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right).$$
 
+\todo{move}
 Recall that for a given ideal, $l$ and $n$ are uniquely determined, but $m$ is only determined up to adding multiples of $l$.
 We must therefore consider what effect making different choices for $m$ has on the output of this map in order to ensure it is well defined.
 For our ideal $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z$, we can also write 
@@ -781,22 +792,49 @@ The map $\Theta$ sends this ideal to
 This is the same result as a $T^k$ transformation on the previous form.
 Hence we see that different choices of $m$ map to properly equivalent forms, so the map is well defined as a map into equivalence classes of forms.
 
-To establish a bijection between ideals and forms, this map must have an inverse.
-Note that an integer multiple of an ideal, $kI$, is sent to the same form as $I$, since $k$ distributes over $l, m, n$, which will then be canceled when computing the form.
-So for an inverse map to be well defined, we must consider equivalence classes of ideals which associate ideals that vary be integer multiples to the same class.
-In fact, we will see that the correct choice of equivalence classes is actually to associate ideals which vary by multiples of elements of $\Q(\sqrt\Delta)$ to the same class.
+\begin{theorem}
+    For an ideal $I$ with $\Z$-bases given by $\{ \alpha, \beta \}$ and $\{\alpha', \beta'\}$ such that 
+    $$\phi \cdot \bmat{a \\ b} = \bmat{a' \\ b'} \rnote{\theta \in \SL_2(\Z)}$$
+    we have a proper equivalence of forms
+    $$\frac{N(\alpha x + \beta y)}{N(I)} = \frac{N(\alpha' x + \beta' y)}{N(I)}.$$
+\end{theorem}
+
+\begin{proof}
+    \begin{align*}
+        N(\alpha' x + \beta' y) &= N \left( \bmat{\alpha' \\ \beta'} \cdot \bmat{x \\ y} \right) \\
+        &= N \left( \phi \bmat{\alpha \\ \beta} \cdot \bmat{x \\ y} \right) \\
+        &= N \left( \bmat{\alpha & \beta} \phi^T \bmat{x \\ y} \right) \\
+        &\simeq N(\alpha x + \beta y)
+    \end{align*}
+\end{proof}
+
+It is clear that an integer multiple of an ideal, $kI$, is sent to the same form as $I$.
+What happans when we multiply an ideal by an element of $\order_\Delta$ which is not necessarily an integer?
+Let $I$ be an ideal with a $\Z$-basis $\{\alpha, \beta\}$, and $\gamma \in \order_\Delta$.
+Then $\gamma I$ has a $\Z$-basis $\{\gamma\alpha, \gamma\beta\}$.
+The corresponding class of ideals ideal is given by
+$$\frac{N(\gamma\alpha x + \gamma\beta y)}{N(\gamma I)} = \frac{\gamma^2 N(\alpha x + \beta y)}{\gamma^2 N(I)} = \frac{N(\alpha x + \beta y)}{N(I)}$$
+\todo{argue why the basis for $\gamma I$ is $\SL_2(\Z)$ equivalent to the canonical basis} 
+So $\Theta$ sends $I$ and $\gamma I$ to equivalent ideals.
+To find an inverse map, $\Theta$ must be injective, so we must consider equivalence classes of ideals which differ by a constant multiple.
+However, note that a relation which associates ideals that by vary by constant factors in $\order_\Delta$ is not an equivalence relation, as it is not associative;
+this would give $I ~ 2I$ and $I ~ 3I$, but not $2I ~ 3I$, since $\frac{2}{3} \notin \order_\Delta$.
+To correct this, we say that ideals are equivalent if they vary by a constant factor in the field of fractions of $\order_\Delta$, which is $\Q(\sqrt\Delta)$.
+\todo{handle narrow equivalence}
+So we have shown that $\Theta$ is a function from narrow equivalence classes of ideals of $\order_\Delta$ to proper equivalence classes of forms of discriminant $\Delta$.
+
 Now, the inverse map must take the form
 \begin{align*}
-    \Theta^{-1} : (a, b, c) &= \left( \frac{l}{n}, \frac{2m}{n} + \Delta, \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right) \\
+    (a, b, c) &= \left( \frac{l}{n}, \frac{2m}{n} + \Delta, \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right) \\
     &\mapsto l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z 
 \end{align*}
 where $I = l\Z + \left( m + n \frac{\Delta + \sqrt\Delta}{2} \right) \Z$ is an ideal of $\order_\Delta$ - we showed the necesarry conditions for this in \Cref{lemma-lattice-divisibility-conditions}.
 Choosing $n = 1$ immediately satisfies the conditions $n \divides m$ and $n \divides l$, and  forces $l = a$ and $m = \frac{b - \Delta}{2}$ (which is always an integer, as $b \equiv \Delta \pmod{4}$).
 Finally, $c = \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right)$ is an integer, which satisfies the final divisibility condition.
 This gives the inverse map
-$$(a, b, c) \mapsto a\Z + \left( \frac{b - \Delta}{2} + \frac{\Delta + \sqrt\Delta}{2} \right) \Z = a\Z + \left( \frac{b + \sqrt\Delta}{2} \right) \Z.$$
-
-\todo{show that equivalent forms map to equivalent ideals}
+$$\Theta^{-1} : (a, b, c) \mapsto a\Z + \left( \frac{b - \Delta}{2} + \frac{\Delta + \sqrt\Delta}{2} \right) \Z = a\Z + \left( \frac{b + \sqrt\Delta}{2} \right) \Z.$$
+We must show that this is a well-defined function from proper equivalence classes of forms of discriminant $\Delta$ to narrow equivalence classes of ideals of $\order_\Delta$.
+\todo{show}
 
 
 \pagebreak
@@ -821,7 +859,7 @@ Which allows us to find an element of $I$ which satisfies this minimal condition
     &\hspace{-5mm} a\frac{b' + \sqrt\Delta}{2}u + a'\frac{b + \sqrt\Delta}{2}v + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}w \\
     &= \frac{ab'}{2}u + \frac{a'b}{2}v + \frac{bb' + \Delta}{4}w + n\frac{\sqrt\Delta}{2}
 \end{align*}
-\todo{find m closed form}
+\todo{find m closed form (should be the non-$n$ part above, despite n missing $\Delta/2$)}
 
 To find $l$, we use the fact that the norm of ideals is multiplicative \todo{cite source}.
 The norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, hence, the norm of $I$ must be $aa'$.
