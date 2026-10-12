@@ -43,7 +43,7 @@
 
 \newcommand{\divides}{\mathrel{|}}
 
-\newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+% \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 \newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
 
 \newcommand{\lnote}[1]{\llap{$#1$\hspace{0.75cm}}}
@@ -175,6 +175,7 @@ Developing a novel encryption method may be an interesting way to continue the n
 but whether this will be an appropriate use of time remains to be seen.
 
 
+
 %===============================================================================================================================%
 %                                                           CHAPTER 1                                                           %
 %===============================================================================================================================%
@@ -297,30 +298,38 @@ This gives
         + \left[ aq^2 + bqs + cs^2 \right] y^2
 \end{align*}
 which gives $g$ to be a binary quadratic form, as required. 
-We now require that $\phi$ is invertible, so that this is a symmetric relationship.
-Consider that $\phi$ can be understood as a matrix multiplication
+We require that $\phi$ is invertible, so that this is a symmetric relationship.
+Note that $\phi$ can be understood as a matrix multiplication
 $$\phi \left( \bmat{x \\ y} \right) = \bmat{p & q \\ r & s} \bmat{x \\ y}.$$
-So it is clear to see that the valid choices of $\phi$ are the invertible elements of $M_2(\Z)$. 
-These are the elements of $\GL_2(\Z)$, also known as the \textbf{unimodular} matrices (of size 2).
-The determinant of such a matrix will always be $\pm 1$ 
-(since the determinant is a result of sums and products of the integer coefficients, 
-and the product of determinants of a matrix and its inverse is 1).
+So it is clear to see that the valid choices of $\phi$ are the invertible elements of $M_2(\Z)$ --- that is, $\GL_2(\Z)$.
+These are the integer matrices with determinant $\pm 1$.
+We will often notate the action of $\phi \in GL_2(\Z)$ on a pair of integers
+$$\phi(x, y) = x_0, y_0 \hspace{5mm} \text{where} \hspace{5mm} \phi \bmat{x \\ y} = \bmat{x_0 \\ y_0}.$$
+We will also sometimes refer to the action of $\phi$ on a form, refering to the form applied to the transformed input coordinates 
+$$\phi(f(x, y)) = (f \circ \phi)(x, y) = f(\phi(x, y)).$$
 
 We define forms to be \textbf{improperly equivalent} if there is a $\GL_2(\Z)$ transformation between them.
 It is easy to see that this is an equivalence realtion.
-If we restrict the discriminant of the transformation to be strictly positive 1, we split the equivalence classes further-
+If we restrict the discriminant of the transformation to be strictly positive 1, we split the equivalence classes further ---
 we call such forms \textbf{properly equivalent}, which is also an equivalence relation.
+This is our standard equivalence for forms, we will write $f \sim g$ to denote $f$ being properly equivalent to $g$.
 
-Let us consider the effect of $\SL_2(\Z)$ transformations on forms;
-for $f \circ S = (c, -b, a)$, the discriminant is clearly unchanged.
-For $f \circ T = (a, 2a + b, a + b + c)$, we have
+Let us consider the effect of $\SL_2(\Z)$ transformations on forms.
+It is known \cite[\S\,2.4]{buchmann} that a basis for $\SL_2(\Z)$ is given by
+$$S = \bmat{ 0 & -1 \\ 1 & 0 }, \hspace{5mm} T = \bmat{ 1 & 1 \\ 0 & 1}.$$
+For $S$, we have
+$$S : (a, b, c) \longmapsto (c, -b, a).$$
+The discriminant is clearly unchanged by this transformation.
+For $T$, we have
+$$T : (a, b, c) \longmapsto (a, 2a + b, a + b + c).$$
+The discriminant of the resulting form is given by
 \begin{align*}
     \Delta &= (2a + b)^2 - 4a(a + b + c) \\
     &= 4a^2 - 4ab + b^2 - 4a^2 + 4ab - 4ac \\
     &= b^2 - 4ac.
 \end{align*}
 So the discriminant is also unchanged under the action of $T$.
-Hence we have
+Since all $SL_2(\Z)$ transformations are obtainable by composing $S$ and $T$, and the discriminant is invariant under each component transformation, we have
 
 \vspace{2mm}
 \begin{lemma}
@@ -339,7 +348,7 @@ Hence we have
 
     Suppose $f = (a, b, c)$ and $g = (a', b', c')$ are improperly equivalent forms.
     That is, we have some $\phi \in \GL_2(\Z)$ such that
-    $$f \circ \phi(x, y) = g(x, y).$$
+    $$(f \circ \phi)(x, y) = g(x, y).$$
     If $g$ represents $n$, then there exist integers $x_0, y_0 \in \Z$ such that
     \begin{align*}
         g(x_0, y_0) &= n \\
@@ -357,20 +366,20 @@ Now that we have an equivalence relation, we would like to be able to find a sui
 This will not only prove useful for simplifying computations by choosing a representative with small values of $a$, $b$, and $c$,
 but will also give us a method for checking whether two forms belong to the same class by evaluating and comparing their canonical representatives.
 
-A basis for $\SL_2(\Z)$ is given by
-$$S = \pmat{0 & -1 \\ 1 & 0}, \hspace{5mm} T = \pmat{1 & 1 \\ 0 & 1}.$$
+A basis for $\SL_2(\Z)$ is
+$$S = \bmat{0 & -1 \\ 1 & 0}, \hspace{5mm} T = \bmat{1 & 1 \\ 0 & 1}.$$
 Note that
-$$S^4 = I, \hspace{5mm} T^k = \pmat{1 & k \\ 0 & 1}.$$
+$$S^4 = I, \hspace{5mm} T^k = \bmat{1 & k \\ 0 & 1}.$$
 So we see that any properly equivalent forms must be related by some series of applications of $S$ and $T^k$.
 Let us observe the results of these transformations on a generic form $f(x, y) = (a, b, c)$
 \begin{align*}
-    f \circ S (x, y) &= f \circ \pmat{0 & -1 \\ 1 & 0} \pmat{x \\ y} \\
+    f \circ S (x, y) &= f \circ \bmat{0 & -1 \\ 1 & 0} \bmat{x \\ y} \\
     &= f(-y, x) \\
     &= a(-y)^2 + b(-y)x + cx^2 \\
     &= ay^2 - bxy + cx^2
 \end{align*}
 \begin{align*}
-    f \circ T^k (x, y) &= f \circ \pmat{1 & k \\ 0 & 1} \pmat{x \\ y} \\
+    f \circ T^k (x, y) &= f \circ \bmat{1 & k \\ 0 & 1} \bmat{x \\ y} \\
     &= f(x + ky, y) \\
     &= a(x + ky)^2 + b(x + ky)y + cy^2 \\
     &= a(x^2 + 2kxy + k^2y^2) + b(xy + ky^2) + cy^2 \\
@@ -438,7 +447,7 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
     To prove uniqueness, we adapt the proof of Cohen \cite[Prop.\,5.3.3]{cohen}.
     Suppose $f = (a, b, c)$ is a reduced form, and that $f' = (a', b', c')$ is another form, such that these forms are properly equivalent.
     That is, there exists a transformation 
-    $$\phi = \pmat{p & q \\ r & s} \in \SL_2(\Z).$$
+    $$\phi = \bmat{p & q \\ r & s} \in \SL_2(\Z).$$
     such that $f \circ \phi = f'$.
     We will show that if $f'$, then it must be equal to $f$.
 
@@ -454,8 +463,8 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
     Since $b$ is strictly greater than $-a$, equality can only hold when $pr = 0$.
     Simplifying this result yields
     \begin{align*}
-        a' &\geq a \left[ |p|^2 - |pr| + |r|^2 \right] \\
-        &= a \left[ (|p| - |r|)^2 + |pr| \right].
+        a' &\geq a \left( |p|^2 - |pr| + |r|^2 \right) \\
+        &= a \left( (|p| - |r|)^2 + |pr| \right).
     \end{align*}
     It's impossible for both $pr$ and $|p| - |r|$ to be zero, as this would require $p = r = 0$,
     which would cause the determinant of $\phi$ to be zero.
@@ -468,7 +477,7 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
     Now we must show that if $\phi$ fixes $a$, then the action of $\phi$ on $f$ is trivial.
     Recall that in order for the equality $a' = a$ to hold, we must have $pr = 0$.
     This gives
-    $$a' = a \left[ p^2 + r^2 \right]$$
+    $$a' = a \left( p^2 + r^2 \right)$$
     So we also require $p^2 + r^2 = 1$.
     This leaves us with two possible cases
     \begin{gather*}
@@ -480,9 +489,9 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
     $$1 = \text{det}(\phi) = ps - qr = \delta s$$
     which gives $s = \delta$.
     Hence we have
-    $$\phi = \pmat{\delta & q \\ 0 & \delta} = \pmat{\delta & 0 \\ 0 & \delta} T^q.$$
+    $$\phi = \bmat{\delta & q \\ 0 & \delta} = \bmat{\delta & 0 \\ 0 & \delta} T^q.$$
     Note the action of the matrix
-    $$\pmat{-1 & 0 \\ 0 & -1} : (a, b, c) \mapsto (a, b, c)$$
+    $$\bmat{-1 & 0 \\ 0 & -1} : (a, b, c) \mapsto (a, b, c)$$
     so $\phi$ has the same action as $T^q$. 
     Since this fixes $a$ and shifts $b$ by $2qa$, any choice for $q$ other than 0 (which gives the identity)
     shifts $b$ outside of the range $(-a, a]$, giving a form which is no longer reduced.
@@ -496,9 +505,9 @@ So we say that a positive definite form is \textbf{reduced} if it satisfies
     which gives $q = - \delta$.
     Hence we have
     \begin{align*}
-        \phi &= \pmat{0 & - \delta \\ \delta & s} \\ 
-        &= \pmat{0 & -1 \\ 1 & 0} \pmat{\delta & 0 \\ 0 & \delta} \pmat{1 & s \\ 0 & 1} \\
-        &= S \cdot \pmat{\delta & 0 \\ 0 & \delta} \cdot T^s.
+        \phi &= \bmat{0 & - \delta \\ \delta & s} \\ 
+        &= \bmat{0 & -1 \\ 1 & 0} \bmat{\delta & 0 \\ 0 & \delta} \bmat{1 & s \\ 0 & 1} \\
+        &= S \cdot \bmat{\delta & 0 \\ 0 & \delta} \cdot T^s.
     \end{align*}
     As before, we can ignore the action of the negative identity matrix.
     Hence we see that the action of $\phi$ is given by
@@ -565,7 +574,7 @@ under which the ideal multiplication structure gives a multiplicative structure 
 \vspace{2mm}
 \noindent
 Legendre was the first to develop a notion of composition, inspired by Lagrange's use of the identity
-$$(2x^2 + 2xy + 3y^2)(2z^2 + 2zw + 3w^2) = (2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2.$$
+$$(2x^2 + 2xy + 3y^2) \cdot (2z^2 + 2zw + 3w^2) = (2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2.$$
 We see that for any two numbers which can be represented by the form $(2, 2, 3)$, their product can be represented by the form $(1, 0, 5)$.
 That is, if we have representations of $n$ and $m$
 \begin{gather*}
@@ -577,20 +586,25 @@ $$(2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2 = nm.$$
 Legendre sought to generalise results of this kind.
 He defined a form $F$ to be the \textbf{composition} of $f$ and $g$ if there exist bilinear forms $B_1$ and $B_2$ such that
 \begin{gather*}
-    f(x, y)g(z, w) = F(B_1(x, y; z, w), B_2(x, y; z, w)) \\
+    f(x, y) \cdot g(z, w) = F(B_1(x, y; z, w), B_2(x, y; z, w)) \\
     B_i = a_i xz + b_i xw + c_i yz + d_i yw
 \end{gather*}
 Legendre was able to show that any two forms of the same discriminant can always be composed in this way, but his formulation was multi-valued, giving several options for the resulting form $F$.
-This was finally rectified by Gauss in his \emph{Disquisitiones Arithmaticae} \cite{gauss}, where he refined Legendre's formulation to turn composition of forms into a well-defined function.
+This was finally rectified by Gauss in 1801 in his \emph{Disquisitiones Arithmaticae} \cite{gauss}, where he refined Legendre's formulation to turn composition of forms into a well-defined function.
 This notion of composition gave a group structure to the set of proper equivalence classes of forms of a fixed discriminant.
 This group is called the \textbf{class group}.
 
-Due to the complexity of Gauss' methods, Dirichlet presented a simpler but less general approach to composition.
-We will acquire a similar formulation of composition in this chapter.
-However, as the theory of ideals developed, it became apparent that there exists a bijection between certain ideals of quadratic number fields and the class group of quadratic forms \cite[Ch.\,1]{buell}.
+As the theory of ideals developed, it became apparent that there exists a bijection between certain ideals of quadratic number fields and the class group of quadratic forms \cite[Ch.\,1]{buell}.
 This provides us a new and perhaps more intuitive way to derive composition of forms;
 we first outline this bijection in \Cref{s-comp-ideals}, then we can leverage the multiplicative structure of ideals to define an analogous operation on forms in \Cref{s-comp-formula}.
-We will then show that this operation precisely fits the desired definition of composition given by Legendre.
+
+Note that this means that we are taking a very different approach to deriving composition of forms than a historical development of the theory would describe.
+This has the possible effect of making the connection between forms and ideals seem fairly obvious, when in reality it is quite profound, and the derivations provided here can only exist in retrospect, as the proofs in this paper only make sense to persue when one already knows that a correspondence exists.
+With that said, we hope that the narrative taken here helps the reader to gain an intuitive, geometric understanding of the theory, which is largely missing from many textbooks \red{can I say that?}.
+
+\todo{show that this operation precisely fits the desired definition of composition given by Legendre?}.
+
+
 
 \section{Algebraic Number Theory Preliminaries}\label{s-comp-algebraic}
 For a finite field extension of the rational numbers, $K/\Q$, an \textbf{order} in $K$ is some $\order \subseteq K$ if \cite[Def.\,4.6.1]{cohen}
@@ -603,8 +617,15 @@ Here, we are working with the definition of a ring that requires the existence o
 
 Now, for $\Delta \equiv 0, 1 \pmod{4}$,
 Let $K_\Delta = \Q(\sqrt\Delta)$, and define the \textbf{order of discriminant} $\mathbf{\Delta}$ to be 
-$$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
-\todo{note that this is the integral closure of the expected ring, $\Z(\Delta)$, cite a reference for further reading}
+$$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z.$$
+One might expect an extension of the integers to take the form $\Z + \sqrt\Delta \Z$, but this ring is not ``integrally closed'' when $\Delta \equiv 1 \pmod{4}$.
+The integral closure of this ring is $\Z + \frac{1 + \sqrt\Delta}{2}\Z$ (see \red{ref} for further discussion on what integral closure is and why it is needed).
+The definition of $\order_\Delta$ given is equivalent to
+$$\order_\Delta = \begin{cases}
+    \Z + \sqrt\Delta \Z & \Delta \equiv 0 \pmod{4} \\
+    \Z + \frac{1 + \sqrt\Delta}{2} \Z & \Delta \equiv 1 \pmod{4}
+\end{cases}$$
+except the chosen definition avoids dealing with multiple cases.
 
 \begin{lemma}
     $\order_\Delta$ is an order in $K_\Delta$.
@@ -625,99 +646,91 @@ $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z$$
 \end{proof}
 
 \begin{lemma}\label{lemma-ideal-lattice}
-    Any nonzero ideal $I \trianglelefteq \order_\Delta$ can be written in the form
-    $$I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$$
-    where $l, m, n \in \Z$, and $l, n \neq 0$.
+    Any nonzero ideal $I \trianglelefteq \order_\Delta$ can be uniquely written in the form
+    $$I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$$
+    where $l, m, n$ are positive integers, $m \equiv n\Delta \pmod{2}$, and $0 \leq m < 2l$.
 \end{lemma}
 
 \begin{proof}
-    We will first show that $I$ contains at least one integer element, and at least one element with a nonzero $\sqrt\Delta$ component.
-    Then, we choose $l, m$ and $n$ according to certain minimum conditions, and argue that their $\Z$-span is all of $I$, or else a contradiction would arise.
-    
-    Consider a nonzero element $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$. 
-    The conjugate of this element is
-    $$x + \frac{\Delta - \sqrt\Delta}{2}y = x + y\Delta - \frac{\Delta + \sqrt\Delta}{2}y \in \order_\Delta.$$
-    Since $I$ is an ideal of $\order_\Delta$, multiplication by an element of $\order_\Delta$ must give a result which is still in $I$.
-    In particular, multiplying our element by its conjugate gives
+    First, let $l$ be the smallest positive integer in $\order_\Delta$.
+    We know that $\order_\Delta$ must contain at least one integer, since for any nonzero $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$, we have 
+    $$\order_\Delta \ni x + \Delta y - \frac{\Delta + \sqrt\Delta}{2}y = x + \frac{\Delta - \sqrt\Delta}{2}y.$$
+    And since $I$ is an ideal we have
     \begin{align*}
         I &\ni \left( x + \frac{\Delta + \sqrt\Delta}{2}y \right) \left( x + \frac{\Delta - \sqrt\Delta}{2}y \right) \\
         &= \left( x + \frac{\Delta}{2}y \right)^2 -  \left( \frac{\sqrt\Delta}{2}y \right)^2 \\
         &= x + \Delta xy + \frac{\Delta^2 y^2}{4} - \frac{\Delta y^2}{4} \\
-        &= x + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4}.
+        &= x + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4} \in \Z.
     \end{align*}
-    This is an integer, so there is at least one integer in $I$.
-    Multiplying this by $\frac{\Delta + \sqrt\Delta}{2} \in \order_\Delta$, we see that there is at least one element in $I$ with a nonzero $\frac{\Delta + \sqrt\Delta}{2}$ component.
-    
-    Now, choose $l \in I \cap \Z$ such that $|l|$ is minimal.
-    Every integer $z \in I \cap \Z$ must be a multiple of $l$, or else we would have $l > \gcd(l, z)$ --- a contradiction with the choice of $l$.
-    Note that the choice of $l$ is unique (up to sign).
-
-    Likewise, choose $m + n\frac{\Delta + \sqrt\Delta}{2} \in I$ such that $|n|$ is minimal.
-    For any $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$ we must also have $n \divides y$, or else a linear combination of elements would yield a result whose coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ would be $\gcd(y, n)$, contradicting the choice of $n$.
-    Again, note that $n$ is uniquely determined (up to sign), but $m$ is not.
-
-    Finally, we will show that our general element can be expressed as an element of $l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$.
-    Letting $y = y_0 n$, we can write
+    So $I$ has at least one integer, and we can choose $l$ as required.
+    Likewise, choose $n$ to be the minimal positive integer such that $x + \frac{\Delta + \sqrt\Delta}{2}n \in I$.
+    Since $I$ is closed under addition, we can add multiples of $l$ to this element while staying in $I$.
+    For an integer $k$, we have
+    $$I \ni kl + x + \frac{\Delta + \sqrt\Delta}{2}n = \frac{(2kl + 2x n\Delta) + n\sqrt\Delta}{2}.$$
+    We can choose $k$ so that
+    $$0 \leq 2kl + 2x + n\Delta < 2l.$$
+    Set $m = 2kl + 2x + n\Delta$, noting that $m \equiv n\Delta \pmod{2}$.
+    Then we have
+    $$\frac{m + n\sqrt\Delta}{2} \in I.$$
+    Clearly $l\Z + \frac{m + n\sqrt\Delta}{2}\Z \subseteq I$, so we must show the reverse inclusion.
+    Consider a general element $z = x + \frac{\Delta + \sqrt\Delta}{2}y \in I$. 
+    Note that $n \divides y$, or else by adding multiples of $\frac{m + n\sqrt\Delta}{2}$ to $z$, we can reach an element with a positive coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ that is smaller than $n$, contradicting the choice of $n$.
+    Hence, letting $y = y_0 n$, we have
     \begin{align*}
-        x + \frac{\Delta + \sqrt\Delta}{2}y &= x - y_0 m + y_0 m + \frac{\Delta + \sqrt\Delta}{2}y_0 n \\
-        &= x - y_0 m + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) y_0.
+        z &= x + \frac{n\Delta + n\sqrt\Delta}{2}y_0 \\
+        &= x + \frac{n\Delta - m}{2}y_0 + \frac{m + n\sqrt\Delta}{2}y_0
     \end{align*}
-    Now, $(m + n\frac{\Delta + \sqrt\Delta}{2}) y_0 \in I$, so by closure under addition, $x - y_0 m$ must also be in $I$.
-    This is an integer, so it can be written as a multiple of $l$.
-    Hence $x + \frac{\Delta + \sqrt\Delta}{2}y \in l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2})\Z$, so $I = l\Z + (m + n\frac{\Delta + \sqrt\Delta}{2}\Z)$.
+    Now, we can subtract multiples of $\frac{m + n\sqrt\Delta}{2}$ to get $x + \frac{n\Delta - m}{2}y_0 \in I$. 
+    This is an integer, since $m \equiv n\Delta \pmod{2}$, so it must be divisible by $l$, or else we could add a multiple of $l$ to get a positive integer smaller than $l$, a contradiction with the choice of $l$.
+    Hence, letting $x + \frac{n\Delta - my_0}{2} = lx_0$, we have
+    $$z = lx_0 + \frac{m + n\sqrt\Delta}{2}y_0 \in l\Z + \frac{m + n\sqrt\Delta}{2}\Z.$$
+    This gives $I \subseteq l\Z + \frac{m + n\sqrt\Delta}{2}\Z$, so the result is proved.
 \end{proof}
-
-\begin{remark}
-    In the formulation of an ideal given above, requiring $l, n > 0$ uniquely determines $l$ and $n$.
-    However, for any choice of $m$, one could have also chosen $m + kl$ for any integer $k$.
-    To uniquely determine $m$, we require $0 \leq m < l$.
-    For now, we will take this to be the canonical representation of an ideal.
-\end{remark}
 
 \vspace{2mm}
 \begin{lemma}\label{lemma-lattice-divisibility-conditions}
     The $\Z$-module
-    $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$
+    $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$
     is an ideal of $\order_\Delta$ if and only if the following conditions are met:
     \begin{enumerate}
         \item $n \divides m$
+        \item $\frac{m}{n} \equiv \Delta \pmod{2}$
         \item $n \divides l$
-        \item $l \divides \left( \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4} \right).$
+        \item $4ln \divides (m^2 - n^2)\Delta.$
     \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-    First, suppose that $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$ is an ideal of $\order_\Delta$.
+    First, suppose that $I = l\Z + \frac{m + n\sqrt\Delta}{2} \Z$ is an ideal of $\order_\Delta$.
     This means that $I$ is closed under multiplication by elements of $\order_\Delta$.
     In particular,
-    $$l \cdot \frac{\Delta + \sqrt\Delta}{2}, \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \frac{\Delta + \sqrt\Delta}{2} \in I.$$
-    Firstly,
     \begin{align*}
         l \cdot \frac{\Delta + \sqrt\Delta}{2} &= \left( n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{l}{n} \\
-        &= - \frac{m}{n}l + \frac{l}{n}\left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \in I.
+        &= \left( \frac{n\Delta - m}{2} + \frac{m + n\sqrt\Delta}{2} \right) \frac{l}{n} \\
+        &= l \cdot \frac{\Delta - m/n}{2} + \frac{m + n\sqrt\Delta}{2} \cdot \frac{l}{n} \in I.
     \end{align*}
-    Since $I$ is a free $\Q$-module, representation of elements as linear combinations of basis elements are unique.
-    Hence, for this to be in $I$ we require that the coefficients, $-\frac{m}{n}$ and $\frac{l}{n}$, be integers.
-    Hence, we require $n \divides m$ and $n \divides l$. Secondly, we have
-    \begin{align*}
-        &\hspace{-5mm} \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \cdot \frac{\Delta + \sqrt\Delta}{2} \\
-        &= m \frac{\Delta + \sqrt\Delta}{2} + n \frac{\Delta^2 + 2\Delta\sqrt\Delta + \Delta}{4} \\
-        &= m \frac{\Delta + \sqrt\Delta}{2} + n \Delta \frac{\sqrt\Delta}{2} + n \frac{\Delta^2 + \Delta}{4} \\
-        &= (m + n\Delta)\frac{\Delta + \sqrt\Delta}{2} - n \frac{\Delta^2}{2} + n \frac{\Delta^2 + \Delta}{4} \\
-        &= n\left( \frac{m + n\Delta}{n} \right)\frac{\Delta + \sqrt\Delta}{2} + n \frac{\Delta - \Delta^2}{4} \\
-        &= \left( \frac{m + n\Delta}{n} \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - m(\frac{m + n\Delta}{n}) + n \frac{\Delta - \Delta^2}{4} \\
-        &= \left( \frac{m}{n} + \Delta \right) \left(m + n\frac{\Delta + \sqrt\Delta}{2} \right) - \frac{1}{l}\left( \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4} \right)l.
-    \end{align*}
-    Again, for this to be in $I$, we require the coefficients to be integers.
-    Hence we have the added condition $l \divides \frac{m^2}{n} + m\Delta + n \frac{\Delta - \Delta^2}{4}$.
+    It is clear that $\{l, \frac{m + n\sqrt\Delta}{2} \}$ forms a $\Q$-basis for $\Q(\sqrt\Delta)$, so representation of elements of $\Q(\sqrt\Delta)$ as linear combinations of these basis elements are unique.
+    And we know that if an element is in $I$, it has a representation where the coefficients of these elements are integers - by uniqueness of representation, this is the only choice of coefficients for such an element.
+    Hence, we require that the coefficients, $\frac{\Delta - m/n}{2}$ and $\frac{l}{n}$, be integers.
+    This immediately implies conditions 1--3.
 
-    Conversely, let $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z$ satisfy the given divisibility conditions.
-    $I$ is a commutative $\Z$-module, so it is closed under addition and under multiplication by integers.
-    By the calculations above, we see that the given divisibility conditions are sufficient for $l$ and $m + n\frac{\Delta + \sqrt\Delta}{2}$ to remain in $I$ when multiplied by $\frac{\Delta + \sqrt\Delta}{2}$.
+    Closure of $I$ under multiples from $\order_\Delta$ also gives
+    \begin{align*}
+        \frac{m + n\sqrt\Delta}{2} \cdot \frac{\Delta + \sqrt\Delta}{2}
+        &= \frac{m\Delta + n\Delta}{4} + \frac{(m/n + \Delta)n\sqrt\Delta}{4} \\
+        &= \frac{m\Delta + n\Delta}{4} + \frac{(m + n\sqrt\Delta)(m/n + \Delta)}{4} - \frac{m(m/n + \Delta)}{4} \\
+        &= \frac{n\Delta - m^2/n}{4} + \frac{m + n\sqrt\Delta}{2} \frac{m/n + \Delta}{2} \\
+        &= l \cdot - \frac{m^2 - n^2\Delta}{4ln} + \frac{m + n\sqrt\Delta}{2} \cdot \frac{m/n + \Delta}{2}
+    \end{align*}
+    Again, we require the coefficients to be integers, which gives condition 4.
+
+    Conversely, let $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$ satisfy conditions 1--4.
+    $I$ is a $\Z$-module, so it is closed under addition and under multiplication by integers.
+    By the calculations above, we see that the given divisibility conditions are sufficient for $l$ and $\frac{m + n\sqrt\Delta}{2}$ to remain in $I$ when multiplied by $\frac{\Delta + \sqrt\Delta}{2}$.
     Hence, a generic product of elements in $I$ and $\order_\Delta$ is
     \begin{align*}
-        &\hspace{-5mm} \left[ lx + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)y \right] \cdot \left( x' + \frac{\Delta + \sqrt\Delta}{2} y' \right) \rnote{x, x', y, y' \in \Z} \\
-        &= lxx' + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) yx' + l \frac{\Delta + \sqrt\Delta}{2} xy' + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \frac{\Delta + \sqrt\Delta}{2} yy'.
+        &\hspace{-5mm} \left( lx + \frac{m + n\sqrt\Delta}{2}y \right) \cdot \left( x' + \frac{\Delta + \sqrt\Delta}{2} y' \right) \rnote{x, x', y, y' \in \Z} \\
+        &= lxx' + \frac{m + n\sqrt\Delta}{2} yx' + l \frac{\Delta + \sqrt\Delta}{2} xy' + \frac{m + n\sqrt\Delta}{2} \frac{\Delta + \sqrt\Delta}{2} yy'.
     \end{align*}
     Each term is in $I$, so their sum is in $I$. 
     Hence, $I$ is an ideal of $\order_\Delta$.
@@ -728,7 +741,7 @@ For an ideal $I$ of a ring $R$, the \textbf{norm} is defined as
 $$N(I) = \left| R / I \right|.$$
 
 \begin{lemma}\label{lemma-ideal-norm}
-    The norm of $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z \trianglelefteq \order_\Delta$ is given by
+    The norm of $I = l\Z + \frac{m + n\sqrt\Delta}{2} \Z \trianglelefteq \order_\Delta$ is given by
     $$ N(I) = \left| l \cdot n \right| .$$
 \end{lemma}
 
@@ -737,13 +750,13 @@ $$N(I) = \left| R / I \right|.$$
     Claim that these are given by
     $$\order_\Delta / I = \left\{ x + \frac{\Delta + \sqrt\Delta}{2}y \mathrel{:} 0 \leq x < l, 0 \leq y < n \right\}.$$
     To see that this is the correct formulation, consider a generic element 
-    $$x + y\frac{\Delta + \sqrt\Delta}{2} \in \order_\Delta.$$
-    By first subtracting multiples of $m + n\frac{\Delta + \sqrt\Delta}{2}$, we can write
-    $$x + y\frac{\Delta + \sqrt\Delta}{2} \equiv x' + y'\frac{\Delta + \sqrt\Delta}{2} \rnote{0 \leq y' < n.}$$
+    $$z = x + \frac{\Delta + \sqrt\Delta}{2}y \in \order_\Delta.$$
+    By first subtracting multiples of $\frac{m + n\sqrt\Delta}{2}$, we can write
+    $$z \sim x' + \frac{\Delta + \sqrt\Delta}{2}y' \rnote{0 \leq y' < n.}$$
     Next, by subtracting multiples of $l$, we get
-    $$x + y\frac{\Delta + \sqrt\Delta}{2} \equiv x'' + y'\frac{\Delta + \sqrt\Delta}{2} \rnote{0 \leq x'' < l.}$$
-    So every element is represented by these classes.
-    None of these classes can be equal, since adding any multiple of $m + n\frac{\Delta + \sqrt\Delta}{2}$ would force the coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ to be outside of the allowed range, and hence adding any multiple of $l$ would force the integer part outside of the allowed range.
+    $$z \sim x'' + y'\frac{\Delta + \sqrt\Delta}{2} \rnote{0 \leq x'' < l.}$$
+    So every element is represented by the given classes.
+    None of these classes can be equal, since adding any multiple of $l$ would force the integer part outside of the allowed range, which cannot be rectified by adding a multiple of $\frac{m + n\sqrt\Delta}{2}$, or else the coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ would be forced outside of the allowed range.
 \end{proof}
 
 Finally, we will define the norm of an element of a number field.
@@ -755,30 +768,35 @@ $$N(x + y\sqrt\Delta) = (x + y\sqrt\Delta) \cdot (x - y\sqrt\Delta) = x^2 - y^2\
 \pagebreak
 \section{Ideal Correspondence}\label{s-comp-ideals}
 We now seek to use the findings of \Cref{s-comp-algebraic} to develop a notion of equivalence between ideals of $\order_\Delta$ and binary quadratic forms of discriminant $\Delta$.
-To do this, consider an ideal $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right)\Z \trianglelefteq \order_\Delta$, taking $l, n > 0$ and $0 \leq m < l$, so that this representation is canonical.
+To do this, consider an ideal $I = l\Z + \frac{m + n\Delta}{2}\Z \trianglelefteq \order_\Delta$, where $l, n > 0$ and $0 \leq m < 2l$.
 The norm of a general element of $I$ is given by
 \begin{align*}
-    &\hspace{-5mm} N\left(lx + \left(m + n\frac{\Delta + \sqrt\Delta}{2}\right)y\right)
-    =  N \left( \left( lx + my + n\frac{\Delta}{2}y \right) + \frac{ny}{2}\sqrt\Delta \right) \\
-    &= \left( lx + my + n\frac{\Delta}{2}y \right)^2 - \left(\frac{ny}{2} \right)^2 \Delta \\
-    &= l^2x^2 + m^2y^2 + n^2\frac{\Delta^2}{4}y^2 + 2lmxy + ln\Delta xy + mn\Delta y^2 - n^2\frac{\Delta}{4}y^2 \\
-    &= l^2x^2 + l(2m + n\Delta)xy + \left(m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4}\right)y^2. \stepcounter{equation}\tag{\theequation}\label{eq-ideal-norm-form}
+    \hspace{-5mm} N\left(lx + \frac{m + n\sqrt\Delta}{2}y\right)
+    &= \left( lx + \frac{m}{2}y \right)^2 - \left(\frac{n\sqrt\Delta y}{2} \right)^2  \\
+    &= l^2x^2 + lmxy + \frac{m^2 - n^2\Delta}{4}y^2 
+    \stepcounter{equation}\tag{\theequation}\label{eq-ideal-norm-form}
 \end{align*}
 This is a binary quadratic form.
 The discriminant of this form is given by
-\begin{align*}
-    &\hspace{-5mm} [l(2m + n\Delta)]^2 - 4l^2\left[ m^2 + mn\Delta + n^2\frac{\Delta^2 - \Delta}{4} \right] \\
-    &= l^2(4m^2 + 4mn\Delta + n^2\Delta^2) - l^2(4m^2 + 4mn\Delta + n^2\Delta^2 - n^2\Delta) \\
-    &= (ln)^2\Delta.
-\end{align*}
-By \Cref{lemma-discriminant-under-multiple}, if we can divide the form by $ln = N(I)$, we will arrive at a form of discriminant $\Delta$.
+$$(lm)^2 - 4 \cdot l^2 \cdot \frac{m^2 - n^2\Delta}{4} = (ln)^2\Delta.$$
+By \Cref{lemma-discriminant-under-multiple}, if we can divide the form by $N(I) = ln$, we will arrive at a form of discriminant $\Delta$.
 That is,
-$$\frac{N \left( lx + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) y \right)}{N \left( I \right)} = \frac{l}{n}x^2 + \left(\frac{2m}{n} + \Delta\right)xy + \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right)y^2.$$
+$$\frac{N \left( lx + \frac{m + n\sqrt\Delta}{2}y \right)}{N \left( I \right)} = \frac{l}{n}x^2 + \frac{m}{n}xy + \frac{m^2 - n^2\Delta}{4ln}y^2.$$
 The divisibility conditions of \Cref{lemma-lattice-divisibility-conditions} show each coefficient to be an integer, hence this is a binary quadratic form of discriminant $\Delta$.
 We can therefore define a function $\bar{\Theta}$ from ideals of $\order_\Delta$ to forms of discriminant $\Delta$:
-$$\Theta : l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z \longmapsto \left( \frac{l}{n}, \frac{2m}{n} + \Delta, \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right).$$
+$$\bar{\Theta} : l\Z + \frac{m + n\sqrt\Delta}{2}\Z \longmapsto \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right).$$
+We want a map which is invertible, so that we can take forms to corresponding ideals, multiply the ideals, then transform the resulting ideal back into a form, inducing a binary operation on forms.
+To achieve this, we simply quotient the domain and codomain into equivalence classes such that the function has a well-defined inverse.
+Defining ideals of $\order_\Delta$ to be \textbf{narrowly equivalent} if they vary by a scalar multiple in $\Q(\Delta)$ with positive norm, we have
+\begin{theorem}
+    The map
+    $$\Theta : l\Z + \frac{m + n\sqrt\Delta}{2}\Z \longmapsto \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right)$$
+    is a bijection between narrow equivalence classes of ideals of $\order_\Delta$ and proper equivalence classes of forms of discriminant $\Delta$.
+\end{theorem}
+The choice of the definition of narrow equivalence may seem arbitrary, we will spend the remainder of this section showing how this is motivated, and how it geometrically aligns with proper equivalence of forms.
 
-\todo{move}
+\pagebreak
+\todo{reorganise}
 Recall that for a given ideal, $l$ and $n$ are uniquely determined, but $m$ is only determined up to adding multiples of $l$.
 We must therefore consider what effect making different choices for $m$ has on the output of this map in order to ensure it is well defined.
 For our ideal $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z$, we can also write 
@@ -848,26 +866,29 @@ These correspond to ideals of $\mathcal{O}_\Delta$
 $$I_f = a\Z + \frac{b + \sqrt\Delta}{2}\Z, \hspace{5mm} I_g = a'\Z + \frac{b' + \sqrt\Delta}{2}\Z.$$
 The product of these ideals is given by
 $$I = I_f \cdot I_g = aa'\Z + a\frac{b' + \sqrt\Delta}{2}\Z + a'\frac{b + \sqrt\Delta}{2}\Z + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}\Z.$$
-By \Cref{lemma-ideal-lattice}, we can express this product in the form $l\Z + \left(m + n\frac{\Delta + \sqrt\Delta}{2}\right)\Z$. 
-We know that $n$ is the minimal positive coefficient of $m + n\frac{\Delta + \sqrt\Delta}{2}$ among elements of $I$, which can also be thought of as the coefficient of $\frac{\sqrt\Delta}{2}$.
-So we must have
+By \Cref{lemma-ideal-lattice}, we can express this product in the form $l\Z + \frac{m + n\sqrt\Delta}{2}\Z$. 
+We know that $n$ is the minimal positive coefficient of $\frac{\sqrt\Delta}{2}$ among elements of $I$, so we have
 $$n = \gcd\left(a, a', \frac{b+b'}{2}\right).$$
 Hence, we can choose $u, v, w \in \Z$ such that
 $$au + a'v + \frac{b+b'}{2}w = n.$$
-Which allows us to find an element of $I$ which satisfies this minimal condition:
+These allow us to find an element of $I$ which satisfies the minimal condition on $n$:
 \begin{align*}
     &\hspace{-5mm} a\frac{b' + \sqrt\Delta}{2}u + a'\frac{b + \sqrt\Delta}{2}v + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}w \\
-    &= \frac{ab'}{2}u + \frac{a'b}{2}v + \frac{bb' + \Delta}{4}w + n\frac{\sqrt\Delta}{2}
+    &= \frac{ab'u + a'bv + \frac{bb' + \Delta}{2}w + n\sqrt\Delta}{2}
 \end{align*}
-\todo{find m closed form (should be the non-$n$ part above, despite n missing $\Delta/2$)}
+Hence,
+$$m = ab'u + a'bv + \frac{bb' + \Delta}{2}w.$$
+Note that this isn't necessarily our canonial choice for $m$, since we haven't added a multiple of $l$ to enforce $0 \leq m < 2l$, but the ideal is unchanged by this choice.
 
-To find $l$, we use the fact that the norm of ideals is multiplicative \todo{cite source}.
+To find $l$, we use the fact that norms of ideals are multiplicative (\red{cite}).
 The norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, hence, the norm of $I$ must be $aa'$.
 But by \Cref{lemma-ideal-norm}, we have
 \begin{gather*}
     aa' = N(I) = ln \\
     \implies l = \frac{aa'}{n}
 \end{gather*}
+Hence, with the given choices of $m$ and $n$, the form corresponding to the resulting ideal is
+$$(a, b, c) \cdot (a', b', c') = \left( \frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'} \right).$$
 
 
 \pagebreak
