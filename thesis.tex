@@ -607,7 +607,7 @@ With that said, we hope that the narrative taken here helps the reader to gain a
 
 
 \section{Algebraic Number Theory Preliminaries}\label{s-comp-algebraic}
-For a finite field extension of the rational numbers, $K/\Q$, an \textbf{order} in $K$ is some $\order \subseteq K$ if \cite[Def.\,4.6.1]{cohen}
+For a finite field extension of the rational numbers, $K/\Q$, an \textbf{order} in $K$ is some subset $\order \subseteq K$ such that \cite[Def.\,4.6.1]{cohen}
 \begin{itemize}
     \item $\order$ is a subring of $K$
     \item $\order$ is a finitely generated $\Z$-module
@@ -615,8 +615,7 @@ For a finite field extension of the rational numbers, $K/\Q$, an \textbf{order} 
 \end{itemize}
 Here, we are working with the definition of a ring that requires the existence of a multiplicative identity.
 
-Now, for $\Delta \equiv 0, 1 \pmod{4}$,
-Let $K_\Delta = \Q(\sqrt\Delta)$, and define the \textbf{order of discriminant} $\mathbf{\Delta}$ to be 
+Now, for $\Delta \equiv 0, 1 \pmod{4}$ where $\Delta$ is not a perfect square, let $K_\Delta = \Q(\sqrt\Delta)$, and define the \textbf{order of discriminant} $\mathbf{\Delta}$ to be 
 $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z.$$
 One might expect an extension of the integers to take the form $\Z + \sqrt\Delta \Z$, but this ring is not ``integrally closed'' when $\Delta \equiv 1 \pmod{4}$.
 The integral closure of this ring is $\Z + \frac{1 + \sqrt\Delta}{2}\Z$ (see \red{ref} for further discussion on what integral closure is and why it is needed).
@@ -696,7 +695,7 @@ except the chosen definition avoids dealing with multiple cases.
         \item $n \divides m$
         \item $\frac{m}{n} \equiv \Delta \pmod{2}$
         \item $n \divides l$
-        \item $4ln \divides (m^2 - n^2)\Delta.$
+        \item $4ln \divides (m^2 - n^2\Delta).$
     \end{enumerate}
 \end{lemma}
 
@@ -710,7 +709,7 @@ except the chosen definition avoids dealing with multiple cases.
         &= l \cdot \frac{\Delta - m/n}{2} + \frac{m + n\sqrt\Delta}{2} \cdot \frac{l}{n} \in I.
     \end{align*}
     It is clear that $\{l, \frac{m + n\sqrt\Delta}{2} \}$ forms a $\Q$-basis for $\Q(\sqrt\Delta)$, so representation of elements of $\Q(\sqrt\Delta)$ as linear combinations of these basis elements are unique.
-    And we know that if an element is in $I$, it has a representation where the coefficients of these elements are integers - by uniqueness of representation, this is the only choice of coefficients for such an element.
+    We also know that if an element is in $I$, it has a representation where the coefficients of these elements are integers --- by uniqueness of representation, this is the only choice of coefficients for such an element.
     Hence, we require that the coefficients, $\frac{\Delta - m/n}{2}$ and $\frac{l}{n}$, be integers.
     This immediately implies conditions 1--3.
 
@@ -725,7 +724,7 @@ except the chosen definition avoids dealing with multiple cases.
     Again, we require the coefficients to be integers, which gives condition 4.
 
     Conversely, let $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$ satisfy conditions 1--4.
-    $I$ is a $\Z$-module, so it is closed under addition and under multiplication by integers.
+    Since $I$ is a $\Z$-module, it is closed under addition and under multiplication by integers.
     By the calculations above, we see that the given divisibility conditions are sufficient for $l$ and $\frac{m + n\sqrt\Delta}{2}$ to remain in $I$ when multiplied by $\frac{\Delta + \sqrt\Delta}{2}$.
     Hence, a generic product of elements in $I$ and $\order_\Delta$ is
     \begin{align*}
@@ -737,18 +736,18 @@ except the chosen definition avoids dealing with multiple cases.
 \end{proof}
 
 We also need to define the norm of an ideal.
-For an ideal $I$ of a ring $R$, the \textbf{norm} is defined as
+For a nonzero ideal $I \trianglelefteq \order_\Delta$, the \textbf{norm} is defined as
 $$N(I) = \left| R / I \right|.$$
 
 \begin{lemma}\label{lemma-ideal-norm}
     The norm of $I = l\Z + \frac{m + n\sqrt\Delta}{2} \Z \trianglelefteq \order_\Delta$ is given by
-    $$ N(I) = \left| l \cdot n \right| .$$
+    $$ N(I) = ln .$$
 \end{lemma}
 
 \begin{proof}
     Consider the elements of the quotient $\order_\Delta / I$.
     Claim that these are given by
-    $$\order_\Delta / I = \left\{ x + \frac{\Delta + \sqrt\Delta}{2}y \mathrel{:} 0 \leq x < l, 0 \leq y < n \right\}.$$
+    $$\order_\Delta / I = \left\{ x + \frac{\Delta + \sqrt\Delta}{2}y \mathrel{:} 0 \leq x < l, \hspace{2mm} 0 \leq y < n \right\}.$$
     To see that this is the correct formulation, consider a generic element 
     $$z = x + \frac{\Delta + \sqrt\Delta}{2}y \in \order_\Delta.$$
     By first subtracting multiples of $\frac{m + n\sqrt\Delta}{2}$, we can write
@@ -763,6 +762,17 @@ Finally, we will define the norm of an element of a number field.
 This can be defined more generally for larger fields \todo{cite definition}, but for our purposes, we will only handle the quadratic case.
 For any quadratic number field $K$ (that is, $K = \Q(\sqrt{\Delta})$ where $\Delta$ is not a perfect square), the \textbf{norm of an element} $x + y\sqrt\Delta \in K$ (where $x, y \in \Q$) is given by \cite[Ch.\,6.2]{buell}
 $$N(x + y\sqrt\Delta) = (x + y\sqrt\Delta) \cdot (x - y\sqrt\Delta) = x^2 - y^2\Delta.$$
+This can be positive or negative, or zero only if $x = y = 0$ (since $\Delta$ is not a perfect square).
+
+\begin{remark}
+    For some $z  \in \order_\Delta$, we have
+    $$N(\langle z \rangle) = \left| N(z) \right|.$$
+\end{remark}
+
+\begin{proof}
+    Let $z = x + y \frac{\Delta + \sqrt\Delta}{2}$.
+    \todo{finish}
+\end{proof}
 
 
 \pagebreak
@@ -861,34 +871,52 @@ We must show that this is a well-defined function from proper equivalence classe
 
 Having seen that forms of the same discriminant correspond to ideals of the same ring, 
 we now seek to find a general formula for an operation corresponding to ideal multipication.
-Let us begin by considering forms $f = (a, b, c)$ and $g = (a', b', c')$, both of discriminant $\Delta$.
-These correspond to ideals of $\mathcal{O}_\Delta$
-$$I_f = a\Z + \frac{b + \sqrt\Delta}{2}\Z, \hspace{5mm} I_g = a'\Z + \frac{b' + \sqrt\Delta}{2}\Z.$$
-The product of these ideals is given by
-$$I = I_f \cdot I_g = aa'\Z + a\frac{b' + \sqrt\Delta}{2}\Z + a'\frac{b + \sqrt\Delta}{2}\Z + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}\Z.$$
-By \Cref{lemma-ideal-lattice}, we can express this product in the form $l\Z + \frac{m + n\sqrt\Delta}{2}\Z$. 
-We know that $n$ is the minimal positive coefficient of $\frac{\sqrt\Delta}{2}$ among elements of $I$, so we have
-$$n = \gcd\left(a, a', \frac{b+b'}{2}\right).$$
-Hence, we can choose $u, v, w \in \Z$ such that
-$$au + a'v + \frac{b+b'}{2}w = n.$$
-These allow us to find an element of $I$ which satisfies the minimal condition on $n$:
-\begin{align*}
-    &\hspace{-5mm} a\frac{b' + \sqrt\Delta}{2}u + a'\frac{b + \sqrt\Delta}{2}v + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}w \\
-    &= \frac{ab'u + a'bv + \frac{bb' + \Delta}{2}w + n\sqrt\Delta}{2}
-\end{align*}
-Hence,
-$$m = ab'u + a'bv + \frac{bb' + \Delta}{2}w.$$
-Note that this isn't necessarily our canonial choice for $m$, since we haven't added a multiple of $l$ to enforce $0 \leq m < 2l$, but the ideal is unchanged by this choice.
+Let $f = (a, b, c)$ and $g = (a', b', c')$ be forms of discriminant $\Delta$.
+Then we have the following algorithm for composition of forms
+\begin{algorithm}\label{alg-composition}
+    \caption{Composition formula}
+    \DontPrintSemicolon
+    \KwData{$a, b, c, a', b', c' \in \Z$}
+    $B \gets (b + b')/2$\;
+    $n \gets GCD(a, a', B)$\;
+    \red{how to handle notating euclid's algorithm to set $u, v, w$?}
+\end{algorithm}
 
-To find $l$, we use the fact that norms of ideals are multiplicative (\red{cite}).
-The norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, hence, the norm of $I$ must be $aa'$.
-But by \Cref{lemma-ideal-norm}, we have
-\begin{gather*}
-    aa' = N(I) = ln \\
-    \implies l = \frac{aa'}{n}
-\end{gather*}
-Hence, with the given choices of $m$ and $n$, the form corresponding to the resulting ideal is
-$$(a, b, c) \cdot (a', b', c') = \left( \frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'} \right).$$
+
+\begin{theorem}
+    \Cref{alg-composition} defines a group operation on the set of proper equivalence classes of forms of discriminant $\Delta$.
+\end{theorem}
+
+\proof{
+    These correspond to ideals of $\mathcal{O}_\Delta$
+    $$I_f = a\Z + \frac{b + \sqrt\Delta}{2}\Z, \hspace{5mm} I_g = a'\Z + \frac{b' + \sqrt\Delta}{2}\Z.$$
+    The product of these ideals is given by
+    $$I = I_f \cdot I_g = aa'\Z + a\frac{b' + \sqrt\Delta}{2}\Z + a'\frac{b + \sqrt\Delta}{2}\Z + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}\Z.$$
+    By \Cref{lemma-ideal-lattice}, we can express this product in the form $l\Z + \frac{m + n\sqrt\Delta}{2}\Z$. 
+    We know that $n$ is the minimal positive coefficient of $\frac{\sqrt\Delta}{2}$ among elements of $I$, so we have
+    $$n = \gcd\left(a, a', \frac{b+b'}{2}\right)$$
+    noting that we will always take the gcd to be positive. 
+    We can then choose $u, v, w \in \Z$ such that
+    $$au + a'v + \frac{b+b'}{2}w = n.$$
+    These allow us to find an element of $I$ which satisfies the minimal condition on $n$:
+    \begin{align*}
+        &\hspace{-5mm} a\frac{b' + \sqrt\Delta}{2}u + a'\frac{b + \sqrt\Delta}{2}v + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}w \\
+        &= \frac{ab'u + a'bv + \frac{bb' + \Delta}{2}w + n\sqrt\Delta}{2}
+    \end{align*}
+    Hence,
+    $$m = ab'u + a'bv + \frac{bb' + \Delta}{2}w.$$
+    Note that this isn't necessarily our canonial choice for $m$, since we haven't added a multiple of $l$ to enforce $0 \leq m < 2l$, but the ideal is unchanged by this choice.
+
+    To find $l$, we use the fact that norms of ideals are multiplicative (\red{cite}).
+    The norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, hence, the norm of $I$ must be $aa'$.
+    But by \Cref{lemma-ideal-norm}, we have
+    \begin{gather*}
+        aa' = N(I) = ln \\
+        \implies l = \frac{aa'}{n}
+    \end{gather*}
+    Hence, with the given choices of $m$ and $n$, the form corresponding to the resulting ideal is
+    $$(a, b, c) \cdot (a', b', c') = \left( \frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'} \right).$$
+}
 
 
 \pagebreak
