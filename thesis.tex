@@ -658,8 +658,8 @@ except the chosen definition avoids dealing with multiple cases.
     \begin{align*}
         I &\ni \left( x + \frac{\Delta + \sqrt\Delta}{2}y \right) \left( x + \frac{\Delta - \sqrt\Delta}{2}y \right) \\
         &= \left( x + \frac{\Delta}{2}y \right)^2 -  \left( \frac{\sqrt\Delta}{2}y \right)^2 \\
-        &= x + \Delta xy + \frac{\Delta^2 y^2}{4} - \frac{\Delta y^2}{4} \\
-        &= x + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4} \in \Z.
+        &= x^2 + \Delta xy + \frac{\Delta^2 y^2}{4} - \frac{\Delta y^2}{4} \\
+        &= x^2 + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4} \in \Z.
     \end{align*}
     So $I$ has at least one integer, and we can choose $l$ as required.
     Likewise, choose $n$ to be the minimal positive integer such that $x + \frac{\Delta + \sqrt\Delta}{2}n \in I$.
@@ -762,17 +762,27 @@ Finally, we will define the norm of an element of a number field.
 This can be defined more generally for larger fields \todo{cite definition}, but for our purposes, we will only handle the quadratic case.
 For any quadratic number field $K$ (that is, $K = \Q(\sqrt{\Delta})$ where $\Delta$ is not a perfect square), the \textbf{norm of an element} $x + y\sqrt\Delta \in K$ (where $x, y \in \Q$) is given by \cite[Ch.\,6.2]{buell}
 $$N(x + y\sqrt\Delta) = (x + y\sqrt\Delta) \cdot (x - y\sqrt\Delta) = x^2 - y^2\Delta.$$
-This can be positive or negative, or zero only if $x = y = 0$ (since $\Delta$ is not a perfect square).
+This can be positive or negative, and is zero if and only if $x = y = 0$, since $\Delta$ is not a perfect square.
 
 \begin{remark}
-    For some $z  \in \order_\Delta$, we have
+    For any nonzero $z \in \order_\Delta$, we have
     $$N(\langle z \rangle) = \left| N(z) \right|.$$
 \end{remark}
 
 \begin{proof}
     Let $z = x + y \frac{\Delta + \sqrt\Delta}{2}$.
+    If $y = 0$, then
+    $$\langle z \rangle = \langle x \rangle = x\Z + x\frac{\Delta + \sqrt\Delta}{2}\Z.$$
+    In this case, $l = n = x$, So
+    $$N(\langle z \rangle) = x^2 = |N(z)|.$$
+    If $y \neq 0$, then the smallest integer in $\langle z \rangle$ is
+    \begin{align*}
+        l &= \left( x + y \frac{\Delta + \sqrt\Delta}{2} \right) \cdot \left( x + y \frac{\Delta - \sqrt\Delta}{2} \right) \\
+        &= x^2 + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4}.
+    \end{align*}
     \todo{finish}
 \end{proof}
+\red{this proof seems like more work than I expected - is this result worth including if it isn't used?}
 
 
 \pagebreak
@@ -797,7 +807,7 @@ We can therefore define a function $\bar{\Theta}$ from ideals of $\order_\Delta$
 $$\bar{\Theta} : l\Z + \frac{m + n\sqrt\Delta}{2}\Z \longmapsto \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right).$$
 We want a map which is invertible, so that we can take forms to corresponding ideals, multiply the ideals, then transform the resulting ideal back into a form, inducing a binary operation on forms.
 To achieve this, we simply quotient the domain and codomain into equivalence classes such that the function has a well-defined inverse.
-Defining ideals of $\order_\Delta$ to be \textbf{narrowly equivalent} if they vary by a scalar multiple in $\Q(\Delta)$ with positive norm, we have
+Defining ideals of $\order_\Delta$ to be \textbf{narrowly equivalent} if they vary by a scalar multiple in $\Q(\sqrt\Delta)$ with positive norm, we have
 \begin{theorem}
     The map
     $$\Theta : l\Z + \frac{m + n\sqrt\Delta}{2}\Z \longmapsto \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right)$$
@@ -872,7 +882,7 @@ We must show that this is a well-defined function from proper equivalence classe
 Having seen that forms of the same discriminant correspond to ideals of the same ring, 
 we now seek to find a general formula for an operation corresponding to ideal multipication.
 Let $f = (a, b, c)$ and $g = (a', b', c')$ be forms of discriminant $\Delta$.
-Then we have the following algorithm for composition of forms
+Then we have the following algorithm for composition of forms:
 \begin{algorithm}\label{alg-composition}
     \caption{Composition formula}
     \DontPrintSemicolon
@@ -882,6 +892,8 @@ Then we have the following algorithm for composition of forms
     \red{how to handle notating euclid's algorithm to set $u, v, w$?}
 \end{algorithm}
 
+\noindent
+Optimisations to this algorithm are given by Cohen \cite[Alg.,5.4.7]{cohen}.
 
 \begin{theorem}
     \Cref{alg-composition} defines a group operation on the set of proper equivalence classes of forms of discriminant $\Delta$.
@@ -921,8 +933,42 @@ Then we have the following algorithm for composition of forms
 
 \pagebreak
 \section{Identity and Inverses}\label{s-comp-idinv}
-\red{to do}
+Now that we have a well defined binary operation on classes of forms, we seek to find an identity element and inverses to complete our understanding of the induced group.
+The identity is straightforward --- regardless of $\Delta$, the ideal of $\order_\Delta$ which acts as the identity is $\order_\Delta$ itself, since it has 1 as an element.
+The corresponding form is
+$$\Theta(\order_\Delta) = \Theta \left( 1\Z + 1\frac{\Delta + \sqrt\Delta}{2} \right) = \left(1, \Delta, \frac{\Delta^2 - \Delta}{4} \right).$$
+By applying a $T$ transformation, we get the reduced form
+$$id_\Delta = \begin{cases}
+    \left( 1, 0, \frac{-\Delta}{4} \right) & \Delta \equiv 0 \pmod{4} \\
+    \left( 1, 1, \frac{1 - \Delta}{4} \right) & \Delta \equiv 1 \pmod{4}. \\
+\end{cases}$$
 
+To find the inverse of a form, consider the inverse of an ideal.
+The identity amongst ideals are the ideals which are narrowly equivalent to $\order_\Delta$.
+Ideals which vary from the whole ring by a scalar multiple are precisely the principal ideals --- so the inverse of an ideal is an ideal such that the product is principal.
+For an ideal $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$, a natural candidate might be given by conjugating the generators:
+\begin{align*}
+    &\hspace{-10mm} \left( l\Z + \frac{m + n\sqrt\Delta}{2}\Z \right) \cdot \left( l\Z + \frac{m - n\sqrt\Delta}{2}\Z \right) \\
+    &= l^2\Z + l \left( \frac{m + n\sqrt\Delta}{2} \right)\Z + l \left( \frac{m - n\sqrt\Delta}{2} \right)\Z + \frac{m^2 - n^2\Delta}{4}\Z \\
+    &= l^2\Z + lm\Z + l \left( \frac{m + n\sqrt\Delta}{2} \right)\Z + \frac{m^2 - n^2\Delta}{4}\Z 
+\end{align*}
+We know by \cref{lemma-ideal-lattice} that we can reduce this to two generators, one of which is the smallest integer in the ideal.
+This integer is 
+$$\gcd \left( l^2, lm, \frac{m^2 - n^2\Delta}{4} \right) = l \cdot \gcd\left( l, m, n\frac{m^2 - n^2\Delta}{4ln} \right) = lk$$
+for some $k \in \Z$.
+We can see that $k$ divides each of $l$, $m$, and $n$, so the product of ideals above is given by
+$$lk \left( \Z + \frac{\Delta + \sqrt\Delta}{2} \right)$$
+since each generator in the above expansion is divisible by $lk$, and is therefore in this ideal (\red{needs more explanation?}).
+This is principal, and is therefore the identity.
+Hence, we have verified that an ideal is inverted by taking its conjugate.
+Now consider a form $f = (a, b, c)$.
+This corresponds to the ideal
+$$\Theta^{-1}(f) = a\Z + \frac{b + \sqrt\Delta}{2}\Z.$$
+The inverse of this ideal is
+$$a\Z + \frac{b - \sqrt\Delta}{2}\Z = a\Z + \frac{-b + \sqrt\Delta}{2}\Z.$$
+Note that we have taken the negative of the second generator to ensure $n$ is positive.
+Finally, the form corresponding to this inverse is
+$$\Theta \left( a\Z + \frac{-b + \sqrt\Delta}{2}\Z \right) = (a, -b, c) = f^{-1}.$$
 
 %===============================================================================================================================%
 %                                                           CHAPTER 3                                                           %
