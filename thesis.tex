@@ -6,8 +6,8 @@
 \linespread{1}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{amsthm}
 \usepackage{latexsym,amsmath}
+\usepackage{amsthm}
 \usepackage{graphicx}
 \usepackage{afterpage}
 \usepackage{cite}
@@ -16,7 +16,7 @@
 \usepackage[many]{tcolorbox}
 \usepackage[colorlinks=true,linkcolor=blue,draft=false]{hyperref}
 \usepackage[nameinlink]{cleveref}
-\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[ruled,vlined,algosection]{algorithm2e}
 % \usepackage{MnSymbol}
 
 \hypersetup{citecolor=[rgb]{0, 0.5, 0}}
@@ -55,6 +55,14 @@
 
 \newcommand{\blankpage}{\null\thispagestyle{empty}\addtocounter{page}{-1}\newpage}
 
+\newcommand{\algosep}{
+    \vspace{1mm}
+    \par
+    \nointerlineskip
+    \moveleft\algomargin\vbox{\hrule width \columnwidth}
+    \nointerlineskip
+    \vspace{1mm}
+}
 
 % Environments
 \newtheorem{theorem}{Theorem}[section]
@@ -409,7 +417,10 @@ The full reduction algorithm is as follows
 \begin{algorithm}\label{alg-reduction}
     \caption{Reduction of positive definite forms}
     \DontPrintSemicolon
-    \KwData{$a, b, c \in \Z$}
+    \vspace{1mm}
+    \KwIn{$a, b, c \in \Z$ such that $(a, b, c)$ is a positive definite form.}
+    \KwOut{$a, b, c \in \Z$ such that $(a, b, c)$ is reduced and properly equivalent to the provided form.}
+    \algosep
     \While {$b \notin (-a, a]$}{
         $k \gets \lceil (b - a) / 2a \rceil$\;
         $c \gets k^2 a + k b + c$\;
@@ -421,7 +432,7 @@ The full reduction algorithm is as follows
     }
 \end{algorithm}
 \noindent
-So we say that a positive definite form is \textbf{reduced} if it satisfies
+We say that a positive definite form is \textbf{reduced} if it satisfies
 \begin{itemize}
     \item $|b| \leq a \leq c$
     \item $b \geq 0$ if $a = |b|$ or $a = c$.
@@ -600,9 +611,7 @@ we first outline this bijection in \Cref{s-comp-ideals}, then we can leverage th
 
 Note that this means that we are taking a very different approach to deriving composition of forms than a historical development of the theory would describe.
 This has the possible effect of making the connection between forms and ideals seem fairly obvious, when in reality it is quite profound, and the derivations provided here can only exist in retrospect, as the proofs in this paper only make sense to persue when one already knows that a correspondence exists.
-With that said, we hope that the narrative taken here helps the reader to gain an intuitive, geometric understanding of the theory, which is largely missing from many textbooks \red{can I say that?}.
-
-\todo{show that this operation precisely fits the desired definition of composition given by Legendre?}.
+With that said, we hope that the narrative taken here helps the reader to gain an intuitive, geometric understanding of the theory, where many textbooks simply state the result and prove that it has the desired algebraic properties.
 
 
 
@@ -759,30 +768,41 @@ $$N(I) = \left| R / I \right|.$$
 \end{proof}
 
 Finally, we will define the norm of an element of a number field.
-This can be defined more generally for larger fields \todo{cite definition}, but for our purposes, we will only handle the quadratic case.
+This can be defined more generally for larger fields (\red{cite}), but for our purposes, we will only handle the quadratic case.
 For any quadratic number field $K$ (that is, $K = \Q(\sqrt{\Delta})$ where $\Delta$ is not a perfect square), the \textbf{norm of an element} $x + y\sqrt\Delta \in K$ (where $x, y \in \Q$) is given by \cite[Ch.\,6.2]{buell}
 $$N(x + y\sqrt\Delta) = (x + y\sqrt\Delta) \cdot (x - y\sqrt\Delta) = x^2 - y^2\Delta.$$
 This can be positive or negative, and is zero if and only if $x = y = 0$, since $\Delta$ is not a perfect square.
 
-\begin{remark}
+\hspace{2mm}
+\begin{lemma}
+    The norms of elements are multiplicative.
+    That is,
+    $$N(xy) = N(x)N(y).$$
+\end{lemma}
+\begin{proof}
+    Let $x_1, x_2, y_1, y_2 \in \Q$.
+    Then we have
+    \begin{align*}
+        N((x_1 + y_1\sqrt\Delta)(x_2 + y_2\sqrt\Delta)) &= N(x_1x_2 + y_1y_2\Delta + (x_1y_2 + x_2y_1)\sqrt\Delta) \\
+        &= (x_1x_2 + y_1y_2\Delta)^2 - (x_1y_2 + x_2y_1)^2 \Delta \\
+        &= x_1^2 x_2^2 - x_1^2 y_2^2 \Delta - x_2^2 y_1^2 \Delta + y_1^2 y_2^2 \Delta^2 \\
+        &= (x_1^2 - y_1^2\Delta)(x_2^2 - y_2^2\Delta) \\
+        &= N(x_1 + y_1\sqrt\Delta)N(x_2 + y_2\sqrt\Delta). \qedhere
+    \end{align*}
+\end{proof}
+
+\noindent
+The same is true of the norms of ideals, although the proof is not so elementary.
+For a proof of this fact, see (\red{cite}).
+
+\vspace{2mm}
+\begin{lemma} \label{lemma-norm-relation}
     For any nonzero $z \in \order_\Delta$, we have
     $$N(\langle z \rangle) = \left| N(z) \right|.$$
-\end{remark}
+\end{lemma}
+\noindent
+A proof of this remark can be found in (\red{cite}).
 
-\begin{proof}
-    Let $z = x + y \frac{\Delta + \sqrt\Delta}{2}$.
-    If $y = 0$, then
-    $$\langle z \rangle = \langle x \rangle = x\Z + x\frac{\Delta + \sqrt\Delta}{2}\Z.$$
-    In this case, $l = n = x$, So
-    $$N(\langle z \rangle) = x^2 = |N(z)|.$$
-    If $y \neq 0$, then the smallest integer in $\langle z \rangle$ is
-    \begin{align*}
-        l &= \left( x + y \frac{\Delta + \sqrt\Delta}{2} \right) \cdot \left( x + y \frac{\Delta - \sqrt\Delta}{2} \right) \\
-        &= x^2 + \Delta xy + \frac{\Delta(\Delta - 1)y^2}{4}.
-    \end{align*}
-    \todo{finish}
-\end{proof}
-\red{this proof seems like more work than I expected - is this result worth including if it isn't used?}
 
 
 \pagebreak
@@ -806,129 +826,181 @@ The divisibility conditions of \Cref{lemma-lattice-divisibility-conditions} show
 We can therefore define a function $\bar{\Theta}$ from ideals of $\order_\Delta$ to forms of discriminant $\Delta$:
 $$\bar{\Theta} : l\Z + \frac{m + n\sqrt\Delta}{2}\Z \longmapsto \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right).$$
 We want a map which is invertible, so that we can take forms to corresponding ideals, multiply the ideals, then transform the resulting ideal back into a form, inducing a binary operation on forms.
-To achieve this, we simply quotient the domain and codomain into equivalence classes such that the function has a well-defined inverse.
-Defining ideals of $\order_\Delta$ to be \textbf{narrowly equivalent} if they vary by a scalar multiple in $\Q(\sqrt\Delta)$ with positive norm, we have
-\begin{theorem}
-    The map
-    $$\Theta : l\Z + \frac{m + n\sqrt\Delta}{2}\Z \longmapsto \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right)$$
-    is a bijection between narrow equivalence classes of ideals of $\order_\Delta$ and proper equivalence classes of forms of discriminant $\Delta$.
+To achieve this, we quotient the domain and codomain into equivalence classes.
+Defining ideals of $\order_\Delta$ to be \textbf{narrowly equivalent} if they differ by a scalar multiple in $\Q(\sqrt\Delta)$ of positive norm, we have:
+
+\hspace{2mm}
+\begin{theorem} \label{thm-ideal-correspondence}
+    The map $\bar{\Theta}$ induces a bijection, $\Theta$, between narrow equivalence classes of ideals of $\order_\Delta$ and proper equivalence classes of forms of discriminant $\Delta$.
 \end{theorem}
-The choice of the definition of narrow equivalence may seem arbitrary, we will spend the remainder of this section showing how this is motivated, and how it geometrically aligns with proper equivalence of forms.
+\hspace{2mm}
+
+The choice of the definition of narrow equivalence may initially seem arbitrary; 
+we will spend the remainder of this section motivating this definition and proving that it yields the desired correspondence to classes of forms.
 
 \pagebreak
-\todo{reorganise}
-Recall that for a given ideal, $l$ and $n$ are uniquely determined, but $m$ is only determined up to adding multiples of $l$.
-We must therefore consider what effect making different choices for $m$ has on the output of this map in order to ensure it is well defined.
-For our ideal $I = l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z$, we can also write 
-$$I = l\Z + \left( (m + kl) + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z$$
-where $k \in \Z$. 
-The map $\Theta$ sends this ideal to
+First, note that the choice of canonical bases for ideals, while computationally convenient, is arbitrary.
+What if we choose a different basis for $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$?
+A transformation from the canonical basis to our new basis is given by some matrix $\phi \in \GL_2(\Z)$.
+If $|\det(\phi)| = -1$, we can multiply $\phi$ by the matrix 
+$\left[ \begin{smallmatrix} 0 & 1 \\ 1 & 0 \end{smallmatrix} \right]$, 
+which corresponds to reordering the basis elements, to get a matrix in $\SL_2(\Z)$.
+Let us therefore say $\phi \in \SL_2(\Z)$.
+What happens if we take the norm of a generic element expressed with this new basis? 
+Would we have reached a different formulation of $\bar{\Theta}$?
+A general element of $I$ as a sum of the new basis is
+$$\left( \phi \bmat{l \\ \frac{m + n\sqrt\Delta}{2}} \right) \cdot \bmat{x \\ y}.$$
+The norm of such an element is given by
 \begin{align*}
-    &\hspace{-5mm} \left( \frac{l}{n}, \frac{2(m + kl)}{n} + \Delta, \frac{1}{l}\left(\frac{(m + kl)^2}{n} + (m + kl)\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right) \\
-    &= \left( \frac{l}{n}, \left[ \frac{2m}{n} + \Delta \right] + 2k\frac{l}{n}, \left[ \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right] + k^2\frac{l}{n} + k(\frac{2m}{n} + \Delta) \right).
+    N \left( \left( \phi \bmat{l \\ \frac{m + n\sqrt\Delta}{2}} \right) \cdot \bmat{x \\ y} \right)
+    &= N \left( \bmat{l & \frac{m + n\sqrt\Delta}{2}} \phi^T \bmat{x \\ y} \right) \\
+    &= N \left( lx_0 + \frac{m + n\sqrt\Delta}{2} y_0 \right)
 \end{align*}
-This is the same result as a $T^k$ transformation on the previous form.
-Hence we see that different choices of $m$ map to properly equivalent forms, so the map is well defined as a map into equivalence classes of forms.
+where $x_0$ and $y_0$ are linear sums of $x$ and $y$ given by
+$$\phi^T \bmat{x \\ y} = \bmat{x_0 \\ y_0}.$$
+So the form we would derive with this new basis is
+$$\frac{l}{n}x_0^2 + \frac{m}{n}x_0y_0 + \frac{m^2 - n^2\Delta}{4ln} y_0^2 = \phi^T \left( \frac{l}{n}x^2 + \frac{m}{n}xy + \frac{m^2 - n^2\Delta}{4ln} y^2 \right).$$
+This is properly equivalent to the form that we found when using our canonical basis.
+We already had the sense that properly equivalent forms contain the same data, since they represent the same numbers.
+We now have a new way of thinking of this --- equivalent forms describe the norms of elements of the same ideal using different bases.
 
-\begin{theorem}
-    For an ideal $I$ with $\Z$-bases given by $\{ \alpha, \beta \}$ and $\{\alpha', \beta'\}$ such that 
-    $$\phi \cdot \bmat{a \\ b} = \bmat{a' \\ b'} \rnote{\theta \in \SL_2(\Z)}$$
-    we have a proper equivalence of forms
-    $$\frac{N(\alpha x + \beta y)}{N(I)} = \frac{N(\alpha' x + \beta' y)}{N(I)}.$$
-\end{theorem}
+If we now allow any basis to be chosen to represent an ideal, a bijection from ideals to forms, $\Theta$, must necessarily map into equivalence classes of forms.
+Otherwise, $\Theta(I)$ would map into different (but equivalent) forms depending on the choice of basis.
+By taking the codomain to be proper equivalence classes of forms, the function remains well defined.
 
-\begin{proof}
-    \begin{align*}
-        N(\alpha' x + \beta' y) &= N \left( \bmat{\alpha' \\ \beta'} \cdot \bmat{x \\ y} \right) \\
-        &= N \left( \phi \bmat{\alpha \\ \beta} \cdot \bmat{x \\ y} \right) \\
-        &= N \left( \bmat{\alpha & \beta} \phi^T \bmat{x \\ y} \right) \\
-        &\simeq N(\alpha x + \beta y)
-    \end{align*}
+We naturally desire a way of being able to check which order of the generators correpsonds to the canonical basis via an $\SL_2(\Z)$ transformation.
+Consider that for bases $B_1 = \{ l, \frac{m + n\sqrt\Delta}{2} \}$ and $B_2 = \{ \alpha_1 + \alpha_2 \sqrt\Delta , \beta_1 + \beta_2 \sqrt\Delta \}$, 
+we have the following matrices for converting coefficients on the basis elements into coefficients on $1$ and $\sqrt\Delta$, respectively:
+$$\phi_1 = \bmat{l & \frac{m}{2} \\ 0 & \frac{n}{2}}, 
+\hspace{10mm} 
+\phi_2 = \bmat{\alpha_1 & \beta_1 \\ \alpha_2 & \beta_2}.$$
+Taking $\phi \in \GL_2(\Z)$ to be the change of basis matrix from $B_1$ to $B_2$, we have
+$$\phi = \phi_2^{-1} \circ \phi_1$$
+so the condition for $\phi \in \SL_2(\Z)$ is
+$$\det \left( \phi \right) = \det \left( \phi_2^{-1} \circ \phi_1 \right) = \det \left( \phi_2 \right)^{-1} \cdot \det \left( \phi_1 \right) = 1.$$
+The determinant of $\phi_1$ is $\frac{ln}{2}$, which is positive since $l$ and $n$ are defined to be strictly positive.
+Therefore, it is sufficient to check that the determinant of $\phi_2$ is positive.
+We have therefore shown
+
+\vspace{2mm}
+\begin{lemma}
+    For an ideal $I \trianglelefteq \order_\Delta$ with a basis $\{ \alpha_1 + \alpha_2 \sqrt\Delta , \beta_1 + \beta_2 \sqrt\Delta \}$ such that $\alpha_1 \beta_2 - \alpha_2 \beta_1 > 0$, we have a proper equivalence of forms
+    $$\frac{N \left( lx + \frac{m + n\sqrt\delta}{2} \right) }{N(I)} \sim \frac{N \left( (\alpha_1 + \alpha_2 \sqrt\Delta)x + (\beta_1 + \beta_2 \sqrt\Delta)y \right) }{N(I)}.$$
+\end{lemma}
+\vspace{2mm}
+
+We must now take equivalence classes of the domain of $\bar{\Theta}$ so that we get an injective function.
+Note the effect of taking an integer multiple of an ideal.
+In particular, consdier $kI = kl\Z + k\frac{m + n\sqrt\Delta}{2}\Z$, where $k \in \Z$.
+The corresponding form is
+$$\bar{\Theta}(kI) = \left( \frac{kl}{kn}, \frac{km}{kn}, \frac{k^2m^2 - k^2n^2\Delta}{4k^2ln} \right) = \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right) = \bar{\Theta}(I).$$
+So $\bar{\Theta}$ maps ideals which vary by an integer multiple to the same form.
+What about ideals which vary by a constant multiple which isn't necessarily rational?
+Let $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$ and $\alpha \in \order_\Delta$.
+Then a $\Z$-basis for $\alpha I$ is 
+$$\left\{\alpha l, \hspace{2mm} \alpha \frac{m + n\sqrt\Delta}{2}\right\}$$
+and a generic element of this ideal is $\alpha l x + \alpha \frac{m + n\sqrt\Delta}{2} y$.
+A form corresponding to this ideal is given by
+\begin{align*}
+    \bar{\Theta}(\alpha I) &= \frac{N \left( \alpha l x + \alpha \frac{m + n\sqrt\Delta}{2} y \right)}{N(\alpha I)} \\
+    &= \frac{N \left(\alpha \cdot \left( l x + \frac{m + n\sqrt\Delta}{2} y \right) \right)}{N(\langle \alpha \rangle \cdot I)} \\
+    &= \frac{N(\alpha)}{N(\langle \alpha \rangle)} \cdot \frac{N \left( l x + \frac{m + n\sqrt\Delta}{2} y \right) }{N(I)} \\
+    &= \frac{N(\alpha)}{\left| N(\alpha) \right|} \cdot \bar{\Theta}(I) \rnote{\text{using \cref{lemma-norm-relation}.}}
+\end{align*}
+So $I$ and $\alpha I$ are mapped to the same form so long as $N(\alpha) > 0$.
+We therefore desire that such forms be equivalent so that $\Theta$ may be injective --- but we must be careful when formalising the equivalence relation.
+We cannot simply say that ideals are equivalent if they vary by a positive-norm scalar multiple in $\order_\Delta$, as this would not be a transitive relation;
+we would have $I \sim 2I$ and $I \sim 3I$, but $2I \nsim 3I$, since $\frac{2}{3} \notin \order_\Delta$.
+So it is clear that we should allow $\alpha$ to be in the field of fractions of $\order_\Delta$, which is $\Q(\sqrt\Delta)$.
+This provides a motivation for the definition of narrow equivalence of ideals.
+
+\begin{proof}[Proof of \cref{thm-ideal-correspondence}]
+We must show that the equivalence relations given are sufficient to turn $\Theta$ into a bijection.
+We have already shown that it is a well-defined function, as different choices for a class representative ideal map to equivalent forms under the action of $\bar{\Theta}$.
+We need only show surjectivity and injectivity.
+
+We first show surjectivity.
+For any form $f = (a, b, c)$ of disriminant $\Delta$, we can find an ideal $I$ using the following map, which resembles an inverse of $\bar{\Theta}$ with $n = 1$:
+$$(a, b, c) \longmapsto a\Z + \frac{b + \sqrt\Delta}{2}.$$
+By \cref{lemma-lattice-divisibility-conditions}, we can see that the output of this function is an ideal ---
+conditions 1 and 3 are trivial when $n = 1$, while conditions 2 and 4 is enforced by $\Delta = b^2 - 4ac$.
+It is clear to see that this ideal satisfies
+$$\bar{\Theta}(I) = f.$$
+Hence, $\Theta$ is surjective.
+% To show injectivity, consider the ideals $I, I' \trianglelefteq \order_\Delta$ given by
+% $$I = l + \frac{m + n\sqrt\Delta}{2}, \hspace{10mm} I' = l' + \frac{m' + n'\sqrt\Delta}{2}.$$
+% Suppose $\bar{\Theta}(I) \sim \bar{\Theta}(I')$.
+% That is, there exists some $\phi \in \SL_2(\Z)$ such that
+% $$\left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right) = \phi \left( \frac{l'}{n'}, \frac{m'}{n'}, \frac{m'^2 - n'^2\Delta}{4l'n'} \right).$$
+% Recall that if we apply $\phi$ to the basis of $I'$, we get a form which has been acted on by $\phi^T$.
+% Hence, acting on the basis by $(\phi^{-1})^T$, we have
+% $$\left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right) = \phi \left( \phi^{-1} \left( \frac{l''}{n''}, \frac{m''}{n''}, \frac{m''^2 - n''^2\Delta}{4l''n''} \right) \right).$$
 \end{proof}
-
-It is clear that an integer multiple of an ideal, $kI$, is sent to the same form as $I$.
-What happans when we multiply an ideal by an element of $\order_\Delta$ which is not necessarily an integer?
-Let $I$ be an ideal with a $\Z$-basis $\{\alpha, \beta\}$, and $\gamma \in \order_\Delta$.
-Then $\gamma I$ has a $\Z$-basis $\{\gamma\alpha, \gamma\beta\}$.
-The corresponding class of ideals ideal is given by
-$$\frac{N(\gamma\alpha x + \gamma\beta y)}{N(\gamma I)} = \frac{\gamma^2 N(\alpha x + \beta y)}{\gamma^2 N(I)} = \frac{N(\alpha x + \beta y)}{N(I)}$$
-\todo{argue why the basis for $\gamma I$ is $\SL_2(\Z)$ equivalent to the canonical basis} 
-So $\Theta$ sends $I$ and $\gamma I$ to equivalent ideals.
-To find an inverse map, $\Theta$ must be injective, so we must consider equivalence classes of ideals which differ by a constant multiple.
-However, note that a relation which associates ideals that by vary by constant factors in $\order_\Delta$ is not an equivalence relation, as it is not associative;
-this would give $I ~ 2I$ and $I ~ 3I$, but not $2I ~ 3I$, since $\frac{2}{3} \notin \order_\Delta$.
-To correct this, we say that ideals are equivalent if they vary by a constant factor in the field of fractions of $\order_\Delta$, which is $\Q(\sqrt\Delta)$.
-\todo{handle narrow equivalence}
-So we have shown that $\Theta$ is a function from narrow equivalence classes of ideals of $\order_\Delta$ to proper equivalence classes of forms of discriminant $\Delta$.
-
-Now, the inverse map must take the form
-\begin{align*}
-    (a, b, c) &= \left( \frac{l}{n}, \frac{2m}{n} + \Delta, \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right) \right) \\
-    &\mapsto l\Z + \left( m + n\frac{\Delta + \sqrt\Delta}{2} \right) \Z 
-\end{align*}
-where $I = l\Z + \left( m + n \frac{\Delta + \sqrt\Delta}{2} \right) \Z$ is an ideal of $\order_\Delta$ - we showed the necesarry conditions for this in \Cref{lemma-lattice-divisibility-conditions}.
-Choosing $n = 1$ immediately satisfies the conditions $n \divides m$ and $n \divides l$, and  forces $l = a$ and $m = \frac{b - \Delta}{2}$ (which is always an integer, as $b \equiv \Delta \pmod{4}$).
-Finally, $c = \frac{1}{l}\left(\frac{m^2}{n} + m\Delta + n\frac{\Delta^2 - \Delta}{4}\right)$ is an integer, which satisfies the final divisibility condition.
-This gives the inverse map
-$$\Theta^{-1} : (a, b, c) \mapsto a\Z + \left( \frac{b - \Delta}{2} + \frac{\Delta + \sqrt\Delta}{2} \right) \Z = a\Z + \left( \frac{b + \sqrt\Delta}{2} \right) \Z.$$
-We must show that this is a well-defined function from proper equivalence classes of forms of discriminant $\Delta$ to narrow equivalence classes of ideals of $\order_\Delta$.
-\todo{show}
 
 
 \pagebreak
 \section{Composition Formula}\label{s-comp-formula}
-\todo{prove that equivalence classes of ideals respect multiplication}
 
 Having seen that forms of the same discriminant correspond to ideals of the same ring, 
-we now seek to find a general formula for an operation corresponding to ideal multipication.
+we now seek to find a general formula for an operation corresponding to ideal multiplication.
+First, consider ideals $I, I' \trianglelefteq \order_\Delta$.
+In general, equivalent ideals to these take the form $\alpha I$ and $\alpha' I'$, respectively, where $\alpha, \alpha' \in \Q(\sqrt\Delta)$.
+The product of these equivalent ideals is
+$$\alpha I \cdot \alpha' I' = \alpha \alpha' \cdot I I'$$
+which is narrowly equivalent to the ideal $II'$.
+Hence we see that ideal multiplication is a well-defined operation on narrow equivalence classes.
+We can hence use this to induce a binary operation on proper equivalence classes of forms.
+
 Let $f = (a, b, c)$ and $g = (a', b', c')$ be forms of discriminant $\Delta$.
-Then we have the following algorithm for composition of forms:
+These correspond to ideals of $\mathcal{O}_\Delta$:
+$$I_f = a\Z + \frac{b + \sqrt\Delta}{2}\Z, \hspace{5mm} I_g = a'\Z + \frac{b' + \sqrt\Delta}{2}\Z.$$
+The product of these ideals is given by
+$$I = I_f \cdot I_g = aa'\Z + a\frac{b' + \sqrt\Delta}{2}\Z + a'\frac{b + \sqrt\Delta}{2}\Z + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}\Z.$$
+By \Cref{lemma-ideal-lattice}, we can express this product in the form $l\Z + \frac{m + n\sqrt\Delta}{2}\Z$. 
+We know that $n$ is the minimal positive coefficient of $\frac{\sqrt\Delta}{2}$ among elements of $I$, so we have
+$$n = \gcd\left(a, a', \frac{b+b'}{2}\right)$$
+noting that we will always take the gcd to be positive. 
+Using B\'ezout's identity, there exist $u, v, w \in \Z$ such that
+$$au + a'v + \frac{b+b'}{2}w = n.$$
+These allow us to find an element of $I$ which satisfies the minimal condition on $n$:
+\begin{align*}
+    &\hspace{-5mm} a\frac{b' + \sqrt\Delta}{2}u + a'\frac{b + \sqrt\Delta}{2}v + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}w \\
+    &= \frac{ab'u + a'bv + \frac{bb' + \Delta}{2}w + n\sqrt\Delta}{2}
+\end{align*}
+Hence,
+$$m = ab'u + a'bv + \frac{bb' + \Delta}{2}w.$$
+Note that this isn't necessarily our canonial choice for $m$, since we haven't added a multiple of $l$ to enforce $0 \leq m < 2l$, but the ideal is unchanged by this choice.
+
+To find $l$, we use the fact that norms of ideals are multiplicative (\red{cite}).
+The norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, hence, the norm of $I$ must be $aa'$.
+But by \Cref{lemma-ideal-norm}, we have
+\begin{gather*}
+    aa' = N(I) = ln \\
+    \implies l = \frac{aa'}{n}
+\end{gather*}
+Hence, with the given choices of $m$ and $n$, the form corresponding to the resulting ideal is
+$$(a, b, c) \cdot (a', b', c') = \left( \frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'} \right).$$
+We have derived the following algorithm:
 \begin{algorithm}\label{alg-composition}
     \caption{Composition formula}
     \DontPrintSemicolon
-    \KwData{$a, b, c, a', b', c' \in \Z$}
+    \vspace{1mm}
+    \KwIn{$a, b, c, a', b', c' \in \Z$ such that $(a, b, c)$ and $(a', b', c')$ are forms with a common discriminant.}
+    \KwOut{$a, b, c \in \Z$ such that $(a, b, c)$ is the composition of the given forms.}
+    \algosep
+    $\Delta \gets b^2 - 4ac$\;
     $B \gets (b + b')/2$\;
-    $n \gets GCD(a, a', B)$\;
-    \red{how to handle notating euclid's algorithm to set $u, v, w$?}
+
+    \vspace{2mm}
+    $u, v, w, n \in \Z$ chosen such that $ua + va' + wB = n = \gcd(a, a', B)$ ---
+    this can be computed using Euclid's extended algorithm (\red{cite}).\;
+    \vspace{2mm}
+
+    \Return{$\frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'}$}
 \end{algorithm}
 
 \noindent
 Optimisations to this algorithm are given by Cohen \cite[Alg.,5.4.7]{cohen}.
-
-\begin{theorem}
-    \Cref{alg-composition} defines a group operation on the set of proper equivalence classes of forms of discriminant $\Delta$.
-\end{theorem}
-
-\proof{
-    These correspond to ideals of $\mathcal{O}_\Delta$
-    $$I_f = a\Z + \frac{b + \sqrt\Delta}{2}\Z, \hspace{5mm} I_g = a'\Z + \frac{b' + \sqrt\Delta}{2}\Z.$$
-    The product of these ideals is given by
-    $$I = I_f \cdot I_g = aa'\Z + a\frac{b' + \sqrt\Delta}{2}\Z + a'\frac{b + \sqrt\Delta}{2}\Z + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}\Z.$$
-    By \Cref{lemma-ideal-lattice}, we can express this product in the form $l\Z + \frac{m + n\sqrt\Delta}{2}\Z$. 
-    We know that $n$ is the minimal positive coefficient of $\frac{\sqrt\Delta}{2}$ among elements of $I$, so we have
-    $$n = \gcd\left(a, a', \frac{b+b'}{2}\right)$$
-    noting that we will always take the gcd to be positive. 
-    We can then choose $u, v, w \in \Z$ such that
-    $$au + a'v + \frac{b+b'}{2}w = n.$$
-    These allow us to find an element of $I$ which satisfies the minimal condition on $n$:
-    \begin{align*}
-        &\hspace{-5mm} a\frac{b' + \sqrt\Delta}{2}u + a'\frac{b + \sqrt\Delta}{2}v + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}w \\
-        &= \frac{ab'u + a'bv + \frac{bb' + \Delta}{2}w + n\sqrt\Delta}{2}
-    \end{align*}
-    Hence,
-    $$m = ab'u + a'bv + \frac{bb' + \Delta}{2}w.$$
-    Note that this isn't necessarily our canonial choice for $m$, since we haven't added a multiple of $l$ to enforce $0 \leq m < 2l$, but the ideal is unchanged by this choice.
-
-    To find $l$, we use the fact that norms of ideals are multiplicative (\red{cite}).
-    The norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, hence, the norm of $I$ must be $aa'$.
-    But by \Cref{lemma-ideal-norm}, we have
-    \begin{gather*}
-        aa' = N(I) = ln \\
-        \implies l = \frac{aa'}{n}
-    \end{gather*}
-    Hence, with the given choices of $m$ and $n$, the form corresponding to the resulting ideal is
-    $$(a, b, c) \cdot (a', b', c') = \left( \frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'} \right).$$
-}
 
 
 \pagebreak
@@ -937,7 +1009,7 @@ Now that we have a well defined binary operation on classes of forms, we seek to
 The identity is straightforward --- regardless of $\Delta$, the ideal of $\order_\Delta$ which acts as the identity is $\order_\Delta$ itself, since it has 1 as an element.
 The corresponding form is
 $$\Theta(\order_\Delta) = \Theta \left( 1\Z + 1\frac{\Delta + \sqrt\Delta}{2} \right) = \left(1, \Delta, \frac{\Delta^2 - \Delta}{4} \right).$$
-By applying a $T$ transformation, we get the reduced form
+By applying a $T$ transformation, we get the reduced \textbf{principal form}:
 $$id_\Delta = \begin{cases}
     \left( 1, 0, \frac{-\Delta}{4} \right) & \Delta \equiv 0 \pmod{4} \\
     \left( 1, 1, \frac{1 - \Delta}{4} \right) & \Delta \equiv 1 \pmod{4}. \\
@@ -970,6 +1042,10 @@ Note that we have taken the negative of the second generator to ensure $n$ is po
 Finally, the form corresponding to this inverse is
 $$\Theta \left( a\Z + \frac{-b + \sqrt\Delta}{2}\Z \right) = (a, -b, c) = f^{-1}.$$
 
+\todo{show that composition precisely fits the definition given by Legendre?}.
+
+
+
 %===============================================================================================================================%
 %                                                           CHAPTER 3                                                           %
 %===============================================================================================================================%
@@ -982,7 +1058,10 @@ As a baseline for comparison, let us consider the most primitive factoring algor
 \begin{algorithm}
     \caption{Factoring by trial division}
     \DontPrintSemicolon
-    \KwData{$n \in \Z$}
+    \vspace{1mm}
+    \KwIn{$n \in \Z$.}
+    \KwOut{$x \in \Z$ where $x$ is a nontrivial factor of $n$ (if such a factor exists).}
+    \algosep
     $x \gets 2$\;
     \While {$x \leq \sqrt{n}$}{
         \eIf {$n \equiv 0 \pmod{x}$}{
