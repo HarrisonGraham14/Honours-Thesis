@@ -543,16 +543,22 @@ We say that a positive definite form is \textbf{reduced} if it satisfies
 It seems natural to ask, how many reduced forms of a given discriminant exist?
 That is, how many equivalence classes of a fixed discriminant are there?
 For a reduced form, we have a bound on $b$ given by $|b| \leq a \leq c$.
-Does this truly allow us to bound $b$?
-We need to use the fact that the choices for $a$ and $c$ are constrained by the discriminant:
-\begin{align*}
-    b^2 - 4ac &= \Delta \\
-    b^2 - 4 \cdot |b| \cdot |b| &\geq \Delta \\
-    -3b^2 &\geq \Delta \\
-    b^2 &\leq -\tfrac{\Delta}{3} \\
-    |b| &\leq \sqrt{-\tfrac{\Delta}{3}}
-\end{align*}
-so there are only finitely many choices for $b$ in a reduced positive definite form.
+Hence we can obtain a bound for $b$:
+\begin{theorem}
+    For a positive definite form $f = (a, b, c)$, if $f$ is reduced, then
+    $$|b| \leq \sqrt{-\tfrac{\Delta}{3}}.$$
+\end{theorem}
+\begin{proof}
+    We use the fact that the choices for $a$ and $c$ are constrained by the discriminant:
+    \begin{align*}
+        b^2 - 4ac &= \Delta \\
+        b^2 - 4 \cdot |b| \cdot |b| &\geq \Delta \\
+        -3b^2 &\geq \Delta \\
+        b^2 &\leq -\tfrac{\Delta}{3} \\
+        |b| &\leq \sqrt{-\tfrac{\Delta}{3}} \qedhere
+    \end{align*}
+\end{proof}
+We therefore see that there are only finitely many choices for $b$ in a reduced positive definite form.
 If we fix a value of $b$, then can we bound the number of choices for $a$ and $c$?
 Consider
 \begin{align*}
@@ -883,9 +889,9 @@ Therefore, it is sufficient to check that the determinant of $\phi_2$ is positiv
 We have therefore shown
 
 \vspace{2mm}
-\begin{lemma}
+\begin{lemma} \label{lemma-basis-orientation}
     For an ideal $I \trianglelefteq \order_\Delta$ with a basis $\{ \alpha_1 + \alpha_2 \sqrt\Delta , \beta_1 + \beta_2 \sqrt\Delta \}$ such that $\alpha_1 \beta_2 - \alpha_2 \beta_1 > 0$, we have a proper equivalence of forms
-    $$\frac{N \left( lx + \frac{m + n\sqrt\delta}{2} \right) }{N(I)} \sim \frac{N \left( (\alpha_1 + \alpha_2 \sqrt\Delta)x + (\beta_1 + \beta_2 \sqrt\Delta)y \right) }{N(I)}.$$
+    $$\bar{\Theta}(I) \sim \frac{N \left( (\alpha_1 + \alpha_2 \sqrt\Delta)x + (\beta_1 + \beta_2 \sqrt\Delta)y \right) }{N(I)}.$$
 \end{lemma}
 \vspace{2mm}
 
@@ -905,7 +911,7 @@ A form corresponding to this ideal is given by
     \bar{\Theta}(\alpha I) &= \frac{N \left( \alpha l x + \alpha \frac{m + n\sqrt\Delta}{2} y \right)}{N(\alpha I)} \\
     &= \frac{N \left(\alpha \cdot \left( l x + \frac{m + n\sqrt\Delta}{2} y \right) \right)}{N(\langle \alpha \rangle \cdot I)} \\
     &= \frac{N(\alpha)}{N(\langle \alpha \rangle)} \cdot \frac{N \left( l x + \frac{m + n\sqrt\Delta}{2} y \right) }{N(I)} \\
-    &= \frac{N(\alpha)}{\left| N(\alpha) \right|} \cdot \bar{\Theta}(I) \rnote{\text{using \cref{lemma-norm-relation}.}}
+    &= \frac{N(\alpha)}{\left| N(\alpha) \right|} \cdot \bar{\Theta}(I) \rnote{\text{using \Cref{lemma-norm-relation}.}}
 \end{align*}
 So $I$ and $\alpha I$ are mapped to the same form so long as $N(\alpha) > 0$.
 We therefore desire that such forms be equivalent so that $\Theta$ may be injective --- but we must be careful when formalising the equivalence relation.
@@ -914,27 +920,87 @@ we would have $I \sim 2I$ and $I \sim 3I$, but $2I \nsim 3I$, since $\frac{2}{3}
 So it is clear that we should allow $\alpha$ to be in the field of fractions of $\order_\Delta$, which is $\Q(\sqrt\Delta)$.
 This provides a motivation for the definition of narrow equivalence of ideals.
 
-\begin{proof}[Proof of \cref{thm-ideal-correspondence}]
-We must show that the equivalence relations given are sufficient to turn $\Theta$ into a bijection.
-We have already shown that it is a well-defined function, as different choices for a class representative ideal map to equivalent forms under the action of $\bar{\Theta}$.
-We need only show surjectivity and injectivity.
+To show that $\Theta$ is a isomorphism, we will construct its inverse.
+A natural candidate for a function resembling an inverse of $\bar{\Theta}$ is
+$$\bar{\Psi} : (a, b, c) \longmapsto a\Z + \frac{b + \sqrt\Delta}{2}\Z.$$
+Of course, this is not truly an inverse to $\bar{\Theta}$, which is not injective and therefore has no inverse.
+However, we will show that $\bar{\Phi}$ induces an inverse function to $\Theta$.
 
-We first show surjectivity.
-For any form $f = (a, b, c)$ of disriminant $\Delta$, we can find an ideal $I$ using the following map, which resembles an inverse of $\bar{\Theta}$ with $n = 1$:
-$$(a, b, c) \longmapsto a\Z + \frac{b + \sqrt\Delta}{2}.$$
-By \cref{lemma-lattice-divisibility-conditions}, we can see that the output of this function is an ideal ---
-conditions 1 and 3 are trivial when $n = 1$, while conditions 2 and 4 is enforced by $\Delta = b^2 - 4ac$.
-It is clear to see that this ideal satisfies
-$$\bar{\Theta}(I) = f.$$
-Hence, $\Theta$ is surjective.
-% To show injectivity, consider the ideals $I, I' \trianglelefteq \order_\Delta$ given by
-% $$I = l + \frac{m + n\sqrt\Delta}{2}, \hspace{10mm} I' = l' + \frac{m' + n'\sqrt\Delta}{2}.$$
-% Suppose $\bar{\Theta}(I) \sim \bar{\Theta}(I')$.
-% That is, there exists some $\phi \in \SL_2(\Z)$ such that
-% $$\left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right) = \phi \left( \frac{l'}{n'}, \frac{m'}{n'}, \frac{m'^2 - n'^2\Delta}{4l'n'} \right).$$
-% Recall that if we apply $\phi$ to the basis of $I'$, we get a form which has been acted on by $\phi^T$.
-% Hence, acting on the basis by $(\phi^{-1})^T$, we have
-% $$\left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right) = \phi \left( \phi^{-1} \left( \frac{l''}{n''}, \frac{m''}{n''}, \frac{m''^2 - n''^2\Delta}{4l''n''} \right) \right).$$
+First, we must show that $\bar{\Psi}$ is well defined --- 
+that is, that the output truly is an ideal of $\order_\Delta$.
+We show this using \Cref{lemma-lattice-divisibility-conditions}.
+Conditions 1 and 3 are trivial, since we have chosen $n = 1$, while conditions 2 and 4 are enforced by $\Delta = b^2 - 4ac$.
+
+\begin{theorem} \label{thm-correspondence-inverse}
+    The function $\Psi$ from proper equivalence classes of forms of discriminant $\Delta$ to narrow equivalence classes of ideals of $\order_\Delta$ induced by $\bar{\Psi}$ is the inverse function to $\Theta$.
+\end{theorem}
+
+\begin{proof}
+    We will show that $\Theta \circ \Phi$ is the identity.
+    Let $\bar{f}$ be a class of forms of disriminant $\Delta$ with a class representative $f = (a, b, c)$. 
+    We then let
+    $$I = \bar{\Phi}(f) = a\Z + \frac{b + \sqrt\Delta}{2}\Z$$
+    and call the correpsonding equivalence class $\bar{I}$.
+
+    \todo{...}
+\end{proof}
+
+\begin{proof}[Proof of \Cref{thm-ideal-correspondence}]
+
+If $a > 0$, then we can add multiples of the first basis element to the second to reach the canonical form:
+$$I = a\Z + \frac{b + 2ka + \sqrt\Delta}{2}\Z$$
+where $k \in \Z$ such that $0 \leq b + 2ka < 2a$.
+Since this is in canonical form, we can apply our simplest formulation for $\Theta$:
+$$\bar{\Theta}(I) = (a, b + 2ka, C)$$
+where $C$ is some integer. By a $T^{-k}$ transformation, we get
+$$\bar{\Theta}(I) = (a, b, C')$$
+where $C'$ is another integer, which is forced to be $c$ by the discriminant formula.
+If instead $a < 0$, as can be the case when $f$ is an indefinite form, \Cref{lemma-basis-orientation} gives
+$$\alpha_1 \beta_2 - \alpha_2 \beta_1 = a \cdot \frac{1}{2} - \frac{b}{2} \cdot 0 = \frac{a}{2} < 0$$
+so we must reverse the order of the basis to get
+$$\Theta(I) = \frac{N \left( \frac{b + \sqrt\Delta}{2}x + ay \right)}{N(I)}.$$
+
+
+
+\todo{finish}
+So we have 
+$$\bar{\Theta}(I) = f \implies \Theta(\bar{I}) = \bar{f}.$$
+Hence, we see that $\Theta$ is surjective.
+
+To show injectivity, we show that $\bar{\Psi}$ induces a function $\Psi$ from proper equivalence classes of forms to narrow equivalence classes of ideals which is an inverse to $\Theta$.
+We must first prove that $\Psi$ is well defined by showing that $\bar{\Psi}$ takes equivalent forms to equivalent ideals.
+First, observe where $\bar{\Psi}$ maps the form $f = (a, b, c)$ after a $T$-transformation:
+\begin{align*}
+    \bar{\Psi} : (a, b + 2a, c + b + a) &\mapsto a\Z + \frac{b + 2a + \sqrt\Delta}{2}\Z \\
+    &= a\Z + \frac{b + \sqrt\Delta}{2}\Z.
+\end{align*}
+Next, observe where it sends $f$ after an $S$-transformation:
+\begin{align*}
+    \bar{\Psi} : (c, -b, a) &\mapsto c\Z + \frac{- b + \sqrt\Delta}{2}\Z \\
+    &\sim \frac{b + \sqrt\Delta}{2} \left( c\Z + \frac{- b + \sqrt\Delta}{2}\Z \right) \\
+    &= c \frac{b + \sqrt\Delta}{2} \Z + \frac{\Delta^2 - b^2}{4}\Z  \\
+    &= c \frac{b + \sqrt\Delta}{2} \Z + \frac{4ac}{4}\Z  \\
+    &= c \left( \frac{b + \sqrt\Delta}{2} \Z + a\Z \right) \\
+    &\sim a\Z + \frac{b + \sqrt\Delta}{2}\Z.
+\end{align*}  
+So applying an $S$ or $T$ transformation to a form doesn't change the class of ideals that it is sent to by $\bar{\Psi}$ --- 
+and since all $\SL_2(\Z)$ transfomations are compositions of $S$ and $T$, we conclude that $\Psi$ is well-defined.
+
+To see that this truly is the inverse of $\Theta$, choose an ideal class $\bar{I}$ in $\order_\Delta$ with a class representative $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$.
+Then
+$$\bar{\Theta}(I) = \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right).$$
+Call this form $f$, and its equivalence class $\bar{f}$.
+Then $\Theta(\bar{I}) = \bar{f}$.
+Now,
+$$\bar{\Psi}(f) = \frac{l}{n}\Z + \frac{\frac{m}{n} + \sqrt\Delta}{2}\Z \sim I.$$
+That is, $\Psi(\Theta(\bar{I})) = \bar{I}$ for all narrow equivalence classes of ideals $\bar{I}$.
+
+Now, suppose that $\bar{I}$ and $\bar{I'}$ are ideal classes of $\order_\Delta$, and that 
+$$\Theta(\bar{I}) = \Theta(\bar{I'}) = \bar{f}$$
+for some class of forms $\bar{f}$.
+Then
+$$\bar{I} = \Psi({\bar{f}}) = \bar{I'}$$
+so $\Theta$ is injective, and is therefore a bijection whose inverse is $\Psi$.
 \end{proof}
 
 
@@ -971,8 +1037,8 @@ Hence,
 $$m = ab'u + a'bv + \frac{bb' + \Delta}{2}w.$$
 Note that this isn't necessarily our canonial choice for $m$, since we haven't added a multiple of $l$ to enforce $0 \leq m < 2l$, but the ideal is unchanged by this choice.
 
-To find $l$, we use the fact that norms of ideals are multiplicative (\red{cite}).
-The norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, hence, the norm of $I$ must be $aa'$.
+We can find $l$ by considering the norms of ideals; 
+the norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, hence, the norm of $I$ must be $aa'$.
 But by \Cref{lemma-ideal-norm}, we have
 \begin{gather*}
     aa' = N(I) = ln \\
@@ -992,11 +1058,12 @@ We have derived the following algorithm:
     $B \gets (b + b')/2$\;
 
     \vspace{2mm}
-    $u, v, w, n \in \Z$ chosen such that $ua + va' + wB = n = \gcd(a, a', B)$ ---
+    Choose $u, v, w, n \in \Z$ such that $ua + va' + wB = n = \gcd(a, a', B)$ ---
     this can be computed using Euclid's extended algorithm (\red{cite}).\;
     \vspace{2mm}
 
-    \Return{$\frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'}$}
+    \Return{$\displaystyle\frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'}$}
+    \vspace{1mm}
 \end{algorithm}
 
 \noindent
@@ -1022,16 +1089,17 @@ For an ideal $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$, a natural candidate might
 \begin{align*}
     &\hspace{-10mm} \left( l\Z + \frac{m + n\sqrt\Delta}{2}\Z \right) \cdot \left( l\Z + \frac{m - n\sqrt\Delta}{2}\Z \right) \\
     &= l^2\Z + l \left( \frac{m + n\sqrt\Delta}{2} \right)\Z + l \left( \frac{m - n\sqrt\Delta}{2} \right)\Z + \frac{m^2 - n^2\Delta}{4}\Z \\
-    &= l^2\Z + lm\Z + l \left( \frac{m + n\sqrt\Delta}{2} \right)\Z + \frac{m^2 - n^2\Delta}{4}\Z 
+    &= l^2\Z + lm\Z + l \left( \frac{m + n\sqrt\Delta}{2} \right)\Z + \frac{m^2 - n^2\Delta}{4}\Z \tag{$\ast$}
 \end{align*}
-We know by \cref{lemma-ideal-lattice} that we can reduce this to two generators, one of which is the smallest integer in the ideal.
+We know by \Cref{lemma-ideal-lattice} that we can reduce this to two $\Z$-generators, one of which is the smallest integer in the ideal.
 This integer is 
 $$\gcd \left( l^2, lm, \frac{m^2 - n^2\Delta}{4} \right) = l \cdot \gcd\left( l, m, n\frac{m^2 - n^2\Delta}{4ln} \right) = lk$$
 for some $k \in \Z$.
-We can see that $k$ divides each of $l$, $m$, and $n$, so the product of ideals above is given by
-$$lk \left( \Z + \frac{\Delta + \sqrt\Delta}{2} \right)$$
-since each generator in the above expansion is divisible by $lk$, and is therefore in this ideal (\red{needs more explanation?}).
-This is principal, and is therefore the identity.
+We can see that $k$ divides each of $l$, $m$, and $n$, so the product of ideals is contained within
+$$lk \left( \Z + \frac{\Delta + \sqrt\Delta}{2} \Z \right) = \langle lk \rangle$$
+since each coefficient in ($\ast$) is divisible by $lk$.
+And since $lk$ is contained in ($\ast$), the ideal product must be all of $\langle lk \rangle$.
+This is principal, and is therefore narrowly equivalent to the identity.
 Hence, we have verified that an ideal is inverted by taking its conjugate.
 Now consider a form $f = (a, b, c)$.
 This corresponds to the ideal
@@ -1041,8 +1109,6 @@ $$a\Z + \frac{b - \sqrt\Delta}{2}\Z = a\Z + \frac{-b + \sqrt\Delta}{2}\Z.$$
 Note that we have taken the negative of the second generator to ensure $n$ is positive.
 Finally, the form corresponding to this inverse is
 $$\Theta \left( a\Z + \frac{-b + \sqrt\Delta}{2}\Z \right) = (a, -b, c) = f^{-1}.$$
-
-\todo{show that composition precisely fits the definition given by Legendre?}.
 
 
 
@@ -1098,7 +1164,7 @@ Since $(a, b, c)$ is reduced, either of the latter conditions would imply $b > 0
     &\textbf{(2)} \hspace{2mm} a = b \implies (a, a, c) \\
     &\textbf{(3)} \hspace{2mm} a = c \implies (a, b, a).
 \end{align*}
-An ambiguous form must necessarily meet one of these conditions, and it is easy to show that each consition is sufficient:
+An ambiguous form must necessarily meet one of these conditions, and it is easy to show that each condition is sufficient:
 \begin{align*}
     \textbf{(1)} \hspace{2mm}
     (a, 0, c) \cdot (a, 0, c) &= (a, 0, c) \cdot (a, -0, c) \\
@@ -1124,7 +1190,7 @@ this is of particular note when one considers how each case affects the formula 
     \textbf{(3)} \hspace{2mm} \Delta = b^2 - 4a^2 = (b + 2a)(b - 2a).
 \end{gather*}
 Notice that every case gives a factorisation of the discriminant.
-Therefore, if we want to find a factorisiation of some number $D$, we can do this by finding amabiguous forms of discriminant $\Delta = D$
+Therefore, if we want to find a factorisiation of some number $D$, we can do this by finding ambiguous forms of discriminant $\Delta = D$
 (or $\Delta = 4D$ if $D$ is congruent to 2 or 3 modulo 4).
 
 
