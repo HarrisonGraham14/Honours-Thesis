@@ -41,6 +41,8 @@
 \newcommand{\GL}{\text{GL}} % General linear group
 \newcommand{\SL}{\text{SL}} % Special linear group
 
+\newcommand{\Cl}{\text{Cl}}
+
 \newcommand{\divides}{\mathrel{|}}
 
 % \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
@@ -544,7 +546,7 @@ It seems natural to ask, how many reduced forms of a given discriminant exist?
 That is, how many equivalence classes of a fixed discriminant are there?
 For a reduced form, we have a bound on $b$ given by $|b| \leq a \leq c$.
 Hence we can obtain a bound for $b$:
-\begin{theorem}
+\begin{theorem} \label{theorem-b-bound}
     For a positive definite form $f = (a, b, c)$, if $f$ is reduced, then
     $$|b| \leq \sqrt{-\tfrac{\Delta}{3}}.$$
 \end{theorem}
@@ -571,7 +573,7 @@ Hence, we see that there are only finitely many choices for $a$, $b$, and $c$ wh
 We have proved
 
 \vspace{2mm}
-\begin{theorem}
+\begin{theorem} \label{theorem-class-number-finite}
     The set of equivalence classes of positive definite forms of fixed discriminant $\Delta < 0$ is finite.
 \end{theorem}
 
@@ -1062,6 +1064,9 @@ We have derived the following algorithm:
     this can be computed using Euclid's extended algorithm (\red{cite}).\;
     \vspace{2mm}
 
+    $\displaystyle m \gets ab'u + a'bv + \frac{bb' + \Delta}{2}w$\;
+    \vspace{2mm}
+
     \Return{$\displaystyle\frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'}$}
     \vspace{1mm}
 \end{algorithm}
@@ -1109,6 +1114,12 @@ $$a\Z + \frac{b - \sqrt\Delta}{2}\Z = a\Z + \frac{-b + \sqrt\Delta}{2}\Z.$$
 Note that we have taken the negative of the second generator to ensure $n$ is positive.
 Finally, the form corresponding to this inverse is
 $$\Theta \left( a\Z + \frac{-b + \sqrt\Delta}{2}\Z \right) = (a, -b, c) = f^{-1}.$$
+
+We have now seen that there are finitely many classes of forms of a fixed discriminant $\Delta < 0$ (\Cref{theorem-class-number-finite}), that there is an identity class which acts trivially on other classes under the action of composition, and that each class has an inverse.
+Hence, the set of classes of forms of discriminant $\Delta < 0$ form a finite group.
+We call this the \textbf{class group}, denoted $\Cl_\Delta$.
+
+\todo{show that there are finitely many classes of indefinite forms?}
 
 
 
@@ -1190,8 +1201,42 @@ this is of particular note when one considers how each case affects the formula 
     \textbf{(3)} \hspace{2mm} \Delta = b^2 - 4a^2 = (b + 2a)(b - 2a).
 \end{gather*}
 Notice that every case gives a factorisation of the discriminant.
-Therefore, if we want to find a factorisiation of some number $D$, we can do this by finding ambiguous forms of discriminant $\Delta = D$
-(or $\Delta = 4D$ if $D$ is congruent to 2 or 3 modulo 4).
+Therefore, if we want to find a factorisiation of some number $D$, we can do this by finding ambiguous forms of discriminant $\Delta = -D$
+(or $\Delta = -4D$ if $D$ is congruent to 2 or 3 modulo 4).
+
+Since $\Cl_\Delta$ is a finite group, we can immediately devise a crude method for factoring via ambiguous forms.
+We can search for all reduced class representatives $(a, b, c)$ in $\Cl_\Delta$ by iterating over all possible values of $b$, and then assigning $a$ and $c$ by checking every factorisation of $\frac{b^2 - \Delta}{4}$.
+This doesn't yet offer an advantage over trial division, as we have simply shifted the task of factoring to the step where we find $a$ and $c$.
+We require a more efficient method for finding ambiguous forms.
+
+
+
+\pagebreak
+\section{Baby Step Giant Step}
+Since $\Cl_\Delta$ is a finite group, each element has some finite order.
+That is, for a form $f$, there exists some $d \in \N$ such that
+$$f^d \sim id_\Delta.$$
+If $d$ happens to be even, then we have
+$$(f^{d/2})^2 \sim id_\Delta.$$
+Hence, $(f^{d/2})$ must be an ambiguous form, which gives a factorisation of the discriminant.
+If there is at least one element of even order, then at least half of the elements of $\Cl_\Delta$ have even order (\red{prove}).
+
+Now, suppose that there exists a nontrivial factorisation of $-\Delta = xy$, then there is a corresponding ambiguous form (\todo{prove}).
+Hence, if we can sample forms of discriminant $\Delta$ randomly, there is at least a one in two chance that we find a form of even order.
+If we compute the order of this element, we can find a factorisation of $\Delta$, and if the order is odd, we simply sample again.
+The average number of samples needed before finding an element of even order is at most 2, so the expected running time is at most twice what it would be if our sample was guaranteed to have even order.
+
+To find the order of an element, we use a method discovered by Daniel Shanks called Baby Step Giant Step, (or BSGS).
+This algorithm uses a ``meet in the middle'' strategy ---
+instead of simply increasing the exponent on $f$ until we reach the identity
+
+\pagebreak
+\section{The Minkowski Bound}
+\red{to do}
+
+\pagebreak
+\section{Sampling Forms}
+\red{to do}
 
 
 %===============================================================================================================================%
