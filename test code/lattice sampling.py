@@ -45,6 +45,7 @@ from form import *
 
 discriminant = - 4 * 1187 * 3499
 tally = {}
+ambiguous = {}
 
 for i in range(10000):
     basis = randomLattice(discriminant)
@@ -56,7 +57,14 @@ for i in range(10000):
     key = f"({f.a}, {f.b}, {f.c})"
     if not key in tally.keys():
         tally[key] = 0
+        g = BinaryQuadraticForm(f.a, f.b, f.c)
+        half_order = 1
+        while g.is_ambiguous() == False:
+            g *= f
+            g = g.reduce()
+            half_order += 1
+        ambiguous[key] = f"^{half_order} = ({g.a}, {g.b}, {g.c})"
     tally[key] += 1
 
 for key in tally.keys():
-    print(f"{key} : {tally[key]}")
+    print(f"{key} : {ambiguous[key]}")

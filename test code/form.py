@@ -1,5 +1,12 @@
 from math import gcd, isqrt
 
+def gcdExtended(a, b):
+    if a == 0:
+        return b, 0, 1
+    gcd, x1, y1 = gcdExtended(b % a, a)
+    x = y1 - (b // a) * x1
+    y = x1
+    return gcd, x, y
 
 class BinaryQuadraticForm:
 
@@ -33,6 +40,10 @@ class BinaryQuadraticForm:
                 and self.b < 0
             )
         )
+
+    def is_ambiguous(self):
+        f = self.reduce()
+        return (f.b == 0) or (f.a == f.b) or (f.a == f.c)
 
     def reduce(self):
         a, b, c = self.a, self.b, self.c
@@ -70,64 +81,29 @@ class BinaryQuadraticForm:
 
         D = self.discriminant
 
-        a1, b1, c1 = self.a, self.b, self.c
-        a2, b2, c2 = other.a, other.b, other.c
-
-        # General composition via CRT / ideal representatives.
-        # Choose equivalent forms with coprime leading coefficients.
-
         f1 = self.reduce()
         f2 = other.reduce()
 
         a1, b1, c1 = f1.a, f1.b, f1.c
         a2, b2, c2 = f2.a, f2.b, f2.c
 
-        # Find equivalent representative with leading coefficient
-        # coprime to a2.
-        found = False
+        B = (b1 + b2) // 2
 
-        for t in range(-abs(a2), abs(a2) + 1):
-            B = b1 + 2 * a1 * t
-            A = a1
+        n1, u1, v1 = gcdExtended(a1, a2)
+        n, z, w = gcdExtended(n1, B)
+        u = z * u1
+        v = z * v1
 
-            if gcd(A, a2) == 1:
-                found = True
-                break
+        m = (a1 * b2 * u) + (a2 * b1 * v) + (((b1 * b2) + D) * w // 2)
 
-        if not found:
-            raise ArithmeticError(
-                "Could not find coprime representatives"
-            )
+        a = a1 * a2 // (n**2)
+        b = m // n
+        c = (m**2 - ((n**2) * D)) // (4 * a1 * a2)
 
-        # Composition when gcd(a1, a2) = 1.
-        # Solve B == b1 (mod 2*a1)
-        #       B == b2 (mod 2*a2)
+        result = BinaryQuadraticForm(a, b, c)
+        result = result.reduce()
 
-        M = 2 * a1
-        N = 2 * a2
-
-        g = gcd(M, N)
-
-        if (b2 - B) % g != 0:
-            raise ArithmeticError("CRT compatibility failure")
-
-        M1 = M // g
-        N1 = N // g
-
-        inv = pow(M1, -1, N1) if N1 > 1 else 0
-
-        k = (((b2 - B) // g) * inv) % N1 if N1 > 1 else 0
-
-        B = B + M * k
-
-        A = a1 * a2
-        B = B % (2 * A)
-
-        C = (B**2 - D) // (4 * A)
-
-        result = BinaryQuadraticForm(A, B, C)
-
-        return result.reduce()
+        return result
 
     def __eq__(self, other):
         if not isinstance(other, BinaryQuadraticForm):
@@ -148,6 +124,5 @@ class BinaryQuadraticForm:
 
     def __str__(self):
         return (
-            f"{self.a}x^2 + {self.b}xy + {self.c}y^2 "
-            f"(D={self.discriminant})"
+            f"({self.a}, {self.b}, {self.c})"
         )
