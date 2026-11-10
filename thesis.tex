@@ -423,13 +423,16 @@ The full reduction algorithm is as follows
     \KwIn{$a, b, c \in \Z$ such that $(a, b, c)$ is a positive definite form.}
     \KwOut{$a, b, c \in \Z$ such that $(a, b, c)$ is reduced and properly equivalent to the provided form.}
     \algosep
-    \While {$b \notin (-a, a]$}{
+    \While {true}{
         $k \gets \lceil (b - a) / 2a \rceil$\;
         $c \gets k^2 a + k b + c$\;
         $b \gets 2ka + b$\;
-        \If {$a > c$ or ($a = c$ and $b < 0$)}{
+        \If {$a > c$ or $(b < 0$ and $a = c$)}{
             $a \leftrightarrow c$ \hspace{2mm} (swap values)\;
             $b \gets -b$\;
+        }
+        \If {$|b| \leq a \leq c$ and $((|b| = a $ or $a = c) \implies b \geq 0)$}{
+            \Return{$a, b, c$}
         }
     }
 \end{algorithm}
@@ -437,7 +440,7 @@ The full reduction algorithm is as follows
 We say that a positive definite form is \textbf{reduced} if it satisfies
 \begin{itemize}
     \item $|b| \leq a \leq c$
-    \item $b \geq 0$ if $a = |b|$ or $a = c$.
+    \item $b \geq 0$ if $|b| = a$ or $a = c$.
 \end{itemize}
 
 \vspace{2mm}
@@ -576,6 +579,14 @@ We have proved
 \begin{theorem} \label{theorem-class-number-finite}
     The set of equivalence classes of positive definite forms of fixed discriminant $\Delta < 0$ is finite.
 \end{theorem}
+
+\vspace{2mm}
+There is a similar result for indefinite forms.
+When $\Delta > 0$, we define "reduced" forms differently, with a different reduction algorithm.
+Unlike what we have seen for definite forms, this algorithm doesn't terminate at a single reduced class representative, but rather resolves to a cycle of reduced forms.
+It can be shown that there are only finitely many equivalence classes of forms for a fixed discriminant $\Delta > 0$ (see \red{cite}).
+We won't discuss this further here, as we are only interested in positive definite forms for the application in \Cref{s-factor}.
+However, the results proved in \Cref{s-comp} generically apply to both kinds of forms, and factoring algorithms which use positive definite forms do exist (\red{cite}).
 
 
 %===============================================================================================================================%
@@ -932,22 +943,14 @@ First, we must show that $\bar{\Psi}$ is well defined ---
 that is, that the output truly is an ideal of $\order_\Delta$.
 We show this using \Cref{lemma-lattice-divisibility-conditions}.
 Conditions 1 and 3 are trivial, since we have chosen $n = 1$, while conditions 2 and 4 are enforced by $\Delta = b^2 - 4ac$.
-
-\begin{theorem} \label{thm-correspondence-inverse}
-    The function $\Psi$ from proper equivalence classes of forms of discriminant $\Delta$ to narrow equivalence classes of ideals of $\order_\Delta$ induced by $\bar{\Psi}$ is the inverse function to $\Theta$.
-\end{theorem}
-
-\begin{proof}
-    We will show that $\Theta \circ \Phi$ is the identity.
-    Let $\bar{f}$ be a class of forms of disriminant $\Delta$ with a class representative $f = (a, b, c)$. 
-    We then let
-    $$I = \bar{\Phi}(f) = a\Z + \frac{b + \sqrt\Delta}{2}\Z$$
-    and call the correpsonding equivalence class $\bar{I}$.
-
-    \todo{...}
-\end{proof}
+Now, we are ready to prove \Cref{thm-ideal-correspondence} by showing that $\Psi$ is an inverse function to $\Theta$.
 
 \begin{proof}[Proof of \Cref{thm-ideal-correspondence}]
+First we show $\Theta \circ \Psi$ is the identity by considering its action on a generic class of forms $\bar{f}$.
+Let $f = (a, b, c)$ be a representative of $\bar{f}$.
+\begin{align*}
+    
+\end{align*}
 
 If $a > 0$, then we can add multiples of the first basis element to the second to reach the canonical form:
 $$I = a\Z + \frac{b + 2ka + \sqrt\Delta}{2}\Z$$
