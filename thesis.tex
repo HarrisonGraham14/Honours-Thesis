@@ -1050,7 +1050,7 @@ But by \Cref{lemma-ideal-norm}, we have
     \implies l = \frac{aa'}{n}
 \end{gather*}
 Hence, with the given choices of $m$ and $n$, the form corresponding to the resulting ideal is
-$$(a, b, c) \cdot (a', b', c') = \left( \frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'} \right).$$
+$$(a, b, c) \cdot (a', b', c') = \left( \frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4aa'} \right).$$
 We have derived the following algorithm:
 \begin{algorithm}\label{alg-composition}
     \caption{Composition formula}
@@ -1070,7 +1070,7 @@ We have derived the following algorithm:
     $\displaystyle m \gets ab'u + a'bv + \frac{bb' + \Delta}{2}w$\;
     \vspace{2mm}
 
-    \Return{$\displaystyle\frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{aa'}$}
+    \Return{$\displaystyle\frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4aa'}$}
     \vspace{1mm}
 \end{algorithm}
 
