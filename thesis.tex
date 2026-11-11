@@ -121,10 +121,13 @@ agreeing to the statements and conditions above.
 Signed: \rule{7cm}{0.25pt} \hfill Date: \rule{4cm}{0.25pt} 
 
 
-% Acknowledgements
-% \pagebreak
-% \prefacesection{Acknowledgements}
-% \bigskip \noindent Body text
+Acknowledgements
+\pagebreak
+\prefacesection{Acknowledgements}
+\bigskip \noindent 
+I would like to thank Professor David Harvey first and foremost for the time and effort he has invested into supervising my project, providing consistent and valuable feedback amidst a busy schedule.
+
+I would also like to thank the Mathematics faculty at UNSW --- in particular, Professor Lee Zhao for arranging practise presentations, and Amandine Schaeffer for organising workshops and other meetings. 
 
 
 % Abstract
@@ -143,46 +146,13 @@ Signed: \rule{7cm}{0.25pt} \hfill Date: \rule{4cm}{0.25pt}
 \chapter*{Introduction}\label{s-intro}
 \addcontentsline{toc}{chapter}{Introduction}
 
-The goal of this paper is to develop methods for factoring large integers using the theory of binary quadratic forms.
-The paper is written with the intention of providing motivated explanations to the reader,
-as the existing resources often give proofs of theorems without explaining how such a result would be formulated without prior knowledge of its truth.
-This poses a particular challenge in \Cref{s-comp}, 
-as I'm yet to find a paper that approaches composition in the style of a derivation instead of stating it as a result and then proving that it works.
+The goal of this paper is to develop methods for factoring integers using the theory of binary quadratic forms.
+The paper is written with the intention of providing motivated explanations to the reader. 
+This is most notably seen in \Cref{s-comp} where we give a motivated derivation of composition of forms, as opposed to the majority of literature which simply states an algorithm for composing forms and then proves that it has the desired properties.
 
-\vspace{2mm}
-\noindent
-For the chapter draft, 
-\begin{itemize}
-    \item A completed draft of \Cref{s-forms} is included, where some of the basic definitions are established.
-    Here, we establish that forms of a fixed discriminant can be partitioned into a finite set of equivalence classes.
-
-    \item A bare-bones version of \Cref{s-comp} is included.
-    Here, important results are given, and the direction of the proofs are in place, but many of the details have not yet been formalised.
-    Notes have been left in \red{red text} to indicate work that is needed.
-
-    \item The beginning of \Cref{s-factor} is also included.
-    Here, the usefulness of binary quadratic forms for factoring is realised.
-    The key result that the previous chapters have built towards is provided in \Cref{s-factor-amb};
-    ``ambiguous forms'' immediately provide a factorisation of the discriminant.
-\end{itemize}
-
-The tasks for the remainder of the project are to finish formalising the derivations in \Cref{s-comp},
-and to develop methods for finding ambiguous forms efficiently.
-
-So far, the paper has focuseed on definite forms (negative discriminant), 
-as they have a simpler structure and are sufficient to develop factoring algorithms.
-However, at some point we will likely want to use definite forms (positive discriminant), as they give rise to different algorithms \cite[\S\,8.7]{cohen}.
-This will require adding to the content of \Cref{s-forms}, and possibly adjusting the arguments in \Cref{s-comp}.
-
-Beyond this, if time allows, 
-we could move to an investigation of factoring algorithms which leverage larger number fields than the quadratic fields which underpin binary quadratic forms.
-
-Alternatively, we could move to a discussion of cryptography \cite[Ch.\,12]{buchmann};
-if finding ambiguous forms leads immediately to factoring the discriminant, then mapping the class group is at least as computationally complex as factoring.
-Since existing cryptographic methods depend on the assumption that factoring is difficult,
-cryptographic methods which depend on the structure of the class group should, in principal, be secure.
-Developing a novel encryption method may be an interesting way to continue the narrative of the paper,
-but whether this will be an appropriate use of time remains to be seen.
+The method of factoring derived in \Cref{s-factor} is inspired by Daniel Shanks' class group method \cite{shanks}.
+The key idea is that we leverage the finite abelian group structure of the class group to search for ``ambiguous forms,'' which immediately lead to factorisations of the discriminant.
+The largest difference from Shanks' approach is that we make no attempt to compute the class number, instead settling for a simple upper bound.
 
 
 
@@ -573,20 +543,19 @@ Consider
 \end{align*}
 so we have finitely many choices for $a$ and $c$ --- each corresponding to a factorisation of $\tfrac{b^2 - \Delta}{4}$.
 Hence, we see that there are only finitely many choices for $a$, $b$, and $c$ when constructing a reduced positive definite form of a fixed discriminant.
-We have proved
+We have proved the following for $\Delta < 0$:
 
 \vspace{2mm}
 \begin{theorem} \label{theorem-class-number-finite}
-    The set of equivalence classes of positive definite forms of fixed discriminant $\Delta < 0$ is finite.
+    The set of equivalence classes of positive definite forms of fixed discriminant $\Delta$ is finite.
 \end{theorem}
 
 \vspace{2mm}
-There is a similar result for indefinite forms.
-When $\Delta > 0$, we define "reduced" forms differently, with a different reduction algorithm.
+To show this when $\Delta > 0$, we define "reduced" forms differently, with a different reduction algorithm.
 Unlike what we have seen for definite forms, this algorithm doesn't terminate at a single reduced class representative, but rather resolves to a cycle of reduced forms.
-It can be shown that there are only finitely many equivalence classes of forms for a fixed discriminant $\Delta > 0$ (see \red{cite}).
-We won't discuss this further here, as we are only interested in positive definite forms for the application in \Cref{s-factor}.
-However, the results proved in \Cref{s-comp} generically apply to both kinds of forms, and factoring algorithms which use positive definite forms do exist (\red{cite}).
+We won't give the proof for $\Delta > 0$ here, as we do not deal explicitly with indefinite forms in this paper (though the results of \Cref{s-comp} do apply generally).
+As such, we will not explicitly construct these results for $\Delta > 0$.
+See \cite[\S\,3.1]{buell} for a complete handling of indefinite forms.
 
 
 %===============================================================================================================================%
@@ -599,7 +568,7 @@ We acheive this by showing a bijection between classes of forms and classes of i
 under which the ideal multiplication structure gives a multiplicative structure to the corresponding classes of forms.
 
 \section{Historical Background}
-\emph{In this section, we draw from \cite[\S2D-\S3A]{cox}.}
+\emph{In this section, we draw from \cite[\S\,2D-\S\,3A]{cox}.}
 
 \vspace{2mm}
 \noindent
@@ -645,8 +614,8 @@ Here, we are working with the definition of a ring that requires the existence o
 
 Now, for $\Delta \equiv 0, 1 \pmod{4}$ where $\Delta$ is not a perfect square, let $K_\Delta = \Q(\sqrt\Delta)$, and define the \textbf{order of discriminant} $\mathbf{\Delta}$ to be 
 $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z.$$
-One might expect an extension of the integers to take the form $\Z + \sqrt\Delta \Z$, but this ring is not ``integrally closed'' when $\Delta \equiv 1 \pmod{4}$.
-The integral closure of this ring is $\Z + \frac{1 + \sqrt\Delta}{2}\Z$ (see \red{ref} for further discussion on what integral closure is and why it is needed).
+One might expect an extension of the integers to take the form $\Z + \sqrt\Delta \Z$, but this ring is not a ``integrally closed'' when $\Delta \equiv 1 \pmod{4}$.
+The integral closure of $\Q(\sqrt\Delta)$ is $\Z + \frac{1 + \sqrt\Delta}{2}\Z$ (see \cite[Ch.\,1\,\S\,2,\,8]{neukirch}, \cite[\S\,2.3]{stewart}).
 The definition of $\order_\Delta$ given is equivalent to
 $$\order_\Delta = \begin{cases}
     \Z + \sqrt\Delta \Z & \Delta \equiv 0 \pmod{4} \\
@@ -654,6 +623,7 @@ $$\order_\Delta = \begin{cases}
 \end{cases}$$
 except the chosen definition avoids dealing with multiple cases.
 
+\vspace{2mm}
 \begin{lemma}
     $\order_\Delta$ is an order in $K_\Delta$.
 \end{lemma}
@@ -787,8 +757,8 @@ $$N(I) = \left| R / I \right|.$$
 \end{proof}
 
 Finally, we will define the norm of an element of a number field.
-This can be defined more generally for larger fields (\red{cite}), but for our purposes, we will only handle the quadratic case.
-For any quadratic number field $K$ (that is, $K = \Q(\sqrt{\Delta})$ where $\Delta$ is not a perfect square), the \textbf{norm of an element} $x + y\sqrt\Delta \in K$ (where $x, y \in \Q$) is given by \cite[Ch.\,6.2]{buell}
+This can be defined more generally for larger fields \cite[\S\,3.2]{jarvis}, but for our purposes, we will only handle the quadratic case.
+For any quadratic number field $K$ (that is, $K = \Q(\sqrt{\Delta})$ where $\Delta$ is not a perfect square), the \textbf{norm of an element} $x + y\sqrt\Delta \in K$ (where $x, y \in \Q$) is given by \cite[\S\,6.2]{buell}
 $$N(x + y\sqrt\Delta) = (x + y\sqrt\Delta) \cdot (x - y\sqrt\Delta) = x^2 - y^2\Delta.$$
 This can be positive or negative, and is zero if and only if $x = y = 0$, since $\Delta$ is not a perfect square.
 
@@ -812,7 +782,7 @@ This can be positive or negative, and is zero if and only if $x = y = 0$, since 
 
 \noindent
 The same is true of the norms of ideals, although the proof is not so elementary.
-For a proof of this fact, see (\red{cite}).
+For a proof of this fact, see \cite[Thm.\,5.37]{jarvis}.
 
 \vspace{2mm}
 \begin{lemma} \label{lemma-norm-relation}
@@ -820,7 +790,7 @@ For a proof of this fact, see (\red{cite}).
     $$N(\langle z \rangle) = \left| N(z) \right|.$$
 \end{lemma}
 \noindent
-A proof of this remark can be found in (\red{cite}).
+A proof of this remark can be found in \cite[Lemma\,5.35]{jarvis}.
 
 
 
@@ -883,11 +853,15 @@ This is properly equivalent to the form that we found when using our canonical b
 We already had the sense that properly equivalent forms contain the same data, since they represent the same numbers.
 We now have a new way of thinking of this --- equivalent forms describe the norms of elements of the same ideal using different bases.
 
-If we now allow any basis to be chosen to represent an ideal, a bijection from ideals to forms, $\Theta$, must necessarily map into equivalence classes of forms.
-Otherwise, $\Theta(I)$ would map into different (but equivalent) forms depending on the choice of basis.
+If we now allow any basis to be chosen to represent an ideal, a bijection from ideals to forms, $\Theta$, must necessarily map into equivalence classes of forms ---
+since $\Theta(I)$ maps into different (but equivalent) forms depending on the choice of basis.
 By taking the codomain to be proper equivalence classes of forms, the function remains well defined.
 
-We naturally desire a way of being able to check which order of the generators correpsonds to the canonical basis via an $\SL_2(\Z)$ transformation.
+When choosing a basis for $I$, there exists a $\GL_2(\Z)$ transformation $\phi$ from the canonical basis to the chosen basis.
+If $\phi \notin \SL_2(\Z)$ (ie. $\det(\phi) = -1$), then we can compose $\phi$ with the matrix 
+$$\bmat{0 & 1 \\ 1 & 0} : \bmat{x \\ y} \longmapsto \bmat{y \\ x}$$
+to get a $\SL_2(\Z)$ transformation which gives the same basis in the reversed order.
+So given a basis for $I$, how do we determine the ``correct'' ordering of elements?
 Consider that for bases $B_1 = \{ l, \frac{m + n\sqrt\Delta}{2} \}$ and $B_2 = \{ \alpha_1 + \alpha_2 \sqrt\Delta , \beta_1 + \beta_2 \sqrt\Delta \}$, 
 we have the following matrices for converting coefficients on the basis elements into coefficients on $1$ and $\sqrt\Delta$, respectively:
 $$\phi_1 = \bmat{l & \frac{m}{2} \\ 0 & \frac{n}{2}}, 
@@ -934,46 +908,21 @@ So it is clear that we should allow $\alpha$ to be in the field of fractions of 
 This provides a motivation for the definition of narrow equivalence of ideals.
 
 To show that $\Theta$ is a isomorphism, we will construct its inverse.
-A natural candidate for a function resembling an inverse of $\bar{\Theta}$ is
+A natural candidate resembling an inverse of $\bar{\Theta}$ is
 $$\bar{\Psi} : (a, b, c) \longmapsto a\Z + \frac{b + \sqrt\Delta}{2}\Z.$$
-Of course, this is not truly an inverse to $\bar{\Theta}$, which is not injective and therefore has no inverse.
-However, we will show that $\bar{\Phi}$ induces an inverse function to $\Theta$.
+We assume that $a$ is positive in order to preserve the basis orientation condition.
+For indefinite forms, $a$ may be negative, but we can always find an equivalent form where $a > 0$.
+Of course, $\bar{\Psi}$ is not an inverse to $\bar{\Theta}$, which is not injective and therefore has no inverse.
+However, we will show that $\bar{\Psi}$ induces an inverse function to $\Theta$.
 
 First, we must show that $\bar{\Psi}$ is well defined --- 
 that is, that the output truly is an ideal of $\order_\Delta$.
 We show this using \Cref{lemma-lattice-divisibility-conditions}.
 Conditions 1 and 3 are trivial, since we have chosen $n = 1$, while conditions 2 and 4 are enforced by $\Delta = b^2 - 4ac$.
-Now, we are ready to prove \Cref{thm-ideal-correspondence} by showing that $\Psi$ is an inverse function to $\Theta$.
+We have hence shown that $\bar{\Psi}$ is well-defined.
 
-\begin{proof}[Proof of \Cref{thm-ideal-correspondence}]
-First we show $\Theta \circ \Psi$ is the identity by considering its action on a generic class of forms $\bar{f}$.
-Let $f = (a, b, c)$ be a representative of $\bar{f}$.
-\begin{align*}
-    
-\end{align*}
-
-If $a > 0$, then we can add multiples of the first basis element to the second to reach the canonical form:
-$$I = a\Z + \frac{b + 2ka + \sqrt\Delta}{2}\Z$$
-where $k \in \Z$ such that $0 \leq b + 2ka < 2a$.
-Since this is in canonical form, we can apply our simplest formulation for $\Theta$:
-$$\bar{\Theta}(I) = (a, b + 2ka, C)$$
-where $C$ is some integer. By a $T^{-k}$ transformation, we get
-$$\bar{\Theta}(I) = (a, b, C')$$
-where $C'$ is another integer, which is forced to be $c$ by the discriminant formula.
-If instead $a < 0$, as can be the case when $f$ is an indefinite form, \Cref{lemma-basis-orientation} gives
-$$\alpha_1 \beta_2 - \alpha_2 \beta_1 = a \cdot \frac{1}{2} - \frac{b}{2} \cdot 0 = \frac{a}{2} < 0$$
-so we must reverse the order of the basis to get
-$$\Theta(I) = \frac{N \left( \frac{b + \sqrt\Delta}{2}x + ay \right)}{N(I)}.$$
-
-
-
-\todo{finish}
-So we have 
-$$\bar{\Theta}(I) = f \implies \Theta(\bar{I}) = \bar{f}.$$
-Hence, we see that $\Theta$ is surjective.
-
-To show injectivity, we show that $\bar{\Psi}$ induces a function $\Psi$ from proper equivalence classes of forms to narrow equivalence classes of ideals which is an inverse to $\Theta$.
-We must first prove that $\Psi$ is well defined by showing that $\bar{\Psi}$ takes equivalent forms to equivalent ideals.
+Now, we will show that $\bar{\Psi}$ induces a function $\Psi$ from proper equivalence classes of forms to narrow equivalence classes of ideals.
+To do this, we must show that $\Psi$ is well defined by showing that $\bar{\Psi}$ takes equivalent forms to equivalent ideals.
 First, observe where $\bar{\Psi}$ maps the form $f = (a, b, c)$ after a $T$-transformation:
 \begin{align*}
     \bar{\Psi} : (a, b + 2a, c + b + a) &\mapsto a\Z + \frac{b + 2a + \sqrt\Delta}{2}\Z \\
@@ -991,21 +940,24 @@ Next, observe where it sends $f$ after an $S$-transformation:
 So applying an $S$ or $T$ transformation to a form doesn't change the class of ideals that it is sent to by $\bar{\Psi}$ --- 
 and since all $\SL_2(\Z)$ transfomations are compositions of $S$ and $T$, we conclude that $\Psi$ is well-defined.
 
-To see that this truly is the inverse of $\Theta$, choose an ideal class $\bar{I}$ in $\order_\Delta$ with a class representative $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$.
-Then
-$$\bar{\Theta}(I) = \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right).$$
-Call this form $f$, and its equivalence class $\bar{f}$.
-Then $\Theta(\bar{I}) = \bar{f}$.
-Now,
-$$\bar{\Psi}(f) = \frac{l}{n}\Z + \frac{\frac{m}{n} + \sqrt\Delta}{2}\Z \sim I.$$
-That is, $\Psi(\Theta(\bar{I})) = \bar{I}$ for all narrow equivalence classes of ideals $\bar{I}$.
+Finally, we are ready to prove \Cref{thm-ideal-correspondence} by showing that $\Psi$ is an inverse function to $\Theta$.
 
-Now, suppose that $\bar{I}$ and $\bar{I'}$ are ideal classes of $\order_\Delta$, and that 
-$$\Theta(\bar{I}) = \Theta(\bar{I'}) = \bar{f}$$
-for some class of forms $\bar{f}$.
-Then
-$$\bar{I} = \Psi({\bar{f}}) = \bar{I'}$$
-so $\Theta$ is injective, and is therefore a bijection whose inverse is $\Psi$.
+\begin{proof}[Proof of \Cref{thm-ideal-correspondence}]
+First we show $\Theta \circ \Psi$ is the identity by considering its action on a generic class of forms $\bar{f}$.
+Let $f = (a, b, c)$ be a representative of $\bar{f}$, chosen such that $a > 0$.
+\begin{align*}
+    \Theta \circ \Psi ((a, b, c)) &= \Theta \left( a\Z + \frac{b + \sqrt\Delta}{2} \Z \right) \\
+    &= (a, b, c) = f.
+\end{align*}
+Likewise, for any narrow ideal class $\bar{I}$, choose a class representative with canonical representation $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$. 
+Then we have
+\begin{align*}
+    \Psi \circ \Theta \left( l\Z + \frac{m + n\sqrt\Delta}{2}\Z \right) 
+    &= \Psi \left( \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right) \right) \\
+    &= \frac{l}{n}\Z + \frac{m/n + \sqrt\Delta}{2} \Z \\
+    &\sim n \cdot \left( \frac{l}{n}\Z + \frac{m/n + \sqrt\Delta}{2} \Z \right) = I.
+\end{align*}
+Hence, $\Psi$ is an inverse to $\Theta$, which means that these functions are bijections between proper equivalence classes of forms and narrow equivalence classes of ideals.
 \end{proof}
 
 
@@ -1064,7 +1016,7 @@ We have derived the following algorithm:
 
     \vspace{2mm}
     Choose $u, v, w, n \in \Z$ such that $ua + va' + wB = n = \gcd(a, a', B)$ ---
-    this can be computed using Euclid's extended algorithm (\red{cite}).\;
+    this can be computed using two applications of Euclid's extended algorithm \cite[\S\,1.3.2]{cohen}, first computing the gcd of $a$ and $a'$, then the gcd of the result and $B$.\;
     \vspace{2mm}
 
     $\displaystyle m \gets ab'u + a'bv + \frac{bb' + \Delta}{2}w$\;
@@ -1075,7 +1027,7 @@ We have derived the following algorithm:
 \end{algorithm}
 
 \noindent
-Optimisations to this algorithm are given by Cohen \cite[Alg.,5.4.7]{cohen}.
+Optimisations to this algorithm are given by Cohen \cite[Alg.\,5.4.7]{cohen}.
 
 
 \pagebreak
@@ -1118,11 +1070,9 @@ Note that we have taken the negative of the second generator to ensure $n$ is po
 Finally, the form corresponding to this inverse is
 $$\Theta \left( a\Z + \frac{-b + \sqrt\Delta}{2}\Z \right) = (a, -b, c) = f^{-1}.$$
 
-We have now seen that there are finitely many classes of forms of a fixed discriminant $\Delta < 0$ (\Cref{theorem-class-number-finite}), that there is an identity class which acts trivially on other classes under the action of composition, and that each class has an inverse.
-Hence, the set of classes of forms of discriminant $\Delta < 0$ form a finite group.
+We now know that there are finitely many proper equivalence classes of fixed discriminant $\Delta$ (\Cref{theorem-class-number-finite}), that composition is a well-defined binary operation on this set, that there is an identity class which acts trivially on other classes, and that each class has an inverse.
+Hence, the set of classes of forms of fixed discriminant $\Delta$ form a finite group under the operation of composition.
 We call this the \textbf{class group}, denoted $\Cl_\Delta$.
-
-\todo{show that there are finitely many classes of indefinite forms?}
 
 
 
@@ -1234,7 +1184,27 @@ This algorithm uses a ``meet in the middle'' strategy ---
 instead of simply increasing the exponent on $f$ until we reach the identity
 
 \pagebreak
-\section{The Minkowski Bound}
+\section{Bounding the Class Number}
+
+In order to implement the BSGS algorithm, we need a bound on the class number $h_\Delta = | \Cl_\Delta |$.
+One's first thought may be to use a counting argument to bound the number of reduced forms.
+For reduced positive definite forms, we have shown $|b| \leq \sqrt{|\Delta|/3}$.
+Note that $b \equiv \Delta \pmod{2}$, so only half of the values of $b$ in this range are valid candidate choices.
+Once we fix $b$, the choices for $a$ and $c$ are given by factor pairs of 
+$$\frac{b^2 - \Delta}{4} \leq \frac{\frac{| \Delta |}{3} + | \Delta |}{4} = \frac{|\Delta|}{3}.$$
+The number of ways to split this term into two factors is bounded above by
+$$2 \cdot \sqrt{\frac{|\Delta|}{3}}.$$
+So the total number of reduced forms is bounded by
+$$h_\Delta \leq \sqrt{\frac{|\Delta|}{3}} \cdot 2 \cdot \sqrt{\frac{|\Delta|}{3}} = \frac{2\Delta}{3}.$$
+This bound allows us to compute the order of a form of discriminant $\Delta$ with time complexity $O(\sqrt\Delta)$.
+This is on par with trial division.
+
+To improve upon this, we use the analytic class number formula.
+For $\Delta < -4$, we have
+$$h_\Delta = \frac{\sqrt{|\Delta|}}{\pi} L(1, \chi_\Delta) \hspace{5mm}$$
+where $\chi_\Delta$ is a Dirichlet character mod $\Delta$.
+The details of this formula and its derivation are given here \red{cite}
+
 \red{to do}
 
 \pagebreak
