@@ -17,7 +17,7 @@
 \usepackage[colorlinks=true,linkcolor=blue,draft=false]{hyperref}
 \usepackage[nameinlink]{cleveref}
 \usepackage[ruled,vlined,algosection]{algorithm2e}
-% \usepackage{MnSymbol}
+\usepackage{changepage}
 
 \hypersetup{citecolor=[rgb]{0, 0.5, 0}}
 
@@ -125,9 +125,7 @@ Acknowledgements
 \pagebreak
 \prefacesection{Acknowledgements}
 \bigskip \noindent 
-I would like to thank Professor David Harvey first and foremost for the time and effort he has invested into supervising my project, providing consistent and valuable feedback amidst a busy schedule.
-
-I would also like to thank the Mathematics faculty at UNSW --- in particular, Professor Lee Zhao for arranging practise presentations, and Amandine Schaeffer for organising workshops and other meetings. 
+I would like to thank Professor David Harvey for the time and effort he has invested into supervising my project, providing consistent and invaluable feedback amidst his busy schedule.
 
 
 % Abstract
@@ -1037,7 +1035,7 @@ The identity is straightforward --- regardless of $\Delta$, the ideal of $\order
 The corresponding form is
 $$\Theta(\order_\Delta) = \Theta \left( 1\Z + 1\frac{\Delta + \sqrt\Delta}{2} \right) = \left(1, \Delta, \frac{\Delta^2 - \Delta}{4} \right).$$
 By applying a $T$ transformation, we get the reduced \textbf{principal form}:
-$$id_\Delta = \begin{cases}
+$$\text{id}_\Delta = \begin{cases}
     \left( 1, 0, \frac{-\Delta}{4} \right) & \Delta \equiv 0 \pmod{4} \\
     \left( 1, 1, \frac{1 - \Delta}{4} \right) & \Delta \equiv 1 \pmod{4}. \\
 \end{cases}$$
@@ -1154,14 +1152,107 @@ this is of particular note when one considers how each case affects the formula 
     \textbf{(3)} \hspace{2mm} \Delta = b^2 - 4a^2 = (b + 2a)(b - 2a).
 \end{gather*}
 Notice that every case gives a factorisation of the discriminant.
-Therefore, if we want to find a factorisiation of some number $D$, we can do this by finding ambiguous forms of discriminant $\Delta = -D$
-(or $\Delta = -4D$ if $D$ is congruent to 2 or 3 modulo 4).
+Therefore, if we want to find a factorisiation of some number $N$, we can do this by finding ambiguous forms of discriminant $\Delta = -N$
+(or $\Delta = -4N$ if $-N$ is congruent to 2 or 3 mod 4).
 
-Since $\Cl_\Delta$ is a finite group, we can immediately devise a crude method for factoring via ambiguous forms.
-We can search for all reduced class representatives $(a, b, c)$ in $\Cl_\Delta$ by iterating over all possible values of $b$, and then assigning $a$ and $c$ by checking every factorisation of $\frac{b^2 - \Delta}{4}$.
-This doesn't yet offer an advantage over trial division, as we have simply shifted the task of factoring to the step where we find $a$ and $c$.
-We require a more efficient method for finding ambiguous forms.
+Suppose we devise a method to randomly sample ambiguous forms of discriminant $\Delta$.
+This is sufficient to constitute a factoring algorithm so long as a fixed percentage of ambiguous forms lead to nontrivial factorisations.
+We will show that this is the case.
 
+\vspace{2mm}
+\begin{theorem} \label{thm-ambiguous-factorisations}
+    If $N > 1$ is an odd composite integer, then at least half of all reduced ambiguous forms of discriminant $\Delta$ lead to nontrivial factorisations of $N$, where
+    $$\Delta = \begin{cases}
+        -N & -N \equiv 1 \pmod{4} \\
+        -4N & -N \equiv 3 \pmod{4}.
+    \end{cases}$$
+\end{theorem}
+
+\begin{proof}
+    Let us first consider the case that $-N \equiv 1 \pmod{4}$.
+    We start by listing all reduced ambiguous forms of discriminant $-N$ which lead to the trivial factorisation $N = 1 \cdot N$.
+    We can break this down by each kind of ambiguous form:
+
+    \begin{adjustwidth}{12mm}{0pt}
+        \noindent
+        \llap{\textbf{(1)} \hspace{2mm}} \hspace{-3mm}
+        We cannot have a form $(a, 0, c)$, since this gives $N = 4ac$, but $N$ is odd.
+
+        \vspace{5mm}
+        \noindent
+        \llap{\textbf{(2)} \hspace{2mm}} \hspace{-3mm}
+        A form $(a, a, c)$ gives $\Delta = a(a-4c)$, so we must choose $a$ to be $1$ or $N$.
+        For a reduced form, $b$ (which here $=a$) must be less than $\sqrt{-\Delta / 3}$, so we must choose $a = 1$.
+        Solving $-N = a - 4c$ for $c$, we get the ambiguous form
+        $$\left( 1, 1, \frac{1 + N}{4} \right).$$
+        This is reduced when $c \geq a$, which is met when $N \geq 3$, which is always the case given $N > 1$ is composite.
+
+        \vspace{5mm}
+        \noindent
+        \llap{\textbf{(3)} \hspace{2mm}} \hspace{-3mm}
+        A form $(a, b, a)$ gives $\Delta = (b + 2a)(b - 2a)$, so we can see that $b$ is the midpoint of the two factors, which are either $-1$ and $N$, or $1$ and $-N$.
+        Since $b$ must be positive for such a form to be reduced, we must choose $b = \frac{N + 1}{2}$.
+        Next, since $a$ is positive, we compute $a = \frac{N - 1}{4}$.
+        This gives the ambiguous form
+        $$\left( \frac{N - 1}{4}, \frac{N + 1}{2}, \frac{N - 1}{4} \right).$$
+        This is reduced when $b \leq a$, ie. $N \leq 3$, which is never the case.
+    \end{adjustwidth}
+    \vspace{2mm}
+    We therefore see that there is only one ambiguous form which gives a trivial factorisation.
+    Now, since $N$ is composite, there exists some nontrivial factorisation $N = xy$, where $x \leq y$.
+    Checking each kind of reduced form in a similar manner yeilds the forms
+    $$\left(x, x, \frac{x + y}{4}\right) \text{ and } \left( \frac{x + y}{4}, \frac{y - x}{2}, \frac{x + y}{4} \right).$$
+    Note that $\Delta = -xy \equiv 1 \pmod{4}$, which means $-x$ and $y$ are both either 1 or 3 mod 4, so $x - y$ is divisible by 4, and $x + y$ is even ---
+    so the entries in the above forms are integers.
+    These forms are reduced when $3x \leq y$ and $3x \geq y$, respectively.
+    So there is always at least one reduced form which gives the factorisation $N = xy$.
+    And since there is only one reduced form which gives a trivial factorisation, at least half of all reduced ambiguous forms give nontrivial factorisations.
+    
+    We repeat this argument for the case $-N \equiv 3 \pmod{4}$.
+    We set $\Delta = -4N$, and consider the forms which lead to trivial factorisations of $4N$, which are $1 \cdot 4N$, $2 \cdot 2N$, and $4 \cdot N$.
+    \begin{adjustwidth}{12mm}{0pt}
+        \vspace{5mm}
+        \noindent
+        \llap{\textbf{(1)} \hspace{2mm}} \hspace{-3mm}
+        The only reduced form $(a, 0, c)$ corresponding to a trivial factorisation is $(1, 0, N)$.
+
+        \vspace{5mm}
+        \noindent
+        \llap{\textbf{(2)} \hspace{2mm}} \hspace{-3mm}
+        A form $(a, a, c)$ is trivial if $a$ is chosen to be 1, 2, or 4 ($N$, $2N$, and $4N$ cannot be chosen or else the form would not be reduced).
+        Solving for $c$ only gives an integer when $a = 2$, in which case we get the ambiguous form
+        $$\left(2, 2, \frac{1 + N}{2} \right).$$
+
+        \vspace{5mm}
+        \noindent
+        \llap{\textbf{(3)} \hspace{2mm}} \hspace{-3mm}
+        A form $(a, b, a)$ gives $\Delta = (b + 2a)(b - 2a)$, so $b$ is the midpoint of the two factors.
+        For $b$ to be an integer, one factor must be even and the other odd, so we either have $-2 \cdot 2N$ or $2 \cdot -2N$.
+        For such a form to be reduced, $b$ must be positive, so we are in the prior case, where $b = N - 1$.
+        This gives 
+        $$b - 2a = -2 \implies a = \frac{N + 1}{2}.$$
+        So we have the ambiguous form
+        $$\left( \frac{N + 1}{2}, N - 1, \frac{N + 1}{2} \right).$$
+        This is reduced when $b \leq a$, which is satisfied when $N \leq 2$, which is never the case.
+    \end{adjustwidth}
+    \vspace{2mm}
+    So there are precisely two reduced ambiguous forms which lead to trivial factorisations.
+    Again, letting $N = xy$ be a nontrivial factorisation where $x \leq y$, we immediately obtain the form $(x, 0, y)$ which gives a nontrivial factorisation.
+    By further examining the 2nd and 3rd kinds of ambiguous forms, we get
+    $$\left( 2x, 2x, \frac{x + y}{2} \right) \text{ and } \left( \frac{x + y}{2}, y - x, \frac{x + y}{2} \right).$$
+    Since $N$ is odd, both $x$ and $y$ are odd, so $x + y$ is divisible by 2, meaning that these forms have integer coefficients.
+    These forms are reduced when $N \leq 3$ and $N \geq 3$, respectively, so there are always at least two ambiguous forms which give the factorisation $N = xy$.
+    And since only two reduced forms give trivial factorisations, at least half of all reduced ambiguous forms give nontrivial factorisations.
+\end{proof}
+
+In order to factor $N$, we desire to find a method for sampling ambiguous forms.
+Suppose we can generate a random ambiguous form using some algorithm. 
+There is at least 50\% chance that the form we generate gives a nontrivial factorisation, otherwise we sample again.
+Let the expected number of samples needed be $E$.
+At least half of the time, the first sample gives a nontrivial factorisation, the other half we will require $1 + E$ steps, so
+$$E \leq \frac{1}{2}(E) + \frac{1}{2}(1 + E) \implies E \leq 2.$$
+So if we take repeated samples until we get a nontrivial factorisation of the discriminant from one of the ambiguous forms, the expected running time of this algorithm is a constant factor $\leq 2$ times the running time of the sampling algorithm.
+This means that the possibility of having to take multiple samples doesn't increase the growth class of our factoring algorithm.
 
 
 \pagebreak
@@ -1172,21 +1263,116 @@ $$f^d \sim id_\Delta.$$
 If $d$ happens to be even, then we have
 $$(f^{d/2})^2 \sim id_\Delta.$$
 Hence, $(f^{d/2})$ must be an ambiguous form, which gives a factorisation of the discriminant.
-If there is at least one element of even order, then at least half of the elements of $\Cl_\Delta$ have even order (\red{prove}).
+We will postpone discussing how uniformly this process samples the set of ambiguous forms until \Cref{s-sampling-forms}.
+For now, suppose that we can choose a random form, we hope that there is a reasonable probability that its order is even.
+Fortunately, this is the case ---
+in fact, we claim the following:
 
-Now, suppose that there exists a nontrivial factorisation of $-\Delta = xy$, then there is a corresponding ambiguous form (\todo{prove}).
-Hence, if we can sample forms of discriminant $\Delta$ randomly, there is at least a one in two chance that we find a form of even order.
-If we compute the order of this element, we can find a factorisation of $\Delta$, and if the order is odd, we simply sample again.
-The average number of samples needed before finding an element of even order is at most 2, so the expected running time is at most twice what it would be if our sample was guaranteed to have even order.
+\vspace{2mm}
+\begin{theorem}
+    If $N > 1$ is an odd composite integer, then at least half of all elements of $\Cl_\Delta$ have even order, where $\Delta$ is $-N$ or $-4N$ as before.
+\end{theorem}
 
-To find the order of an element, we use a method discovered by Daniel Shanks called Baby Step Giant Step, (or BSGS).
-This algorithm uses a ``meet in the middle'' strategy ---
-instead of simply increasing the exponent on $f$ until we reach the identity
+\begin{proof}
+    We fist claim that $Cl_\Delta$ contains at least one ambiguous form which is not the identity.
+    We already saw this in the proof of \Cref{thm-ambiguous-factorisations} that $Cl_\Delta$ contains a reduced ambiguous form which is not the identity, which has order 2.
+    Call one such form $f$, and its equivalence class $\bar{f}$.
+    Now, consider all classes of forms $\bar{g} \in \Cl_\Delta$ which have odd order.
+    Each such $\bar{g}$ determines a unique $\bar{h} = \bar{f} \cdot \bar{g}$.
+    Let the order of $\bar{g}$ be $d$, which is odd, and the order of $\bar{h}$ be $d'$.
+    Then
+    $$\text{id}_\Delta = (\bar{h}^{d'})^d = \bar{f}^{dd'} \cdot (\bar{g}^d)^{d'} = \bar{f}^{dd'}.$$
+    So the order of $\bar{f}$, which is 2, divides $dd'$, and since $d$ is odd, $d'$ must be even.
+    Therefore, for each $\bar{g} \in \Cl_\Delta$ with odd order, we can find a unique $\bar{h} \in \Cl_\Delta$ with even order.
+    So at least half of the elements in $\Cl_\Delta$ have even order.
+\end{proof}
+
+So if we can sample a random form $f$, the order of $f$ will be even at least half of the time, allowing us to find an ambiguous form.
+To efficiently find the order of an element, we use a method discovered by Daniel Shanks called \textbf{Baby Step Giant Step}, (or BSGS).
+
+BSGS uses a ``meet in the middle'' strategy, which first requires we have some bound on the size of the class group, which we call the \textbf{class number}, $h_\Delta = |\Cl_\Delta|$.
+Suppose we have a bound $h_\Delta \leq H$ (we will find such a bound in \Cref{s-class-number-formula}).
+Instead of increasing the power of $f$ until we reach the identity, we compute the first $\lceil \sqrt{H} \rceil$ powers of $f$ (``baby steps'').
+If this contains the identity, we are done. 
+Otherwise, we compute the first $\lceil \sqrt{H} \rceil$ powers of $f^{\lceil \sqrt{H} \rceil}$ (``giant steps'').
+All powers of $f$ from $\lceil \sqrt{H} \rceil + 1$ up to $H$ are given by multiplying a baby step with a giant step, and the order of $f$ cannot be larger than $h_\Delta$, so one of these products must be the identity.
+This means that one of the giant steps is an inverse to one of the baby steps.
+If we store our baby steps in a hash table, then as we calculate the giant steps, we can check if their inverses are in the hash table.
+Once a collision is found between the $i$-th baby step and the $j$-th giant step, we have found
+$$\text{id}_\Delta = f^i \cdot (f^{\lceil \sqrt{H} \rceil})^j = f^{i + \lceil \sqrt{H} \rceil j}.$$
+Since we check all powers of $f$ in increasing order, this is the first positive power of $f$ which gives the identity, so the order of $f$ is $i + \lceil \sqrt{H} \rceil j$.
+In practise, we employ a small optimisation where the giant steps are instead powers of $f^{-\lceil \sqrt{H} \rceil}$, which we compare directly for collisions with the hash table of baby steps.
+This way, we don't have to take the inverse at each step.
+As an algorithm, we have
+\begin{algorithm}
+    \caption{Baby Step Giant Step}
+    \DontPrintSemicolon
+    \vspace{1mm}
+    \KwIn{$f \in \Cl_\Delta, H \in \Z$ such that $H \geq h_\Delta$.}
+    \KwOut{$d \in \Z$ where $d$ is the order of $f$.}
+    \algosep
+
+    \If{$f = \text{id}_\Delta$}{
+        \Return{1}
+    }
+    Initialise a hash table $B$.\;
+    $b \gets f$\;
+    To $B$, add the key $b$ with the value $1$.\;
+
+    \For{$i \gets 2$ \KwTo $\lceil \sqrt{H} \rceil$} {
+        $b \gets b \cdot f$\;
+        \If{$b = \text{id}_\Delta$}{
+            \Return{$i$}
+        }
+        To $B$, add the key $b$ with the value $i$.\;
+    }
+
+    $g \gets \text{id}_\Delta$\;
+    \For{$j \gets 1$ \KwTo $\lceil \sqrt{H} \rceil$} {
+        $g \gets g \cdot b^{-1}$\;
+        \If{$g$ is a key in $B$}{
+            $i \gets$ value at key $g$ in $B$.\;
+            \Return{$i + j \lceil \sqrt{H} \rceil$}
+        }
+    }
+\end{algorithm}
+
+\noindent
+This algorithm computes the order of an element in $O(\sqrt{H})$ composition operations.
+Once we have computed the order of $f$, we can efficiently raise $f$ to a power using a standard algorithm:
+we consider the binary expansion of $d$, ie
+$$d = a_0 \cdot 2^0 + a_1 \cdot 2^1 + a_2 \cdot 2^2 + \dots \rnote{(a_i \in \{0, 1\}).}$$
+Then we have
+$$f^d = (f)^{a_0} \cdot (f^2)^{a_1} \cdot (f^4)^{a_2} \cdot (f^8)^{a_3} \cdot \dots$$
+So instead of multiplying $f$ by itself $d$ times, we take repeated squares $\lceil \log_2(d) \rceil$ times, and multiply all terms corresponding to 1s in the binary expansion of $d$.
 
 \pagebreak
-\section{Bounding the Class Number}
+\begin{algorithm}
+    \caption{Fast Powering}
+    \DontPrintSemicolon
+    \vspace{1mm}
+    \KwIn{$f$ in some group, $d \in \N$ where $d \neq 0$.}
+    \KwOut{$f^d$.}
+    \algosep
+    $g \gets f$\;
+    $h \gets \text{id}$\;
+    \If{$d \equiv 1 \pmod{2}$}{
+        $h \gets f$\;
+    }
+    \For{$i \gets 1$ \KwTo $\lceil \log_2{d} \rceil$} {
+        $g \gets g^2$\;
+        \If{$\lfloor d / 2^{i} \rfloor \equiv 1 \pmod{2}$}{
+            $h \gets h \cdot g$\;
+        }
+    }
+    \Return{$h$}
+\end{algorithm}
 
-In order to implement the BSGS algorithm, we need a bound on the class number $h_\Delta = | \Cl_\Delta |$.
+\noindent
+This allows us to compute $f^{d/2}$ in $O(\log_2(H))$ composition operations.
+
+So far, the slowest step in the method of factoring that we are developing is computing the order of an arbitrary element.
+This depends on the bound $H$, so the lower we can make this bound, the faster our factoring method will be.
 One's first thought may be to use a counting argument to bound the number of reduced forms.
 For reduced positive definite forms, we have shown $|b| \leq \sqrt{|\Delta|/3}$.
 Note that $b \equiv \Delta \pmod{2}$, so only half of the values of $b$ in this range are valid candidate choices.
@@ -1197,18 +1383,50 @@ $$2 \cdot \sqrt{\frac{|\Delta|}{3}}.$$
 So the total number of reduced forms is bounded by
 $$h_\Delta \leq \sqrt{\frac{|\Delta|}{3}} \cdot 2 \cdot \sqrt{\frac{|\Delta|}{3}} = \frac{2\Delta}{3}.$$
 This bound allows us to compute the order of a form of discriminant $\Delta$ with time complexity $O(\sqrt\Delta)$.
-This is on par with trial division.
+This bound gives an algorithm which is in a growth class no faster than trial division.
+As such, we will need a better bound.
 
-To improve upon this, we use the analytic class number formula.
-For $\Delta < -4$, we have
-$$h_\Delta = \frac{\sqrt{|\Delta|}}{\pi} L(1, \chi_\Delta) \hspace{5mm}$$
-where $\chi_\Delta$ is a Dirichlet character mod $\Delta$.
-The details of this formula and its derivation are given here \red{cite}
 
-\red{to do}
 
 \pagebreak
-\section{Sampling Forms}
+\section{The Analytic Class Number Formula} \label{s-class-number-formula}
+
+\todo{derive the analytic class number formula}
+
+Shanks attempts to compute the class number using the analytic class number formula.
+For $\Delta < -4$, this formula is \cite[\S\,10.5]{jarvis}
+$$h_\Delta = \frac{\sqrt{|\Delta|}}{\pi} L(1, \chi_\Delta) \hspace{5mm}$$
+where $\chi_\Delta(n) = (\Delta / n)$ is is the Kroenecker symbol, which is a Dirichlet character mod $|\Delta|$.
+Shanks approximates this with a product over primes $p$ \cite[\S\,2]{shanks}:
+$$h_\Delta \approx \frac{\sqrt{|\Delta|}}{\pi} \prod_{p=2}^{P} \frac{p}{p - (\Delta / p)}$$
+where $P$ is suitably large.
+He then takes further steps to verify that his approximation is likely to be correct.
+We will take a different approach, simply finding an upper bound for the $L$-series.
+
+\todo{bound the L-series}
+
+
+
+\pagebreak
+\section{Sampling Forms} \label{s-sampling-forms}
+
+The last component missing from our factoring algorithm is a method for randomly sampling forms.
+This isn't as easy as it might first seem - for instance, if one chooses some $b$ congruent to $\Delta$ mod 2, then it remains to find $a$ and $c$ satisfying $ac = \frac{b^2 - \Delta}{4}$.
+That is, we have to factor a number which is roughly the same size as $\Delta$.
+
+Shanks offers a better method.
+He suggests taking ``small'' primes $p$ such that $\Delta$ is a quadratic residue mod $p$ \cite[\S\,2]{shanks}.
+Then one can find $b$ such that $b^2 \equiv \Delta \pmod{p}$, which gives the form
+$$\left( p, b, \frac{\Delta - b^2}{4p} \right).$$
+Note that $\Delta - b^2 \equiv 0 \pmod{4}$, so the entries of the above form are integers (except perhaps when $p = 2$).
+This method is particularly convenient for Shanks, since he has already calculated $(\Delta / p)$ for many small primes, which is 1 precisely when $\Delta$ is a quadratic residue mod $p$.
+Still, the following questions arise:
+\begin{itemize}
+    \item How often is $\Delta$ a quadratic residue of a random prime $p$? 
+    \item Does this method sample uniformly from the class group?
+    \item For both questions above, how large of a range must $p$ be sampled from for the answers to remain true?
+\end{itemize}
+
 \red{to do}
 
 
