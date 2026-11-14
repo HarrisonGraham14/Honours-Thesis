@@ -14,15 +14,16 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage[many]{tcolorbox}
+\usepackage[ruled,vlined,algosection]{algorithm2e}
 \usepackage[colorlinks=true,linkcolor=blue,draft=false]{hyperref}
 \usepackage[nameinlink]{cleveref}
-\usepackage[ruled,vlined,algosection]{algorithm2e}
 \usepackage{changepage}
 
 \hypersetup{citecolor=[rgb]{0, 0.5, 0}}
 
-\crefname{algocfline}{algorrithm}{algorithms}
-\Crefname{algocfline}{Algorithm}{Algorithms}
+%\numberwithin{algocf}{section}
+\crefname{algocf}{algorithm}{algorithms}
+\Crefname{algocf}{Algorithm}{Algorithms}
 
 % Macros
 \newcommand{\N}{\mathbb{N}} % Natural numbers
@@ -78,6 +79,12 @@
 \newtheorem{question}[theorem]{Question}
 \newtheorem{notation}[theorem]{Notation}
 \numberwithin{equation}{section}
+
+% Share theorem numbering with algorithms
+\makeatletter
+\let\c@algocf\c@theorem
+\let\thealgocf\thetheorem
+\makeatother
 
 
 %===============================================================================================================================%
@@ -384,15 +391,15 @@ We adjust the reduction algorithm such that step 1 moves $b$ into the interval $
 and applying $S$ not only if $a > c$, but if $a = c$ and $b$ is negative.
 The full reduction algorithm is as follows
 
-\begin{algorithm}\label{alg-reduction}
-    \caption{Reduction of positive definite forms}
+\begin{algorithm}
+    \caption{Reduction of positive definite forms} \label{alg-reduction}
     \DontPrintSemicolon
     \vspace{1mm}
     \KwIn{$a, b, c \in \Z$ such that $(a, b, c)$ is a positive definite form.}
     \KwOut{$a, b, c \in \Z$ such that $(a, b, c)$ is reduced and properly equivalent to the provided form.}
     \algosep
     \While {true}{
-        $k \gets \lceil (b - a) / 2a \rceil$\;
+        $k \gets \lfloor (a - b) / 2a \rfloor$\;
         $c \gets k^2 a + k b + c$\;
         $b \gets 2ka + b$\;
         \If {$a > c$ or $(b < 0$ and $a = c$)}{
@@ -1002,8 +1009,8 @@ But by \Cref{lemma-ideal-norm}, we have
 Hence, with the given choices of $m$ and $n$, the form corresponding to the resulting ideal is
 $$(a, b, c) \cdot (a', b', c') = \left( \frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4aa'} \right).$$
 We have derived the following algorithm:
-\begin{algorithm}\label{alg-composition}
-    \caption{Composition formula}
+\begin{algorithm}
+    \caption{Composition formula} \label{alg-composition}
     \DontPrintSemicolon
     \vspace{1mm}
     \KwIn{$a, b, c, a', b', c' \in \Z$ such that $(a, b, c)$ and $(a', b', c')$ are forms with a common discriminant.}
