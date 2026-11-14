@@ -1,4 +1,4 @@
-from math import gcd, isqrt
+import math
 
 def gcdExtended(a, b):
     if a == 0:
@@ -8,7 +8,16 @@ def gcdExtended(a, b):
     y = x1
     return gcd, x, y
 
-class BinaryQuadraticForm:
+class PositiveDefiniteForm:
+
+    @staticmethod
+    def Identity(discriminant):
+        if discriminant % 4 not in (0, 1):
+            raise ValueError("Invalid quadratic form discriminant")
+        if discriminant % 4 == 0:
+            return PositiveDefiniteForm(1, 0, -discriminant // 4)
+        else:
+            return PositiveDefiniteForm(1, 1, (1 - discriminant) // 4)
 
     def __init__(self, a, b, c):
         self.a = int(a)
@@ -29,7 +38,7 @@ class BinaryQuadraticForm:
         if self.discriminant % 4 not in (0, 1):
             raise ValueError("Invalid quadratic form discriminant")
 
-        if gcd(gcd(abs(self.a), abs(self.b)), abs(self.c)) != 1:
+        if math.gcd(math.gcd(abs(self.a), abs(self.b)), abs(self.c)) != 1:
             raise ValueError("Form must be primitive")
 
     def is_reduced(self):
@@ -46,46 +55,37 @@ class BinaryQuadraticForm:
         return (f.b == 0) or (f.a == f.b) or (f.a == f.c)
 
     def reduce(self):
-        a, b, c = self.a, self.b, self.c
+        f = PositiveDefiniteForm(self.a, self.b, self.c)
+        while f.is_reduced() == False:
 
-        while True:
+            # T-reduction
+            k = (f.a - f.b) // (2 * f.a)
+            f.c = (k * k * f.a) + (k * f.b) + f.c
+            f.b = (2 * k * f.a) + f.b
 
-            # Ensure a <= c
-            if a > c:
-                a, b, c = c, -b, a
+            # S-reduction
+            if (f.a > f.c) or (f.b < 0 and f.a == f.c):
+                f.a, f.c = f.c, f.a
+                f.b = -f.b
 
-            # Reduce b into the interval [-a, a]
-            m = (a - b) // (2 * a)
+        return f
 
-            b_new = b + 2 * a * m
-            c_new = (b_new**2 - self.discriminant) // (4 * a)
-
-            b, c = b_new, c_new
-
-            # Apply boundary convention
-            if abs(b) <= a <= c:
-                if (abs(b) == a or a == c) and b < 0:
-                    b = -b
-
-                return BinaryQuadraticForm(a, b, c)
-
+    # Multiplication is composition of forms
     def __mul__(self, other):
 
-        if not isinstance(other, BinaryQuadraticForm):
+        if not isinstance(other, PositiveDefiniteForm):
             return NotImplemented
 
         if self.discriminant != other.discriminant:
-            raise ValueError(
-                "Forms must have the same discriminant"
-            )
+            raise ValueError("Forms must have the same discriminant")
 
         D = self.discriminant
 
         f1 = self.reduce()
         f2 = other.reduce()
 
-        a1, b1, c1 = f1.a, f1.b, f1.c
-        a2, b2, c2 = f2.a, f2.b, f2.c
+        a1, b1 = f1.a, f1.b
+        a2, b2 = f2.a, f2.b
 
         B = (b1 + b2) // 2
 
@@ -100,29 +100,29 @@ class BinaryQuadraticForm:
         b = m // n
         c = (m**2 - ((n**2) * D)) // (4 * a1 * a2)
 
-        result = BinaryQuadraticForm(a, b, c)
-        result = result.reduce()
+        result = PositiveDefiniteForm(a, b, c)
+        return result.reduce()
 
-        return result
+    def inverse(self):
+        f = PositiveDefiniteForm(self.a, -self.b, self.c)
+        return f.reduce()
 
+    # Equality is defined up to equivalence
     def __eq__(self, other):
-        if not isinstance(other, BinaryQuadraticForm):
+        if not isinstance(other, PositiveDefiniteForm):
             return False
 
+        self_reduced = self.reduce()
+        other_reduced = other.reduce()
+
         return (
-            self.a == other.a
-            and self.b == other.b
-            and self.c == other.c
+            self_reduced.a == other_reduced.a
+            and self_reduced.b == other_reduced.b
+            and self_reduced.c == other_reduced.c
         )
 
     def __repr__(self):
-        return (
-            f"BinaryQuadraticForm("
-            f"a={self.a}, b={self.b}, c={self.c}, "
-            f"D={self.discriminant})"
-        )
+        return f"PositiveDefiniteForm(a={self.a}, b={self.b}, c={self.c}, D={self.discriminant})"
 
     def __str__(self):
-        return (
-            f"({self.a}, {self.b}, {self.c})"
-        )
+        return f"({self.a}, {self.b}, {self.c})"
