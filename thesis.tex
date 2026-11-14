@@ -1363,14 +1363,11 @@ So instead of multiplying $f$ by itself $d$ times, we take repeated squares $\lc
     \algosep
     $g \gets f$\;
     $h \gets \text{id}$\;
-    \If{$d \equiv 1 \pmod{2}$}{
-        $h \gets f$\;
-    }
-    \For{$i \gets 1$ \KwTo $\lceil \log_2{d} \rceil$} {
-        $g \gets g^2$\;
+    \For{$i \gets 0$ \KwTo $\lceil \log_2{d} \rceil$} {
         \If{$\lfloor d / 2^{i} \rfloor \equiv 1 \pmod{2}$}{
             $h \gets h \cdot g$\;
         }
+        $g \gets g^2$\;
     }
     \Return{$h$}
 \end{algorithm}
