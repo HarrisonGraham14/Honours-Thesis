@@ -18,6 +18,7 @@
 \usepackage[colorlinks=true,linkcolor=blue,draft=false]{hyperref}
 \usepackage[nameinlink]{cleveref}
 \usepackage{changepage}
+\usepackage{adjustbox}
 
 \hypersetup{citecolor=[rgb]{0, 0.5, 0}}
 
@@ -66,6 +67,8 @@
     \nointerlineskip
     \vspace{1mm}
 }
+
+\graphicspath{ {./figures/} }
 
 % Environments
 \newtheorem{theorem}{Theorem}[section]
@@ -620,7 +623,8 @@ Here, we are working with the definition of a ring that requires the existence o
 Now, for $\Delta \equiv 0, 1 \pmod{4}$ where $\Delta$ is not a perfect square, let $K_\Delta = \Q(\sqrt\Delta)$, and define the \textbf{order of discriminant} $\mathbf{\Delta}$ to be 
 $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z.$$
 One might expect an extension of the integers to take the form $\Z + \sqrt\Delta \Z$, but this ring is not a ``integrally closed'' when $\Delta \equiv 1 \pmod{4}$.
-The integral closure of $\Q(\sqrt\Delta)$ is $\Z + \frac{1 + \sqrt\Delta}{2}\Z$ (see \cite[Ch.\,1\,\S\,2,\,8]{neukirch}, \cite[\S\,2.3]{stewart}).
+The integral closure of $\Q(\sqrt\Delta)$ is $\Z + \frac{1 + \sqrt\Delta}{2}\Z$ (see \cite[Ch.\,1\,\S\,2,\,Exercise\,4]{neukirch}).
+As a result, $\order_\Delta$ is a Dedekind domain \cite[Thm.\,14]{marcus}, which means that ideals of $\order_\Delta$ factorise uniquely into products of prime ideals \cite[Thm.\,16]{marcus}.
 The definition of $\order_\Delta$ given is equivalent to
 $$\order_\Delta = \begin{cases}
     \Z + \sqrt\Delta \Z & \Delta \equiv 0 \pmod{4} \\
@@ -1263,7 +1267,7 @@ This means that the possibility of having to take multiple samples doesn't incre
 
 
 \pagebreak
-\section{Baby Step Giant Step}
+\section{Baby Step Giant Step} \label{s-bsgs}
 Since $\Cl_\Delta$ is a finite group, each element has some finite order.
 That is, for a form $f$, there exists some $d \in \N$ such that
 $$f^d \sim id_\Delta.$$
@@ -1312,7 +1316,7 @@ In practise, we employ a small optimisation where the giant steps are instead po
 This way, we don't have to take the inverse at each step.
 As an algorithm, we have
 \begin{algorithm}
-    \caption{Baby Step Giant Step}
+    \caption{Baby Step Giant Step} \label{alg-bsgs}
     \DontPrintSemicolon
     \vspace{1mm}
     \KwIn{$f \in \Cl_\Delta, H \in \Z$ such that $H \geq h_\Delta$.}
@@ -1355,7 +1359,7 @@ So instead of multiplying $f$ by itself $d$ times, we take repeated squares $\lc
 
 \pagebreak
 \begin{algorithm}
-    \caption{Fast Powering}
+    \caption{Fast Powering} \label{alg-fast-power}
     \DontPrintSemicolon
     \vspace{1mm}
     \KwIn{$f$ in some group, $d \in \N$ where $d \neq 0$.}
@@ -1393,21 +1397,56 @@ As such, we will need a better bound.
 
 
 \pagebreak
-\section{The Analytic Class Number Formula} \label{s-class-number-formula}
+\section{Bounding the Class Number} \label{s-class-number-formula}
 
-\todo{derive the analytic class number formula}
-
-Shanks attempts to compute the class number using the analytic class number formula.
-For $\Delta < -4$, this formula is \cite[\S\,10.5]{jarvis}
-$$h_\Delta = \frac{\sqrt{|\Delta|}}{\pi} L(1, \chi_\Delta) \hspace{5mm}$$
-where $\chi_\Delta(n) = (\Delta / n)$ is is the Kroenecker symbol, which is a Dirichlet character mod $|\Delta|$.
+In the factoring method outlined by Shanks, one attempts to compute the precise class number using the analytic class number formula:
+\vspace{2mm}
+\begin{theorem}
+    For $\Delta < -4$, the class number is given by
+    $$h_\Delta = \frac{\sqrt{|\Delta|}}{\pi} L(1, \chi_\Delta) \hspace{5mm}$$
+    where $\chi_\Delta(n) = (\Delta / n)$ is is the Kroenecker symbol.
+\end{theorem}
+\vspace{2mm}
+For a proof of this theorem, see \cite[\S\,10.5]{jarvis}.
 Shanks approximates this with a product over primes $p$ \cite[\S\,2]{shanks}:
 $$h_\Delta \approx \frac{\sqrt{|\Delta|}}{\pi} \prod_{p=2}^{P} \frac{p}{p - (\Delta / p)}$$
 where $P$ is suitably large.
 He then takes further steps to verify that his approximation is likely to be correct.
 We will take a different approach, simply finding an upper bound for the $L$-series.
+\vspace{2mm}
+\begin{theorem}
+    For $\Delta < -4$, the class number is bounded above by
+    $$h_\Delta < \frac{\sqrt{|\Delta|}}{\pi}(\ln|\Delta| + 2).$$
+\end{theorem}
 
-\todo{bound the L-series}
+\begin{proof}
+    We will construct a bound on $L(1, \chi_\Delta)$ using the fact that $\chi_\Delta$ is a Dirichlet character mod $|\Delta|$.
+    First, we split the sum
+    $$L(1, \chi_\Delta) = \sum_{n = 1}^{\infty} \frac{\chi_\Delta(n)}{n} = \sum_{n = 1}^{|\Delta|} \frac{\chi_\Delta(n)}{n} + \sum_{n = |\Delta| + 1}^{\infty} \frac{\chi_\Delta(n)}{n}.$$
+    To bound the first sum, we observe that $|\chi_\Delta| \leq 1$, so
+    $$\left| \sum_{n = 1}^{|\Delta|} \frac{\chi_\Delta(n)}{n} \right| \leq 1 + \sum_{n = 2}^{|\Delta|} \frac{1}{n} \leq 1 + \int_{1}^{|\Delta|} \frac{dx}{x} = 1 + \ln|\Delta|.$$
+    To bound the second sum, we will use Abel summation.
+    First, define
+    $$A(N) = \sum_{n = |\Delta| + 1}^{N} \chi_\Delta(n).$$
+    Since $\chi_\Delta$ is a Dirichlet mod $|\Delta|$, it has the property
+    $$\sum_{n = k}^{k + \Delta} \chi_\Delta(n) = 0 \rnote{\forall k \in \Z.}$$
+    So $A(k|\Delta|) = 0$ for all integers $k$, and to bound $A(n)$ in general, note that the the sum of the first $k|\Delta|$ terms of the sum cancel, leaving at most $|\Delta| - 1$ terms in the sum, giving
+    $$|A(n)| \leq |\Delta| - 1 \leq |\Delta|.$$
+    Now, we can write $\chi_\Delta(n) = A(n) - A(n - 1)$, which gives
+    \begin{align*}
+        \sum_{n = |\Delta| + 1}^{N} \frac{\chi_\Delta(n)}{n} &= \sum_{n = |\Delta| + 1}^{N} \frac{A(n) - A(n - 1)}{n} \\
+        &= \sum_{n = |\Delta| + 1}^{N} \frac{A(n)}{n} - \sum_{n = |\Delta|}^{N - 1} \frac{A_n}{n + 1} \\
+        &= \frac{A(N)}{N} + \sum_{n = |\Delta| + 1}^{N} \left( \frac{A(n)}{n} - \frac{A_n}{n + 1} \right) - \frac{A(|\Delta|)}{|\Delta| + 1} \\
+        &= \frac{A(N)}{N} + \sum_{n = |\Delta| + 1}^{N} A(n) \left( \frac{1}{n} - \frac{1}{n + 1} \right) \\
+        &\leq \frac{|\Delta|}{N} + |\Delta| \sum_{n = |\Delta| + 1}^{N} \left( \frac{1}{n} - \frac{1}{n + 1} \right) \\
+        &= \frac{|\Delta|}{N} + |\Delta| \left( \frac{1}{1 + |\Delta|} - \frac{1}{N + 1} \right)
+    \end{align*}
+    Taking the limit as $N \rightarrow \infty$, we have
+    $$\sum_{n = |\Delta| + 1}^{\infty} \leq 0 + \frac{|\Delta|}{1 + |\Delta|} - 0 < 1.$$
+    Combining these bounds, we get
+    $$L(1, \chi_{\Delta}) < \ln|\Delta| + 2.$$
+    Substituting this into the analytic class number formula gives the desired bound.
+\end{proof}
 
 
 
@@ -1424,14 +1463,353 @@ Then one can find $b$ such that $b^2 \equiv \Delta \pmod{p}$, which gives the fo
 $$\left( p, b, \frac{\Delta - b^2}{4p} \right).$$
 Note that $\Delta - b^2 \equiv 0 \pmod{4}$, so the entries of the above form are integers (except perhaps when $p = 2$).
 This method is particularly convenient for Shanks, since he has already calculated $(\Delta / p)$ for many small primes, which is 1 precisely when $\Delta$ is a quadratic residue mod $p$.
-Still, the following questions arise:
-\begin{itemize}
-    \item How often is $\Delta$ a quadratic residue of a random prime $p$? 
-    \item Does this method sample uniformly from the class group?
-    \item For both questions above, how large of a range must $p$ be sampled from for the answers to remain true?
-\end{itemize}
 
-\red{to do}
+But should we expect such a method to sample forms from all equivalence classes with equal likelihood?
+In fact, we will show this does sample uniformly, since this method of sampling is equivalent to uniformly sampling from the set of prime ideals of $\order_\Delta$ and then mapping these to the corresponding forms.
+To see this, we must understand what the prime ideals of $\order_\Delta$ look like.
+\todo{outline 3 kinds of ideals}
+
+
+
+\vspace{2mm}
+\begin{theorem}
+    Prime ideals of $\order_\Delta$ are equally distributed among narrow equivalence classes.
+    That is, for a class $C$,
+    $$\lim_{N \rightarrow \infty} \frac{|\{ \text{prime } \mathfrak{p} \in C : N(\mathfrak{p}) \leq N \}|}{|\{ \text{prime } \mathfrak{p} \trianglelefteq \order_\Delta : N(\mathfrak{p}) \leq N \}|} = \frac{1}{h_\Delta}.$$
+\end{theorem}
+\vspace{2mm}
+
+\noindent
+This theorem comes from using class field theory to realise the class group as a Galois group, at which point the Chebotarev density theorem can be applied.
+The details of such a proof are beyond the scope of this paper ---
+for verification of this theorem, one can see \red{cite Cl as galois group} \cite[Cor.\,8.18]{cox}.
+Note that the Chebotarev density theorem considers the density of all prime ideals, while we only sample prime ideals of norm no greater than $|\Delta|$.
+We will not prove formally that this is sufficient --- 
+such a proof would involve a finite-bounded version of the density theorem.
+We will, however, observe computational evidence that this bound is likely sufficient for our purposes in \Cref{s-factoring-algorithm}.
+
+
+\pagebreak
+\section{The 2-Sylow Subgroup}
+Now we are able to sample forms with (roughly) equal probability of landing in each class.
+We previously suggested that we can sample a random form $f$, compute its order $d$, and if $d$ is even we compute $f^{d/2}$, an ambiguous form.
+There remains a question of how uniformly this process samples ambiguous forms.
+In fact, this concern is well-founded, as there are cases where this method samples non-uniformly.
+Worse yet, there are cases where this process is strongly biased towards sampling an ambiguous form which corresponds to a trivial factorisation.
+To understand why this issue occurs and how to avoid it, we must discuss the \textbf{2-Sylow subgroup} of $\Cl_\Delta$.
+This is given by
+$$S_\Delta = \{ \bar{f} \in \Cl_\Delta : \text{ord}({\bar{f}}) = 2^k, \hspace{2mm} k \in \Z \}.$$
+One can easily verify that this is a subgroup, and it is clearly the largest subgroup with order $2^k$, since the order of a group is divided by the order of each element, so no more elements of $\Cl_\Delta$ can be added to this group without making its order no longer a power of 2.
+Now, we can adapt our method for finding ambiguous forms to a method for sampling $S_\Delta$:
+\begin{algorithm}
+    \caption{Sampling the 2-Sylow Subgroup} \label{alg-sylow-sample}
+    \DontPrintSemicolon
+    \vspace{1mm}
+    \KwIn{$D \in \Z$ a negative discriminant.}
+    \KwOut{$s$, a form of discriminant $D$ with order equal to a power of 2.}
+    \algosep
+    $f \gets$ random form of discriminant $D$ (using the method in \Cref{s-sampling-forms}).\;
+    $B \gets$ order of $f$ (using \Cref{alg-bsgs} with the bound from \Cref{s-class-number-formula}).\;
+    $A \gets 0$\;
+    \While{$2 \divides B$}{
+        $B \gets B / 2$\;
+        $A \gets A + 1$\;
+    }
+    $s \gets f^B$ (using \Cref{alg-fast-power}).\;
+    \Return{$s$}
+    \vspace{2mm}
+\end{algorithm}
+
+\begin{lemma}
+    \Cref{alg-sylow-sample} samples $S_\Delta$ uniformly.
+\end{lemma}
+
+\begin{proof}
+    It is immediately clear that the output $s \in S_\Delta$, since 
+    $$s^{2^A} = f^{B \cdot 2^A} = f^{\text{ord}(f)} = \text{id}_\Delta.$$
+    Now, consider that by the structure theorem for finite abelian groups, $\Cl_\Delta \simeq S_\Delta \times G$ for some group $G \subseteq CL_\Delta$.
+    So for a form $f$, we can uniquely write $f = s'g$, where $s' \in S_\Delta, g \in G$.
+
+    Now consider that the action $f \mapsto f^B$ is a permutation of $S_\Delta$ whenever $2 \nmid B$.
+    It is injective, since 
+    $$f^B = g^B \implies (fg^{-1})^B = \text{id}_\Delta$$
+    which implies the order of $fg^{-1}$ divides $B$, and can therefore only be 1 (ie $f = g$).
+    The map is also surjective, by finiteness of $S_\Delta$.
+
+    Now, consider that sampling $f = s'g$ is equivalent to sampling some $g \in G$, and then sampling $s' \in S_\Delta$.
+    Letting the order of this element be $2^A \cdot B$ where $2 \nmid B$, note that the value of $A$ is completely determined by $s'$, and the value of $B$ is completely determined by $g$.
+    Therefore, if we first sample $g \in G$, then we can immediately determine $B$.
+    Before even choosing $s'$, note that
+    $$f^B = s'^B g^B = s'^B.$$
+    Our choice of $s'$ will simply be permuted when taken to the power of $B$.
+    Hence, the result is a uniformly distributed sample from $S_\Delta$.
+\end{proof}
+
+Now, consider sampling $s \in S_\Delta$, computing its order $d$, and then getting the ambiguous form $s^{d/2}$, we have claimed that this method does not uniformly sample the set of ambiguous forms.
+To see this, consider the case that $S_\Delta \simeq \Z_2 \times \Z_64$.
+Denoting the elements of this group as $(a, b)$, with $a \in \Z_2, b \in \Z_64$, the square of every element is of the form $(0, b)$.
+This means the ambiguous forms $(1, 0)$ and $(1, 32)$ cannot be found by any $s^{d/2}$ except for when $s$ is the ambiguous forms.
+Shanks claims that $\Delta = -4 \cdot 10721$ leads to this exact case, where out of 128 elements of the 2-Sylow subgroup, 125 of them lead to the same ambiguous form, $(2, 2, 5361)$, which corresponds to a trivial factorisation of the discriminant \cite[\S\,7]{shanks}.
+
+Shanks calls ambiguous forms which are overrepresented by our sampling algorithm \textbf{parasitic forms}.
+Fortunately, he also provides a method to mitigate their effect on the running time of our factoring algorithm.
+He suggests that if the same parasitic form is encountered many times, then it will arise as the square of distinct forms of order 4 (since we are commonly getting this form as $s^{2^{A-1}}$, so $s^{2^{A-2}}$ is a square root).
+Suppose two such distinct roots of the parasitic form $P$ are $f$ and $g$ which are not inverses of eachother, then consider the form $fg^{-1}$.
+This is ambiguous, since
+$$(fg^{-1})^2 = f^2 (g^2)^{-1} = PP^{-1}  = \text{id}_\Delta.$$
+We know that $fg^{-1}$ is not the identity, since $f \neq g$.
+We also know that it is not $P$, since $f \neq g^{-1}$.
+So it seems that we have a way of generating ambiguous forms which are not the parasitic form.
+But there is still a problem ---
+What if we keep finding the same form which squares to $P$?
+Fortunately, the argument generalises.
+
+Suppose of all of the forms with order $2^A$, a form $P$ is overrepresented by our sampling method.
+Then either there are several distinct forms with order $2^{A-1}$ which square to $P$, or else there is only one (and its inverse) which is itself overrepresented when sampling forms of order $2^{A-1}$.
+We can follow this chain until we find an overrepresented $P$ of the largest order, which must always have several square roots, or else uniform sampling of $S_\Delta$ could not cause it to become overrepresented.
+We therefore have found several roots of $P$ in order to determine that it is overrepresented, letting two such distinct roots be $f$ and $g$, we again find that $fg^{-1}$ is an ambiguous form. 
+If $f$ is fixed, then of all possible choices for $g$, only one gives the same ambiguous form as we would have gotten by taking $P$ to the power of half of its order.
+Since there are many choices for $g$, we are more likely to get a new ambiguous form.
+
+
+
+\pagebreak
+\section{The Factoring Algorithm} \label{s-factoring-algorithm}
+
+The methods we have discussed in this chapter are sufficient to arrive at a factoring algorithm.
+
+\begin{center}
+\makebox[\textwidth][r]{
+\clipbox{0pt 8.4cm 0pt 0pt}{
+\begin{minipage}{\textwidth}
+    
+\begin{algorithm}[H]
+    \caption{Factoring via Ambiguous Forms}
+    \DontPrintSemicolon
+    \vspace{1mm}
+    \KwIn{$N \in \N$, a composite integer.}
+    \KwOut{$x \in \N$, a nontrivial factor of $N$.}
+    \algosep
+
+    \vspace{2mm}
+    \If{$2 \divides N$}{
+        \Return{2}
+    }
+
+    \vspace{2mm}
+    $D \gets \begin{cases} -N & -N \equiv 1 \pmod{4} \\ -4N & -N \equiv 3 \pmod{4} \end{cases}$\;
+
+    \vspace{2mm}
+    Initialise a hash map $S$ which uses forms in the 2-Sylow subgroup as keys, storing their square roots.\;
+
+    \vspace{2mm}
+    \While{no nontrivial factor has been found}{
+
+        \vspace{2mm}
+        $p \gets$ random prime in $[3, |D|]$, which can be chosen by sampling integers until one is found to be prime via a primality test such as the Rabin-Miller test \cite[Alg.\,8.2.2]{cohen}.\;
+
+        \vspace{2mm}
+        \If{$p \divides D$}{
+            \Return{$p$}
+        }
+
+        \vspace{2mm}
+        \If{$D$ is a quadratic nonresidue mod $p$}{
+            Return to the start of the loop.
+        }
+
+        \vspace{2mm}
+        $b \gets$ a square root of $D$ mod $p$, which can be computed using an algorithm such as the Tonelli-Shanks algorithm \cite[Alg.\,1.5.1]{cohen}.
+        If $4 \nmid (b^2 - D)$, then $b \gets b + p$.\;
+
+        \vspace{2mm}
+        $\displaystyle f \gets \left( p, b, \frac{b^2 - D}{4p} \right)$\;
+
+        \vspace{2mm}
+        $d \gets$ order of $f$, computed using BSGS algorithm with the upper bound $H = \ln|D| + 2$.\;
+
+        \vspace{2mm}
+        \If{$d$ is odd}{
+            Return to the start of the loop.
+        }
+
+        \vspace{2mm}
+        $g \gets f^{d/2}$ using the fast powering algorithm.\;
+
+        \vspace{2mm}
+        $x \gets$ factor extracted from $g$. 
+        If $g$ has the form $(a, b, a)$, this is $2a - b$.
+        Otherwise, $g$ has the form $(a, 0, c)$ or $(a, a, c)$ --- 
+        in both cases the factor is $a$.\;
+
+        \vspace{2mm}
+        \If{$x$ is nontrivial}{
+            \Return{$x/4$ if $4 \divides x$, $x/2$ if $2 \divides x$, or otherwise $x$.}
+        }
+
+        \vspace{2mm}  
+        $A \gets 0$\;
+        $B \gets d$\;
+
+        \vspace{2mm}
+        \While{$2 \divides B$}{
+            $A \gets A + 1$\;
+            $B \gets B / 2$\;
+        }
+
+        \vspace{2mm}
+        $h \gets f^{B}$
+        \While {$h \neq \text{id}_\Delta$}{
+            $h2 \gets h^2$\;
+
+            \vspace{2mm}
+            \If{$h2$ is a key in $S$}{
+                $g \gets h^{-1} \cdot$ value at key $h2$ in $S$.\;
+                $x \gets$ factor extracted from $g'$, as before.
+
+                \vspace{2mm}
+                \If{$x$ is nontrivial}{
+                    \Return{$x/4$ if $4 \divides x$, $x/2$ if $2 \divides x$, or otherwise $x$.}
+                }
+            }
+            \Else{
+                To $S$, add the key $h2$ with the value $h$.\;
+            }
+            $h \gets h2$\;
+        }
+    }
+\end{algorithm}
+
+\end{minipage}}}
+\end{center}
+
+\pagebreak
+\begin{center}
+\makebox[\textwidth][r]{
+\clipbox{0pt 0pt 0pt 1cm}{
+\begin{minipage}{\textwidth}
+    
+\begin{algorithm}[H]
+    \DontPrintSemicolon
+
+    \vspace{2mm}
+    \While{}{
+        \While{$2 \divides B$}{
+            $A \gets A + 1$\;
+            $B \gets B / 2$\;
+        }
+
+        \vspace{2mm}
+        $h \gets f^{B}$\;
+
+        \vspace{2mm}
+        \While {$h \neq \text{id}_\Delta$}{
+            $h2 \gets h^2$\;
+
+            \vspace{2mm}
+            \If{$h2$ is a key in $S$}{
+                $h1 \gets$ value at key $h2$ in $S$.\;
+                $g \gets h^{-1} \cdot h1$\;
+                $x \gets$ factor extracted from $g'$, as before.
+
+                \vspace{2mm}
+                \If{$x$ is nontrivial}{
+                    \Return{$x/4$ if $4 \divides x$, $x/2$ if $2 \divides x$, or otherwise $x$.}
+                }
+            }
+            \Else{
+                To $S$, add the key $h2$ with the value $h$.\;
+            }
+            $h \gets h2$\;
+        }
+    }
+\end{algorithm}
+
+\end{minipage}}}
+\end{center}
+
+\vspace{2mm}
+\noindent
+A python implementation of this algorithm can be found at \url{https://github.com/HarrisonGraham14/Factoring}.
+Note that the suggested Miller-Rabin test is probabilistic, and can return false positives for the primality of $p$. 
+But even if this occurs, no real harm is done.
+We can add a step to check that $f$ is a primitive form by computing the gcd of its coefficients.
+If this is not 1, compositions using $f$ are not defined, and we cannot proceed ---
+however, the gcd of the coefficints of $f$ divides the discriminant of $f$, so in this case we have found a factor of $D$ which may be nontrivial.
+
+\todo{complexity analysis}
+
+\pagebreak
+To confirm the asymptotic behaviour of this algorithm, the python implementation was used to factor integers which are products of similarly sized primes (as these are typically the hardest numbers of their size to factor).
+The raw results are plotted in \Cref{fig-factoring-time-raw} below:
+\vspace{-5mm}
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.6\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{factoring time raw.png}
+        \caption{Time taken to factor $N$.}
+        \label{fig-factoring-time-raw}
+    \end{minipage}
+\end{figure}
+
+\noindent
+The trend is fairly difficult to see amidst two main factors which cause noise.
+Firstly, the factoring algorithm is more directly related to $|\Delta|$ than $N$, so we can use that as our x-axis instead.
+Secondly, the running time essentially gets multiplied by a random number depending on how many BSGS steps are needed, which is the largest contribution to the running time.
+This should be no greater than 2 on average, but there is enough variance to make the graph difficult to interpret.
+If we divide by the number of times the BSGS algorithm was called when each number was factored, we get the following results:
+\vspace{-5mm}
+\begin{figure}[ht]
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{factoring time normalised.png}
+        \caption{\centering Time per BSGS step taken to factor $|\Delta|$.}
+        \label{fig-factoring-time-normalised}
+    \end{minipage}
+    \hfill
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{factoring time fourth root.png}
+        \caption{\centering Time per BSGS step taken to factor $|\Delta|^4$.}
+        \label{fig-factoring-time-fourth-root}
+    \end{minipage}
+\end{figure}
+
+\noindent
+This is fairly strong evidence that the algorithm truly has time complexity $O(N^{1/4})$.
+
+\pagebreak
+We can also use these results to verify that the BSGS algorithm isn't being called more often than expected.
+First, we can check that the distribution of BSGS calls made to factor each number matches what we would predict if each call had probability of roughly $1/2$ of giving a nontrivial factor:
+\vspace{-5mm}
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.6\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{bsgs calls histogram.png}
+        \caption{Distribution of BSGS calls made over 100 uses of the factoring algorithm.}
+        \label{fig-bsgs-histogram}
+    \end{minipage}
+\end{figure}
+
+Finally, we should check that the number of BSGS calls made isn't increasing as the numbers that we are factoring becomes larger.
+We can see that this is the case in the following figure:
+\vspace{-5mm}
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.6\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{bsgs calls rolling average.png}
+        \caption{Rolling average of how many BSGS calls were made while factoring increasingly large numbers.}
+        \label{fig-bsgs-rolling}
+    \end{minipage}
+\end{figure}
+
+\noindent
+There is no clear indication that this is continuing to increase as the numbers being factored becomes larger, so it seems that our method for avoiding parasitic forms is effective.
+
 
 
 %===============================================================================================================================%
