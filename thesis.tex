@@ -1119,55 +1119,70 @@ For this reason, such an algorithm will sometimes be called \textbf{exponential}
 
 
 \section{Ambiguous forms}\label{s-factor-amb}
-The key insight which bridges the theory of binary quadratic forms into the realm of factoring comes from considering
-forms of order 2 - that is, forms which are their own inverses. 
-Such forms are called \textbf{ambiguous forms}, since they are properly equivalent to the same forms that they are improperly
-equivalent to, so it is ``ambiguous'' which proper equivalence class they belong to.
+The key insight which bridges the theory of binary quadratic forms into the realm of factoring comes from considering forms of order 2 - that is, forms which are their own inverses. 
+Such forms are called \textbf{ambiguous forms}.
+These are properly equivalent to the same forms that they are improperly equivalent to, so it is ``ambiguous'' which proper equivalence class they belong to.
 
-For a reduced form to be properly equivalent to its inverse, we have
-$$(a, b, c) \equiv (a, -b, c).$$
-When is this possible?
-The clearest case where the equility holds is when $b = 0$, but there are other possibilities.
-If $b \neq 0$, the only way for the equivalence to hold is if $(a, -b, c)$ is not fully reduced.
-Since $(a, b, c)$ is reduced, we know that $|b| \leq a \leq c$, 
-so the only way for $(a, -b, c)$ not to be reduced is if $-b < 0$ and $a = |-b|$ or $a = c$.
-Since $(a, b, c)$ is reduced, either of the latter conditions would imply $b > 0$, so we can now write the three cases
-\begin{align*}
-    &\textbf{(1)} \hspace{2mm} b = 0 \implies (a, 0, c) \\
-    &\textbf{(2)} \hspace{2mm} a = b \implies (a, a, c) \\
-    &\textbf{(3)} \hspace{2mm} a = c \implies (a, b, a).
-\end{align*}
-An ambiguous form must necessarily meet one of these conditions, and it is easy to show that each condition is sufficient:
-\begin{align*}
-    \textbf{(1)} \hspace{2mm}
-    (a, 0, c) \cdot (a, 0, c) &= (a, 0, c) \cdot (a, -0, c) \\
-    &= id_\Delta
-\end{align*}
-\begin{align*}
-    \textbf{(2)} \hspace{2mm}
-    (a, a, c) \cdot (a, a, c) &= (a, a, c) \cdot (a, -a, a - a + c) \rnote{\text{(using $T^{-1}$)}} \\
-    &= (a, a, c) \cdot (a, -a, c) \\
-    &= id_\Delta
-\end{align*}
-\begin{align*}
-    \textbf{(3)} \hspace{2mm}
-    (a, b, a) \cdot (a, b, a) &= (a, b, a) \cdot (a, -b, a) \rnote{\text{(using $S$)}} \\
-    &= id_\Delta
-\end{align*}
-so these cases are necessary and sufficient to classify a form as ambiguous.
-Notice that each case reduces the three variables $a, b, c$ to only two - 
-this is of particular note when one considers how each case affects the formula $\Delta = b^2 - 4ac$
+\vspace{2mm}
+\begin{lemma}
+    A reduced form $f$ is ambiguous if and only if it meets one of the following conditions:
+    \begin{align*}
+        &\textbf{(1)} \hspace{2mm} b = 0 \implies f = (a, 0, c) \\
+        &\textbf{(2)} \hspace{2mm} a = b \implies f = (a, a, c) \\
+        &\textbf{(3)} \hspace{2mm} a = c \implies f = (a, b, a).
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+    For a reduced form to be properly equivalent to its inverse, we have
+    $$(a, b, c) \equiv (a, -b, c).$$
+    When is this possible?
+    The clearest case where the equility holds is when $b = 0$, but there are other possibilities.
+    If $b \neq 0$, the only way for the equivalence to hold is if $(a, -b, c)$ is not fully reduced.
+    Since $(a, b, c)$ is reduced, we know that $|b| \leq a \leq c$, 
+    so the only way for $(a, -b, c)$ not to be reduced is if $-b < 0$ and $a = |-b|$ or $a = c$.
+    Since $(a, b, c)$ is reduced, either of the latter conditions would imply $b > 0$, so we have shown the conditions of the lemma to be necessary for $f$ to be reduced.
+    It is easy to show that each condition is sufficient:
+    \begin{align*}
+        \textbf{(1)} \hspace{2mm}
+        (a, 0, c) \cdot (a, 0, c) &= (a, 0, c) \cdot (a, -0, c) \\
+        &= id_\Delta
+    \end{align*}
+    \begin{align*}
+        \textbf{(2)} \hspace{2mm}
+        (a, a, c) \cdot (a, a, c) &= (a, a, c) \cdot (a, -a, a - a + c) \rnote{\text{(using $T^{-1}$)}} \\
+        &= (a, a, c) \cdot (a, -a, c) \\
+        &= id_\Delta
+    \end{align*}
+    \begin{align*}
+        \textbf{(3)} \hspace{2mm}
+        (a, b, a) \cdot (a, b, a) &= (a, b, a) \cdot (a, -b, a) \rnote{\text{(using $S$)}} \\
+        &= id_\Delta
+    \end{align*}
+    so these cases are necessary and sufficient to classify a form as ambiguous.
+\end{proof}
+
+Notice that each case reduces the three variables $a, b, c$ to only two --- 
+consider how each case affects the formula $\Delta = b^2 - 4ac$
 \begin{gather*}
     \textbf{(1)} \hspace{2mm} \Delta = 0 - 4ac = -4ac \\
     \textbf{(2)} \hspace{2mm} \Delta = a^2 - 4ac = a(a-4c) \\
     \textbf{(3)} \hspace{2mm} \Delta = b^2 - 4a^2 = (b + 2a)(b - 2a).
 \end{gather*}
-Notice that every case gives a factorisation of the discriminant.
+The theorem immediately follows:
+
+\vspace{2mm}
+\begin{theorem}
+    An ambiguous form directly provides a (possibly trivial) factorisation of its discriminant.
+\end{theorem}
+\vspace{2mm}
+
+\noindent
 Therefore, if we want to find a factorisiation of some number $N$, we can do this by finding ambiguous forms of discriminant $\Delta = -N$
 (or $\Delta = -4N$ if $-N$ is congruent to 2 or 3 mod 4).
 
-Suppose we devise a method to randomly sample ambiguous forms of discriminant $\Delta$.
-This is sufficient to constitute a factoring algorithm so long as a fixed percentage of ambiguous forms lead to nontrivial factorisations.
+Suppose we devise a method to randomly sample reduced ambiguous forms of discriminant $\Delta$.
+This is sufficient to constitute a factoring algorithm so long as a fixed percentage of such forms lead to nontrivial factorisations.
 We will show that this is the case.
 
 \vspace{2mm}
@@ -1209,7 +1224,7 @@ We will show that this is the case.
         This is reduced when $b \leq a$, ie. $N \leq 3$, which is never the case.
     \end{adjustwidth}
     \vspace{2mm}
-    We therefore see that there is only one ambiguous form which gives a trivial factorisation.
+    We therefore see that there is only one reduced ambiguous form which gives a trivial factorisation.
     Now, since $N$ is composite, there exists some nontrivial factorisation $N = xy$, where $x \leq y$.
     Checking each kind of reduced form in a similar manner yeilds the forms
     $$\left(x, x, \frac{x + y}{4}\right) \text{ and } \left( \frac{x + y}{4}, \frac{y - x}{2}, \frac{x + y}{4} \right).$$
@@ -1252,12 +1267,12 @@ We will show that this is the case.
     By further examining the 2nd and 3rd kinds of ambiguous forms, we get
     $$\left( 2x, 2x, \frac{x + y}{2} \right) \text{ and } \left( \frac{x + y}{2}, y - x, \frac{x + y}{2} \right).$$
     Since $N$ is odd, both $x$ and $y$ are odd, so $x + y$ is divisible by 2, meaning that these forms have integer coefficients.
-    These forms are reduced when $N \leq 3$ and $N \geq 3$, respectively, so there are always at least two ambiguous forms which give the factorisation $N = xy$.
+    These forms are reduced when $N \leq 3$ and $N \geq 3$, respectively, so there are always at least two reduced ambiguous forms which give the factorisation $N = xy$.
     Since only two reduced forms give trivial factorisations, at least half of all reduced ambiguous forms give nontrivial factorisations.
 \end{proof}
 
 In order to factor $N$, we desire to find a method for sampling ambiguous forms.
-Suppose we can generate a random ambiguous form using some algorithm. 
+Suppose we can generate a random reduced ambiguous form using some algorithm. 
 There is at least 50\% chance that the form we generate gives a nontrivial factorisation, otherwise we sample again.
 Let the expected number of samples needed be $E$.
 At least half of the time, the first sample gives a nontrivial factorisation, the other half we will require $1 + E$ steps, so
@@ -1275,7 +1290,7 @@ If $d$ happens to be even, then we have
 $$(f^{d/2})^2 \sim id_\Delta.$$
 Hence, $(f^{d/2})$ must be an ambiguous form, which gives a factorisation of the discriminant.
 We will postpone discussing how uniformly this process samples the set of ambiguous forms until \Cref{s-sampling-forms}.
-For now, suppose that we can choose a random form, we hope that there is a reasonable probability that its order is even.
+For now, suppose that we can choose a random reduced form, we hope that there is a reasonable probability that its order is even.
 Fortunately, this is the case ---
 in fact, we claim the following:
 
@@ -1283,6 +1298,7 @@ in fact, we claim the following:
 \begin{theorem}
     If $N > 1$ is an odd composite integer, then at least half of all elements of $\Cl_\Delta$ have even order, where $\Delta$ is $-N$ or $-4N$ as before.
 \end{theorem}
+\red{change to half of all reduced forms}
 
 \begin{proof}
     We fist claim that $\Cl_\Delta$ contains at least one ambiguous form which is not the identity.
@@ -1298,13 +1314,14 @@ in fact, we claim the following:
     So at least half of the elements in $\Cl_\Delta$ have even order.
 \end{proof}
 
-So if we can sample a random form $f$, the order of $f$ will be even at least half of the time, allowing us to find an ambiguous form.
+So if we can sample a random reduced form $f$, the order of $f$ will be even at least half of the time, allowing us to find an ambiguous form.
 To efficiently find the order of an element, we use a method discovered by Daniel Shanks called \textbf{Baby Step Giant Step}, (or BSGS).
 
-BSGS uses a ``meet in the middle'' strategy, which first requires we have some bound on the size of the class group, which we call the \textbf{class number}, $h_\Delta = |\Cl_\Delta|$.
-Suppose we have a bound $h_\Delta \leq H$ (we will find such a bound in \Cref{s-class-number-formula}).
-Instead of increasing the power of $f$ until we reach the identity, we compute the first $\lceil \sqrt{H} \rceil$ powers of $f$ (``baby steps'').
-If this contains the identity, we are done. 
+BSGS uses a ``meet in the middle'' strategy, which requires we have some bound on the size of the class group.
+We call the order of the class group the \textbf{class number}, $h_\Delta = |\Cl_\Delta|$.
+Suppose we have an upper bound $H \geq h_\Delta$ (we will find such a bound in \Cref{s-class-number-formula}).
+We first compute the first $\lceil \sqrt{H} \rceil$ powers of $f$ (``baby steps'').
+If this process hits the identity, we are done. 
 Otherwise, we compute the first $\lceil \sqrt{H} \rceil$ powers of $f^{\lceil \sqrt{H} \rceil}$ (``giant steps'').
 All powers of $f$ from $\lceil \sqrt{H} \rceil + 1$ up to $H$ are given by multiplying a baby step with a giant step, and the order of $f$ cannot be larger than $h_\Delta$, so one of these products must be the identity.
 This means that one of the giant steps is an inverse to one of the baby steps.
@@ -1312,8 +1329,6 @@ If we store our baby steps in a hash table, then as we calculate the giant steps
 Once a collision is found between the $i$-th baby step and the $j$-th giant step, we have found
 $$\text{id}_\Delta = f^i \cdot (f^{\lceil \sqrt{H} \rceil})^j = f^{i + \lceil \sqrt{H} \rceil j}.$$
 Since we check all powers of $f$ in increasing order, this is the first positive power of $f$ which gives the identity, so the order of $f$ is $i + \lceil \sqrt{H} \rceil j$.
-In practise, we employ a small optimisation where the giant steps are instead powers of $f^{-\lceil \sqrt{H} \rceil}$, which we compare directly for collisions with the hash table of baby steps.
-This way, we don't have to take the inverse at each step.
 As an algorithm, we have
 \begin{algorithm}
     \caption{Baby Step Giant Step} \label{alg-bsgs}
@@ -1350,7 +1365,7 @@ As an algorithm, we have
 
 \noindent
 This algorithm computes the order of an element in $O(\sqrt{H})$ composition operations.
-Once we have computed the order of $f$, we can efficiently raise $f$ to a power using a standard algorithm:
+Once we have computed the order of $f$, we can efficiently raise $f$ to a power using a binary algorithm:
 we consider the binary expansion of $d$, ie
 $$d = a_0 \cdot 2^0 + a_1 \cdot 2^1 + a_2 \cdot 2^2 + \dots \rnote{(a_i \in \{0, 1\}).}$$
 Then we have
@@ -1359,7 +1374,7 @@ So instead of multiplying $f$ by itself $d$ times, we take repeated squares $\lc
 
 \pagebreak
 \begin{algorithm}
-    \caption{Fast Powering} \label{alg-fast-power}
+    \caption{Binary Powering Algorithm} \label{alg-fast-power}
     \DontPrintSemicolon
     \vspace{1mm}
     \KwIn{$f$ in some group, $d \in \N$ where $d \neq 0$.}
@@ -1380,7 +1395,7 @@ So instead of multiplying $f$ by itself $d$ times, we take repeated squares $\lc
 \noindent
 This allows us to compute $f^{d/2}$ in $O(\log_2(H))$ composition operations.
 
-So far, the slowest step in the method of factoring that we are developing is computing the order of an arbitrary element.
+We will see that the slowest step in the method of factoring that we are developing is computing the order of an arbitrary element.
 This depends on the bound $H$, so the lower we can make this bound, the faster our factoring method will be.
 One's first thought may be to use a counting argument to bound the number of reduced forms.
 For reduced positive definite forms, we have shown $|b| \leq \sqrt{|\Delta|/3}$.
@@ -1405,7 +1420,7 @@ In the factoring method outlined by Shanks, one attempts to compute the precise 
 \begin{theorem}
     For $\Delta < -4$, the class number is given by
     $$h_\Delta = \frac{\sqrt{|\Delta|}}{\pi} L(1, \chi_\Delta) \hspace{5mm}$$
-    where $\chi_\Delta(n) = (\Delta / n)$ is is the Kroenecker symbol.
+    where $L(s, \chi) = \sum_{n = 1}^{\infty} \frac{\chi(n)}{n^s}$, and $\chi_\Delta(n) = (\Delta / n)$ is is the Kroenecker symbol.
 \end{theorem}
 \vspace{2mm}
 For a proof of this theorem, see \cite[\S\,10.5]{jarvis}.
@@ -1454,7 +1469,7 @@ We will take a different approach, simply finding an upper bound for the $L$-ser
 \pagebreak
 \section{Sampling Forms} \label{s-sampling-forms}
 
-The last component missing from our factoring algorithm is a method for randomly sampling forms.
+The last component missing from our factoring algorithm is a method for randomly sampling reduced forms.
 This isn't as easy as it might first seem - for instance, if one chooses some $b$ congruent to $\Delta$ mod 2, then it remains to find $a$ and $c$ satisfying $ac = \frac{b^2 - \Delta}{4}$.
 That is, we have to factor a number which is roughly the same size as $\Delta$.
 
@@ -1465,8 +1480,8 @@ $$\left( p, b, \frac{\Delta - b^2}{4p} \right).$$
 Note that $\Delta - b^2 \equiv 0 \pmod{4}$, so the entries of the above form are integers (except perhaps when $p = 2$).
 This method is particularly convenient for Shanks, since he has already calculated $(\Delta / p)$ for many small primes, which is 1 precisely when $\Delta$ is a quadratic residue mod $p$.
 
-But should we expect such a method to sample forms from all equivalence classes with equal likelihood?
-In fact, we will show this does sample uniformly, since this method of sampling is equivalent to uniformly sampling from the set of prime ideals of $\order_\Delta$ and then mapping these to the corresponding forms.
+But should we expect such a method to sample forms from all reduced forms with equal likelihood?
+In fact, we will show this does sample the set of reduced primitive forms uniformly, since this method of sampling is equivalent to uniformly sampling from the set of prime ideals of $\order_\Delta$ and then mapping these to the corresponding forms.
 To see this, we must understand what the prime ideals of $\order_\Delta$ look like.
 
 \vspace{2mm}
@@ -1550,9 +1565,9 @@ We will, however, observe computational evidence that this bound is likely suffi
 
 \pagebreak
 \section{The 2-Sylow Subgroup}
-Now we are able to sample forms with (roughly) equal probability of landing in each class.
-We previously suggested that we can sample a random form $f$, compute its order $d$, and if $d$ is even we compute $f^{d/2}$, an ambiguous form.
-There remains a question of how uniformly this process samples ambiguous forms.
+Now we are able to (roughly) uniformly sample reduced forms.
+We previously suggested that we can sample a random reduced form $f$, compute its order $d$, and if $d$ is even we compute $f^{d/2}$, an ambiguous form.
+There remains a question of how uniformly this process samples the set of reduced ambiguous forms.
 In fact, this concern is well-founded, as there are cases where this method samples non-uniformly.
 Worse yet, there are cases where this process is strongly biased towards sampling an ambiguous form which corresponds to a trivial factorisation.
 To understand why this issue occurs and how to avoid it, we must discuss the \textbf{2-Sylow subgroup} of $\Cl_\Delta$.
@@ -1564,10 +1579,10 @@ Now, we can adapt our method for finding ambiguous forms to a method for samplin
     \caption{Sampling the 2-Sylow Subgroup} \label{alg-sylow-sample}
     \DontPrintSemicolon
     \vspace{1mm}
-    \KwIn{$D \in \Z$ a negative discriminant.}
-    \KwOut{$s$, a form of discriminant $D$ with order equal to a power of 2.}
+    \KwIn{$\Delta \in \Z$ a negative discriminant.}
+    \KwOut{$s$, a form of discriminant $\Delta$ with order equal to a power of 2.}
     \algosep
-    $f \gets$ random form of discriminant $D$ (using the method in \Cref{s-sampling-forms}).\;
+    $f \gets$ random form of discriminant $\Delta$ (using the method in \Cref{s-sampling-forms}).\;
     $B \gets$ order of $f$ (using \Cref{alg-bsgs} with the bound from \Cref{s-class-number-formula}).\;
     \While{$2 \divides B$}{
         $B \gets B / 2$\;
@@ -1602,10 +1617,10 @@ Now, we can adapt our method for finding ambiguous forms to a method for samplin
     Hence, the result is a uniformly distributed sample from $S_\Delta$.
 \end{proof}
 
-Now, consider sampling $s \in S_\Delta$, computing its order $d$, and then getting the ambiguous form $s^{d/2}$, we have claimed that this method does not uniformly sample the set of ambiguous forms.
+Now, consider sampling $s \in S_\Delta$, computing its order $d$, and then getting the ambiguous form $s^{d/2}$, we have claimed that this method does not uniformly sample the set of reduced ambiguous forms.
 To see this, consider the case that $S_\Delta \simeq \Z_2 \times \Z_64$.
 Denoting the elements of this group as $(a, b)$, with $a \in \Z_2, b \in \Z_64$, the square of every element is of the form $(0, b)$.
-This means the ambiguous forms $(1, 0)$ and $(1, 32)$ cannot be found by any $s^{d/2}$ except for when $s$ is the ambiguous forms.
+This means the ambiguous forms $(1, 0)$ and $(1, 32)$ cannot be found by any $s^{d/2}$ except for when $s$ is itself ambiguous.
 Shanks claims that $\Delta = -4 \cdot 10721$ leads to this exact case, where out of 128 elements of the 2-Sylow subgroup, 125 of them lead to the same ambiguous form, $(2, 2, 5361)$, which corresponds to a trivial factorisation of the discriminant \cite[\S\,7]{shanks}.
 
 Shanks calls ambiguous forms which are overrepresented by our sampling algorithm \textbf{parasitic forms}.
@@ -1621,6 +1636,7 @@ But there is still a problem ---
 What if we keep finding the same form which squares to $P$?
 Fortunately, the argument generalises.
 
+\red{rewrite}
 Suppose of all of the forms with order $2^A$, a form $P$ is overrepresented by our sampling method.
 Then either there are several distinct forms with order $2^{A-1}$ which square to $P$, or else there is only one (and its inverse) which is itself overrepresented when sampling forms of order $2^{A-1}$.
 We can follow this chain until we find an overrepresented $P$ of the largest order, which must always have several square roots, or else uniform sampling of $S_\Delta$ could not cause it to become overrepresented.
@@ -1781,6 +1797,7 @@ We can add a step to check that $f$ is a primitive form by computing the gcd of 
 If this is not 1, compositions using $f$ are not defined, and we cannot proceed ---
 however, the gcd of the coefficints of $f$ divides the discriminant of $f$, so in this case we have found a factor of $D$ which may be nontrivial.
 
+\todo{improve}
 Let us consider the time complexity of this algorithm, starting with the prime sampling step.
 The Miller-Rabin primality test is $O(\ln^3|\Delta|)$.
 By Chebyshev's theorem \cite[Thm.\,5.1]{shoup}, there is about a $1/\ln|\Delta|$ chance that each sample is prime.
@@ -1798,7 +1815,7 @@ Although parasitic forms make this uncertain, we assume that our treatment of th
 
 
 \pagebreak
-To confirm the asymptotic behaviour of this algorithm, the python implementation was used to factor integers which are products of similarly sized primes (as these are typically the hardest numbers of their size to factor).
+To verify the asymptotic behaviour of this algorithm, the python implementation was used to factor integers which are products of similarly sized primes (as these are typically the hardest numbers of their size to factor).
 The raw results are plotted in \Cref{fig-factoring-time-raw} below:
 \vspace{-5mm}
 \begin{figure}[ht]
@@ -1867,6 +1884,8 @@ We can see that this is the case in the following figure:
 
 \noindent
 There is no clear indication that this is continuing to increase as the numbers being factored becomes larger, so it seems that our method for avoiding parasitic forms is effective.
+
+\todo{check known parasitic case}
 
 
 
