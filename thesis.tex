@@ -661,7 +661,7 @@ except the chosen definition avoids dealing with multiple cases.
     First, let $l$ be the smallest positive integer in $\order_\Delta$.
     We know that $\order_\Delta$ must contain at least one integer, since for any nonzero $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$, we have 
     $$\order_\Delta \ni x + \Delta y - \frac{\Delta + \sqrt\Delta}{2}y = x + \frac{\Delta - \sqrt\Delta}{2}y.$$
-    And since $I$ is an ideal we have
+    Since $I$ is an ideal we have
     \begin{align*}
         I &\ni \left( x + \frac{\Delta + \sqrt\Delta}{2}y \right) \left( x + \frac{\Delta - \sqrt\Delta}{2}y \right) \\
         &= \left( x + \frac{\Delta}{2}y \right)^2 -  \left( \frac{\sqrt\Delta}{2}y \right)^2 \\
@@ -1067,7 +1067,7 @@ for some $k \in \Z$.
 We can see that $k$ divides each of $l$, $m$, and $n$, so the product of ideals is contained within
 $$lk \left( \Z + \frac{\Delta + \sqrt\Delta}{2} \Z \right) = \langle lk \rangle$$
 since each coefficient in ($\ast$) is divisible by $lk$.
-And since $lk$ is contained in ($\ast$), the ideal product must be all of $\langle lk \rangle$.
+Since $lk$ is contained in ($\ast$), the ideal product must be all of $\langle lk \rangle$.
 This is principal, and is therefore narrowly equivalent to the identity.
 Hence, we have verified that an ideal is inverted by taking its conjugate.
 Now consider a form $f = (a, b, c)$.
@@ -1217,7 +1217,7 @@ We will show that this is the case.
     so the entries in the above forms are integers.
     These forms are reduced when $3x \leq y$ and $3x \geq y$, respectively.
     So there is always at least one reduced form which gives the factorisation $N = xy$.
-    And since there is only one reduced form which gives a trivial factorisation, at least half of all reduced ambiguous forms give nontrivial factorisations.
+    Since there is only one reduced form which gives a trivial factorisation, at least half of all reduced ambiguous forms give nontrivial factorisations.
     
     We repeat this argument for the case $-N \equiv 3 \pmod{4}$.
     We set $\Delta = -4N$, and consider the forms which lead to trivial factorisations of $4N$, which are $1 \cdot 4N$, $2 \cdot 2N$, and $4 \cdot N$.
@@ -1253,7 +1253,7 @@ We will show that this is the case.
     $$\left( 2x, 2x, \frac{x + y}{2} \right) \text{ and } \left( \frac{x + y}{2}, y - x, \frac{x + y}{2} \right).$$
     Since $N$ is odd, both $x$ and $y$ are odd, so $x + y$ is divisible by 2, meaning that these forms have integer coefficients.
     These forms are reduced when $N \leq 3$ and $N \geq 3$, respectively, so there are always at least two ambiguous forms which give the factorisation $N = xy$.
-    And since only two reduced forms give trivial factorisations, at least half of all reduced ambiguous forms give nontrivial factorisations.
+    Since only two reduced forms give trivial factorisations, at least half of all reduced ambiguous forms give nontrivial factorisations.
 \end{proof}
 
 In order to factor $N$, we desire to find a method for sampling ambiguous forms.
@@ -1285,8 +1285,8 @@ in fact, we claim the following:
 \end{theorem}
 
 \begin{proof}
-    We fist claim that $Cl_\Delta$ contains at least one ambiguous form which is not the identity.
-    We already saw this in the proof of \Cref{thm-ambiguous-factorisations} that $Cl_\Delta$ contains a reduced ambiguous form which is not the identity, which has order 2.
+    We fist claim that $\Cl_\Delta$ contains at least one ambiguous form which is not the identity.
+    We already saw this in the proof of \Cref{thm-ambiguous-factorisations} that $\Cl_\Delta$ contains a reduced ambiguous form which is not the identity, which has order 2.
     Call one such form $f$, and its equivalence class $\bar{f}$.
     Now, consider all classes of forms $\bar{g} \in \Cl_\Delta$ which have odd order.
     Each such $\bar{g}$ determines a unique $\bar{h} = \bar{f} \cdot \bar{g}$.
@@ -1374,6 +1374,7 @@ So instead of multiplying $f$ by itself $d$ times, we take repeated squares $\lc
         $g \gets g^2$\;
     }
     \Return{$h$}
+    \vspace{2mm}
 \end{algorithm}
 
 \noindent
@@ -1467,9 +1468,67 @@ This method is particularly convenient for Shanks, since he has already calculat
 But should we expect such a method to sample forms from all equivalence classes with equal likelihood?
 In fact, we will show this does sample uniformly, since this method of sampling is equivalent to uniformly sampling from the set of prime ideals of $\order_\Delta$ and then mapping these to the corresponding forms.
 To see this, we must understand what the prime ideals of $\order_\Delta$ look like.
-\todo{outline 3 kinds of ideals}
 
+\vspace{2mm}
+\begin{lemma}
+    Every prime ideal $\mathfrak{p} \trianglelefteq \order_\Delta$ sits above an integer prime ideal $p\Z \trianglelefteq \Z$.
+    That is, there is some prime $p \in \Z$ such that
+    $$\mathfrak{p} \cap \Z = p\Z.$$
+\end{lemma}
 
+\begin{proof}
+    Suppose $\mathfrak{p} \cap \Z = pq\Z$, where $p$ and $q$ are integers greater than 1.
+    Then $pq \in \mathfrak{p}$, but neither $p$ nor $q$ is in $\mathfrak{p}$.
+    This contradicts the definition of a prime ideal.
+    So we must have $\mathfrak{p} \cap \Z = p\Z$ for a prime integer $p$.
+\end{proof}
+
+\vspace{2mm}
+\begin{lemma}
+    For each prime $p \in \Z$, there is at least one prime ideal $\mathfrak{p} \trianglelefteq \order_\Delta$ sitting above $p\Z$.
+    Such an ideal has norm $p$ or $p^2$.
+\end{lemma}
+
+\begin{proof}
+    Consider the ideal $\langle p \rangle \trianglelefteq \order_\Delta$.
+    Since $\order_\Delta$ is a Dedekind domain, this splits uniquely into prime ideal factors.
+    Note that the norm of $\langle p \rangle$ is $p^2$.
+    The norms of ideals are multiplicative, and the only ideal with norm 1 is the trivial ideal (all of $\order_\Delta)$, so the only possibilities for the splitting of $\langle p \rangle$ into prime ideals is that it is already prime, or $\langle p \rangle = \mathfrak{p}\mathfrak{p}'$ for prime ideals $\mathfrak{p}$ and $\mathfrak{p}'$.
+    In the prior case, $\langle p \rangle$ is a prime ideal of nrom $p^2$ sitting above $p\Z$.
+    In the latter case, let
+    $$\mathfrak{p} = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$$
+    be the usual canonical representation of $\mathfrak{p}$.
+    Then $p = N(\mathfrak{p}) = ln$.
+    Since $n \divides l$, the only possibility is that $n = 1, l = p$.
+    Hence,
+    \[ \langle p \rangle \cap \Z = \left( p\Z + \frac{m + \sqrt\Delta}{2}\Z \right) \cap \Z = p\Z. \qedhere \]
+\end{proof}
+
+We say that a prime $p$ is \textbf{inert} if there is only one prime ideal of norm $p^2$ above it, \textbf{split} if there are two distinct prime ideals or norm $p$ above it, and \textbf{ramified} if there is only one prime ideal above it satisfying $\mathfrak{p}^2 = \langle p \rangle$.
+Note that the ideals corresponding to inert primes are principal, and therefore correspond to the identity element of the class group.
+As such, we are not concerned with finding such ideals.
+
+\vspace{2mm}
+\begin{lemma}
+    Over $\order_\Delta$, a prime $p \in \Z$ is
+    \begin{itemize}
+        \item \textbf{Inert} if $(\Delta / p) = -1$
+        \item \textbf{Split} if $(\Delta / p) = 1$
+        \item \textbf{Ramified} if $(\Delta / p) = 0$ (ie. $p \divides \Delta$).
+    \end{itemize}
+    Where $(n / p)$ is the Kroenecker symbol.
+\end{lemma}
+\vspace{2mm}
+
+\noindent
+\todo{prove or cite}
+
+If we sample primes $p$ on the interval $[3, |\Delta|]$ randomly, rejecting $p$ whenever $\Delta$ is not a quadratic residue mod $p$ or $p \divides \Delta$, we are randomly sampling split primes in $\order_\Delta$ whose corresponding ideals have norm no greater than $|\Delta|$.
+To compute these ideals, we must find $b \in \Z$ such that $b^2 \equiv \Delta \pmod{p}$, which can be achieved using an algorithm such as the Tonelli-Shanks algorithm \cite[Alg.\,1.5.1]{cohen}.
+Then, we have
+$$\mathfrak{p} = p\Z + \frac{b + \sqrt\Delta}{2}$$
+is a corresponding prime ideal.
+The other, given by choosing $-b$, is in the inverse ideal class.
 
 \vspace{2mm}
 \begin{theorem}
@@ -1510,10 +1569,8 @@ Now, we can adapt our method for finding ambiguous forms to a method for samplin
     \algosep
     $f \gets$ random form of discriminant $D$ (using the method in \Cref{s-sampling-forms}).\;
     $B \gets$ order of $f$ (using \Cref{alg-bsgs} with the bound from \Cref{s-class-number-formula}).\;
-    $A \gets 0$\;
     \While{$2 \divides B$}{
         $B \gets B / 2$\;
-        $A \gets A + 1$\;
     }
     $s \gets f^B$ (using \Cref{alg-fast-power}).\;
     \Return{$s$}
@@ -1580,7 +1637,7 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
 
 \begin{center}
 \makebox[\textwidth][r]{
-\clipbox{0pt 8.4cm 0pt 0pt}{
+\clipbox{0pt 6.4cm 0pt 0pt}{
 \begin{minipage}{\textwidth}
     
 \begin{algorithm}[H]
@@ -1597,7 +1654,7 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
     }
 
     \vspace{2mm}
-    $D \gets \begin{cases} -N & -N \equiv 1 \pmod{4} \\ -4N & -N \equiv 3 \pmod{4} \end{cases}$\;
+    $\Delta \gets \begin{cases} -N & -N \equiv 1 \pmod{4} \\ -4N & -N \equiv 3 \pmod{4} \end{cases}$\;
 
     \vspace{2mm}
     Initialise a hash map $S$ which uses forms in the 2-Sylow subgroup as keys, storing their square roots.\;
@@ -1606,24 +1663,24 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
     \While{no nontrivial factor has been found}{
 
         \vspace{2mm}
-        $p \gets$ random prime in $[3, |D|]$, which can be chosen by sampling integers until one is found to be prime via a primality test such as the Rabin-Miller test \cite[Alg.\,8.2.2]{cohen}.\;
+        $p \gets$ random prime in $[3, |\Delta|]$, which can be chosen by sampling integers until one is found to be prime via a primality test such as the Rabin-Miller test \cite[Alg.\,8.2.2]{cohen}.\;
 
         \vspace{2mm}
-        \If{$p \divides D$}{
+        \If{$p \divides \Delta$}{
             \Return{$p$}
         }
 
         \vspace{2mm}
-        \If{$D$ is a quadratic nonresidue mod $p$}{
+        \If{$\Delta$ is a quadratic nonresidue mod $p$}{
             Return to the start of the loop.
         }
 
         \vspace{2mm}
-        $b \gets$ a square root of $D$ mod $p$, which can be computed using an algorithm such as the Tonelli-Shanks algorithm \cite[Alg.\,1.5.1]{cohen}.
-        If $4 \nmid (b^2 - D)$, then $b \gets b + p$.\;
+        $b \gets$ a square root of $\Delta$ mod $p$, which can be computed using an algorithm such as the Tonelli-Shanks algorithm \cite[Alg.\,1.5.1]{cohen}.
+        If $4 \nmid (b^2 - \Delta)$, then $b \gets b + p$.\;
 
         \vspace{2mm}
-        $\displaystyle f \gets \left( p, b, \frac{b^2 - D}{4p} \right)$\;
+        $\displaystyle f \gets \left( p, b, \frac{b^2 - \Delta}{4p} \right)$\;
 
         \vspace{2mm}
         $d \gets$ order of $f$, computed using BSGS algorithm with the upper bound $H = \ln|D| + 2$.\;
@@ -1648,17 +1705,12 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
         }
 
         \vspace{2mm}  
-        $A \gets 0$\;
-        $B \gets d$\;
+        Compute $d = 2^A \cdot B$ where $2 \nmid B$.\;
 
         \vspace{2mm}
-        \While{$2 \divides B$}{
-            $A \gets A + 1$\;
-            $B \gets B / 2$\;
-        }
+        $h \gets f^{B}$\;
 
         \vspace{2mm}
-        $h \gets f^{B}$
         \While {$h \neq \text{id}_\Delta$}{
             $h2 \gets h^2$\;
 
@@ -1694,13 +1746,6 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
 
     \vspace{2mm}
     \While{}{
-        \While{$2 \divides B$}{
-            $A \gets A + 1$\;
-            $B \gets B / 2$\;
-        }
-
-        \vspace{2mm}
-        $h \gets f^{B}$\;
 
         \vspace{2mm}
         \While {$h \neq \text{id}_\Delta$}{
@@ -1708,8 +1753,7 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
 
             \vspace{2mm}
             \If{$h2$ is a key in $S$}{
-                $h1 \gets$ value at key $h2$ in $S$.\;
-                $g \gets h^{-1} \cdot h1$\;
+                $g \gets h^{-1} \cdot$ value at key $h2$ in $S$.\;
                 $x \gets$ factor extracted from $g'$, as before.
 
                 \vspace{2mm}
@@ -1737,7 +1781,21 @@ We can add a step to check that $f$ is a primitive form by computing the gcd of 
 If this is not 1, compositions using $f$ are not defined, and we cannot proceed ---
 however, the gcd of the coefficints of $f$ divides the discriminant of $f$, so in this case we have found a factor of $D$ which may be nontrivial.
 
-\todo{complexity analysis}
+Let us consider the time complexity of this algorithm, starting with the prime sampling step.
+The Miller-Rabin primality test is $O(\ln^3|\Delta|)$.
+By Chebyshev's theorem \cite[Thm.\,5.1]{shoup}, there is about a $1/\ln|\Delta|$ chance that each sample is prime.
+(\red{Wolfram alpha gives $O(\ln^2|\Delta|$) expected samples needed}).
+
+The Tonelli-Shanks algorithm has time complexity $O(\ln^2|\Delta|)$.
+Reducing a form with coefficients as large as $|\Delta|$ has time complexity $O(\ln|\Delta|)$ \cite[Prop.\,5.4.3]{buell}.
+
+Computing the order of a form using BSGS involves $O(|\Delta|^{1/4})$ composition operactions (\red{check time complexity of composition}).
+
+Taking a power of a form up to an exponent of $|\Delta|^{1/2}$ involves $O(\ln|\Delta|)$ composition operations \cite[\S\,1.2]{buell}.
+
+We claim that each step which can cause us to restart from the sampling step adds a constant factor to the time complexity.
+Although parasitic forms make this uncertain, we assume that our treatment of this issue is effective, and returns us to a constant error term.
+
 
 \pagebreak
 To confirm the asymptotic behaviour of this algorithm, the python implementation was used to factor integers which are products of similarly sized primes (as these are typically the hardest numbers of their size to factor).
