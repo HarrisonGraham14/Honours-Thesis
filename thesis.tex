@@ -31,8 +31,6 @@
 \renewcommand{\P}{\mathbb{P}} % Prime numbers
 \newcommand{\Z}{\mathbb{Z}} % Integers
 \newcommand{\Q}{\mathbb{Q}} % Rational numbers
-\newcommand{\A}{\mathbb{A}} % Algebraic numbers
-\newcommand{\B}{\mathbb{B}} % Algebraic integers
 \newcommand{\R}{\mathbb{R}} % Real numbers
 \newcommand{\C}{\mathbb{C}} % Complex numbers
 \newcommand{\T}{\mathbb{T}} % Circle group
@@ -40,10 +38,9 @@
 
 \newcommand{\order}{\mathcal{O}} % Order
 
-\newcommand{\GL}{\text{GL}} % General linear group
-\newcommand{\SL}{\text{SL}} % Special linear group
-
-\newcommand{\Cl}{\text{Cl}}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\Cl}{Cl}
 
 \newcommand{\divides}{\mathrel{|}}
 
@@ -181,25 +178,25 @@ The largest difference from Shanks' approach is that we make no attempt to compu
 
 \vspace{2mm}
 \noindent
-A \textbf{binary quadratic form} (or simply a \textbf{form}) is a function of the form
+A \textbf{binary quadratic form} (or simply a \textbf{form}) is a homogeneous equation of the form
 $$f(x, y) = ax^2 + bxy + cy^2.$$
 It is called ``binary'' because it is a function of two variables, and ``quadratic'' because the degree of each term is 2.
-For our purposes, we are usually working over the integers. 
+For our purposes, we are taking $a, b, c \in \Z$, and $x$ and $y$ as integer-valued variables.
 Since $x$ and $y$ are variables, the behaviour of a given form is wholly dependent on the values of $a$, $b$ and $c$,
 which motivates a shorthand notation of the same form; $(a, b, c)$.
-We will impose that $a, c \neq 0$, or else $x$ or $y$ would be reduced to a linear factor.
+We will impose that $a, c \neq 0$, or else $f$ would be linear in either $x$ or $y$.
 Allowing this would serve no purpose beyond complicating proofs with the added work of edge case considerations.
 
-A form is called \textbf{primitive} if $\text{gcd}(a, b, c) = 1$. 
-Primitive forms are of primary concern, as he behaviour of a nonprimitive form can be more simply understood by removing the common factor to work with simpler coefficients.
+A form is called \textbf{primitive} if $\gcd(a, b, c) = 1$. 
+Primitive forms are of primary concern, as the behaviour of a nonprimitive form can be more simply understood by removing the common factor to work with simpler coefficients.
 
 
 \section{Representation}\label{s-forms-rep}
 
-A form $f(x, y)$ is said to \textbf{represent} a number $n$ if there exists an integer solution
-$$f(x_0, y_0) = n$$
+A form $f(x, y)$ is said to \textbf{represent} an integer $z$ if there exists an integer solution
+$$f(x_0, y_0) = z$$
 where $x_0, y_0 \in \Z$.
-For example, the form $(2, 1, 5)$ (ie. $f(x, y) = 2x^2 + xy + 5y^2$) represents the number 2, since $f(1, 0) = 2$.
+For example, the form $(2, 1, 5)$ (i.e. $f(x, y) = 2x^2 + xy + 5y^2$) represents the number 2, since $f(1, 0) = 2$.
 The form does not represent the number 1, though it is not immediately clear how to prove a result of this kind.
 
 The questions which historically motivated the study of forms were as follows \cite[Ch.\,1]{buell};
@@ -210,7 +207,7 @@ These questions will not be our primary concern, but they will help to motivate 
 \pagebreak
 \section{Discriminant}\label{s-forms-disc}
 
-The form $x^2 + y^2$ clearly exclusively represents non-negative integers. 
+It is clear that the form $x^2 + y^2$ exclusively represents non-negative integers. 
 The same property holds for the previous example, $2x^2 + xy + 5y^2$, though this is harder to see.
 On the other hand, the form $x^2 - y^2$ clearly represents both positive and negative integers.
 A reasonable first step to understanding a form's representations is to classify whether they can represent positive, negative, or both positive and negative integers.
@@ -222,7 +219,7 @@ Notice that
     &= \left(ax^2 + bxy + cy^2\right)\frac{1}{y^2} \\
     &= f(x, y) \frac{1}{y^2}.
 \end{align*}
-Hence we see that $f(x, y)$ and $g(\tfrac{x}{y})$ agree up to sign, with the exception of when $y=0$.
+Hence we see that $f(x, y)$ and $g(\tfrac{x}{y})$ have the same sign, with the exception of when $y=0$.
 Now, the zeroes of $g(t)$ are given by
 $$t = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.$$
 If $b^2 -4ac$ is negative, then $g$ has no real zeroes, meaning that $g$ must be either positive everywhere or negative everywhere (except the origin).
@@ -233,7 +230,7 @@ Combining these facts, we can argue that the line $y=0$ must have the same sign 
 We call forms satisfying $b^2 -4ac < 0$ \textbf{positive definite} or \textbf{negative definite}, depending on whether they output positive or negative values.
 For forms where $b^2 - 4ac > 0$, $g$ has two distinct real zeroes, so $g$ (and hence $f$) will be positive for some inputs and negative for others.
 Such forms are called \textbf{indefinite}.
-Similar reasoning shows that forms with $b^2 -4ac = 0$, called \textbf{degenerate forms}, are strictly non-negative or non-positive, but such forms are of little intereest.
+Similar reasoning shows that forms with $b^2 -4ac = 0$, called \textbf{degenerate forms}, are strictly non-negative or non-positive, but such forms are of little interest.
 
 This motivates defining the \textbf{discriminant} of a form $ax^2 + bxy + cy^2$ to be 
 $$\Delta = b^2 - 4ac.$$
@@ -241,7 +238,7 @@ We will come to see that this classification is far more powerful than simply be
 
 \pagebreak
 \begin{lemma}
-    The discriminant of a form, $\Delta$, is equivalent to 1 or 0 modulo 4. 
+    The discriminant of a form, $\Delta$, is congruent to 1 or 0 modulo 4. 
 \end{lemma}
 
 \begin{proof}
@@ -251,11 +248,11 @@ We will come to see that this classification is far more powerful than simply be
 \end{proof}
 
 \begin{lemma}\label{lemma-discriminant-under-multiple}
-    If the discriminant of the form $(a, b, c)$ is $\Delta$, then the discriminant of the form $(ak, bk, ck)$ is $\Delta k^2$.
+    If the discriminant of the form $(a, b, c)$ is $\Delta$, then the discriminant of the form $(ak, bk, ck)$ is $\Delta k^2$ (for $k \in \Z$).
 \end{lemma}
 
 \begin{proof}
-    The discriminant of $(ak, bk, ck)$ is given By
+    The discriminant of $(ak, bk, ck)$ is given by
     \[ (bk)^2 - 4(ak)(ck) = b^2k^2 - 4ack^2 = \Delta k^2. \qedhere \]
 \end{proof}
 
@@ -295,17 +292,17 @@ So it is clear to see that the valid choices of $\phi$ are the invertible elemen
 These are the integer matrices with determinant $\pm 1$.
 We will often notate the action of $\phi \in GL_2(\Z)$ on a pair of integers
 $$\phi(x, y) = x_0, y_0 \hspace{5mm} \text{where} \hspace{5mm} \phi \bmat{x \\ y} = \bmat{x_0 \\ y_0}.$$
-We will also sometimes refer to the action of $\phi$ on a form, refering to the form applied to the transformed input coordinates 
+We will also sometimes refer to the action of $\phi$ on a form, referring to the form applied to the transformed input coordinates 
 $$\phi(f(x, y)) = (f \circ \phi)(x, y) = f(\phi(x, y)).$$
 
 We define forms to be \textbf{improperly equivalent} if there is a $\GL_2(\Z)$ transformation between them.
-It is easy to see that this is an equivalence realtion.
-If we restrict the discriminant of the transformation to be strictly positive 1, we split the equivalence classes further ---
+It is easy to see that this is an equivalence relation.
+If we restrict the determinant of the transformation to be strictly positive 1, we split the equivalence classes further ---
 we call such forms \textbf{properly equivalent}, which is also an equivalence relation.
 This is our standard equivalence for forms, we will write $f \sim g$ to denote $f$ being properly equivalent to $g$.
 
 Let us consider the effect of $\SL_2(\Z)$ transformations on forms.
-It is known \cite[\S\,2.4]{buchmann} that a basis for $\SL_2(\Z)$ is given by
+It is known \cite[\S\,2.4]{buchmann} that a generating set for $\SL_2(\Z)$ is given by
 $$S = \bmat{ 0 & -1 \\ 1 & 0 }, \hspace{5mm} T = \bmat{ 1 & 1 \\ 0 & 1}.$$
 For $S$, we have
 $$S : (a, b, c) \longmapsto (c, -b, a).$$
@@ -315,7 +312,7 @@ $$T : (a, b, c) \longmapsto (a, 2a + b, a + b + c).$$
 The discriminant of the resulting form is given by
 \begin{align*}
     \Delta &= (2a + b)^2 - 4a(a + b + c) \\
-    &= 4a^2 - 4ab + b^2 - 4a^2 + 4ab - 4ac \\
+    &= 4a^2 + 4ab + b^2 - 4a^2 - 4ab - 4ac \\
     &= b^2 - 4ac.
 \end{align*}
 So the discriminant is also unchanged under the action of $T$.
@@ -356,7 +353,7 @@ Now that we have an equivalence relation, we would like to be able to find a sui
 This will not only prove useful for simplifying computations by choosing a representative with small values of $a$, $b$, and $c$,
 but will also give us a method for checking whether two forms belong to the same class by evaluating and comparing their canonical representatives.
 
-We have a basis for $\SL_2(\Z)$ given by
+We have a generating set for $\SL_2(\Z)$ given by
 $$S = \bmat{0 & -1 \\ 1 & 0}, \hspace{5mm} T = \bmat{1 & 1 \\ 0 & 1}.$$
 Note that
 $$S^4 = I, \hspace{5mm} T^k = \bmat{1 & k \\ 0 & 1}.$$
@@ -380,10 +377,9 @@ So we have
     S : (a, b, c) \mapsto (c, -b, a) \\
     T^k : (a, b, c) \mapsto (a, 2ak + b, ak^2 + bk + c).
 \end{gather*}
-Let us use these for constructing a redution algorithm, which turns any form into a canonical class representative.
+Let us use these for constructing a reduction algorithm, which turns any form into a canonical class representative.
 For now, we will only consider positive definite forms, as the result is simpler.
-Note that in this case, $a$ and $c$ must both be positive, as their signs must be equal for $\Delta = b^2 - 4ac < 0$,
-and they must be positive to represent positive integers.
+Note that in this case, $a$ and $c$ must both be positive, as their signs must be equal for $\Delta = b^2 - 4ac < 0$, and they must be positive to represent positive integers.
 
 A natural way to use $S$ and $T$ to reduce a form is to attempt to minimise $|b|$.
 Whenever $|b| > a$, we can use $T$ to reduce $b$ to be in the range $[-a, a]$.
@@ -392,8 +388,7 @@ Eventually, we reach a form with $|b| \leq a \leq c$, at which point the algorit
 
 In the case that $a = |b|$ or $a = c$, a form has two representations which satisfy $a \leq b \leq c$ --- one with positive $b$, and one with negative $b$.
 This can be fixed by taking $b$ to be positive in these cases.
-We adjust the reduction algorithm such that step 1 moves $b$ into the interval $(-a, a]$ (removing the choice of sign in the case that $|b| = a$),
-and applying $S$ not only if $a > c$, but if $a = c$ and $b$ is negative.
+We adjust the reduction algorithm such that step 1 moves $b$ into the interval $(-a, a]$ (removing the choice of sign in the case that $|b| = a$), and applying $S$ not only if $a > c$, but if $a = c$ and $b$ is negative.
 The full reduction algorithm is as follows
 
 \begin{algorithm}
@@ -429,8 +424,8 @@ We say that a positive definite form is \textbf{reduced} if it satisfies
 \end{theorem}
 
 \begin{proof}
-    On each iteration of the while loop, the value of $b$ decreases.
-    Since $b$ is initially a finite integer, and only takes on integer values, the initial value of $b$ is an upper bound on how many loops the algorithm can perform before terminating.
+    On each iteration of the while loop, the value of $|b|$ decreases.
+    Since $b$ is initially a finite integer, and only takes on integer values, the initial value of $|b|$ is an upper bound on how many loops the algorithm can perform before terminating.
 \end{proof}
 
 \vspace{2mm}
@@ -441,11 +436,11 @@ We say that a positive definite form is \textbf{reduced} if it satisfies
 \begin{proof}
     The fact that any form is equivalent to at least one reduced form follows immediately from the existence of the reduction algorithm.
     To prove uniqueness, we adapt the proof of Cohen \cite[Prop.\,5.3.3]{cohen}.
-    Suppose $f = (a, b, c)$ is a reduced form, and that $f' = (a', b', c')$ is another form, such that these forms are properly equivalent.
+    Suppose $f = (a, b, c)$ and $f' = (a', b', c')$ are reduced forms which are properly equivalent.
     That is, there exists a transformation 
     $$\phi = \bmat{p & q \\ r & s} \in \SL_2(\Z).$$
     such that $f \circ \phi = f'$.
-    We will show that if $f'$, then it must be equal to $f$.
+    We will show that $f' = f$.
 
     First, we claim that $a$ is the minimal coefficient of $x^2$ for all forms in its equivalence class --- that is, $a \leq a'$.
     In \Cref{s-forms-eq}, we showed that the result of $\phi$ acting on $f$ is
@@ -466,8 +461,7 @@ We say that a positive definite form is \textbf{reduced} if it satisfies
     which would cause the determinant of $\phi$ to be zero.
     But the determinant of $\phi$ is known to be 1, so, since $p, r \in \Z$, we have that $a'$ is at least $a$.
 
-    Now, consider the case where $f'$ is reduced.
-    Then by the same argument as above, we have that $a' \geq a$ --- together these results imply $a = a'$.
+    By the same argument as above (swapping $f$ for $f'$), we also have $a' \geq a$ --- together these results imply $a = a'$.
     That is, properly equivalent reduced forms must have the same leading coefficient.
     
     Now we must show that if $\phi$ fixes $a$, then the action of $\phi$ on $f$ is trivial.
@@ -485,17 +479,17 @@ We say that a positive definite form is \textbf{reduced} if it satisfies
     $$1 = \text{det}(\phi) = ps - qr = \delta s$$
     which gives $s = \delta$.
     Hence we have
-    $$\phi = \bmat{\delta & q \\ 0 & \delta} = \bmat{\delta & 0 \\ 0 & \delta} T^q.$$
+    $$\phi = \bmat{\delta & q \\ 0 & \delta} = \bmat{\delta & 0 \\ 0 & \delta} T^{\delta q}.$$
     Note the action of the matrix
     $$\bmat{-1 & 0 \\ 0 & -1} : (a, b, c) \mapsto (a, b, c)$$
-    so $\phi$ has the same action as $T^q$. 
+    so $\phi$ has the same action as $T^{\delta q}$. 
     Since this fixes $a$ and shifts $b$ by $2qa$, any choice for $q$ other than 0 (which gives the identity)
     shifts $b$ outside of the range $(-a, a]$, giving a form which is no longer reduced.
     That is, $f' = f \circ \phi = f$.
 
     In the second case, let $r = \delta \in \{1, -1\}$. 
-    The equality $a' = a$ depends on $cr^2 \geq ar^2$ acheiving equality. 
-    Since $r$ is nonzero and $c \geq a$, this is only acheived if $c = a$.
+    The equality $a' = a$ depends on $cr^2 \geq ar^2$ achieving equality. 
+    Since $r$ is nonzero and $c \geq a$, this is only achieved if $c = a$.
     Again taking the determinant of $\phi$, we have
     $$1 = \text{det}(\phi) = ps - qr = - \delta q$$
     which gives $q = - \delta$.
@@ -503,9 +497,10 @@ We say that a positive definite form is \textbf{reduced} if it satisfies
     \begin{align*}
         \phi &= \bmat{0 & - \delta \\ \delta & s} \\ 
         &= \bmat{0 & -1 \\ 1 & 0} \bmat{\delta & 0 \\ 0 & \delta} \bmat{1 & s \\ 0 & 1} \\
-        &= S \cdot \bmat{\delta & 0 \\ 0 & \delta} \cdot T^s.
+        &= S \cdot \bmat{\delta & 0 \\ 0 & \delta} \cdot T^{\delta s}.
     \end{align*}
     As before, we can ignore the action of the negative identity matrix.
+    Also note that the action of $T^{-s}$ is the same as the action of $T^s$.
     Hence we see that the action of $\phi$ is given by
     $$ST^s : (a, b, a) \mapsto (as^2 + bs + a, - 2as - b, a).$$
     Recall that the leading term must be equal to $a$ in order for this form to be reduced.
@@ -573,9 +568,8 @@ See \cite[\S\,3.1]{buell} for a complete handling of indefinite forms.
 %===============================================================================================================================%
 
 \chapter{Composition}\label{s-comp}
-Now that we have the means to properly understand equivalence classes of forms, we seek to equip them with a binary operation to form a group.
-We acheive this by showing a bijection between classes of forms and classes of ideals, 
-under which the ideal multiplication structure gives a multiplicative structure to the corresponding classes of forms.
+Now that we have seen that there are finitely many equivalence classes of forms of a fixed discriminant, we seek to equip them with a binary operation to form a group.
+We achieve this by showing a bijection between classes of forms and classes of ideals, under which the ideal multiplication structure gives a multiplicative structure to the corresponding classes of forms.
 
 \section{Historical Background}
 \emph{In this section, we draw from \cite[\S\,2D-\S\,3A]{cox}.}
@@ -593,22 +587,22 @@ That is, if we have representations of $n$ and $m$
 then the form $(1, 0, 5)$ represents $nm$ via
 $$(2xz + xw + yz + 3yw)^2 + 5(xw - yz)^2 = nm.$$
 Legendre sought to generalise results of this kind.
-He defined a form $F$ to be the \textbf{composition} of $f$ and $g$ if there exist bilinear forms $B_1$ and $B_2$ such that
+He defined a form $F$ to be a \textbf{composition} of $f$ and $g$ if there exist bilinear forms $B_1$ and $B_2$ such that
 \begin{gather*}
     f(x, y) \cdot g(z, w) = F(B_1(x, y; z, w), B_2(x, y; z, w)) \\
     B_i = a_i xz + b_i xw + c_i yz + d_i yw
 \end{gather*}
 Legendre was able to show that any two forms of the same discriminant can always be composed in this way, but his formulation was multi-valued, giving several options for the resulting form $F$.
-This was finally rectified by Gauss in 1801 in his \emph{Disquisitiones Arithmaticae} \cite{gauss}, where he refined Legendre's formulation to turn composition of forms into a well-defined function.
+This was finally rectified by Gauss in 1801 in his \emph{Disquisitiones Arithmeticae} \cite{gauss}, where he refined Legendre's formulation to turn composition of forms into a well-defined function.
 This notion of composition gave a group structure to the set of proper equivalence classes of forms of a fixed discriminant.
 This group is called the \textbf{class group}.
 
-As the theory of ideals developed, it became apparent that there exists a bijection between certain ideals of quadratic number fields and the class group of quadratic forms \cite[Ch.\,1]{buell}.
+As the theory of ideals developed, it became apparent that there exists a bijection between certain classes of ideals of quadratic orders and the class group of quadratic forms \cite[Ch.\,1]{buell}.
 This provides us a new and perhaps more intuitive way to derive composition of forms;
 we first outline this bijection in \Cref{s-comp-ideals}, then we can leverage the multiplicative structure of ideals to define an analogous operation on forms in \Cref{s-comp-formula}.
 
 Note that this means that we are taking a very different approach to deriving composition of forms than a historical development of the theory would describe.
-This has the possible effect of making the connection between forms and ideals seem fairly obvious, when in reality it is quite profound, and the derivations provided here can only exist in retrospect, as the proofs in this paper only make sense to persue when one already knows that a correspondence exists.
+This has the possible effect of making the connection between forms and ideals seem fairly obvious, when in reality it is quite profound, and the derivations provided here can only exist in retrospect, as the proofs in this paper only make sense to pursue when one already knows that a correspondence exists.
 With that said, we hope that the narrative taken here helps the reader to gain an intuitive, geometric understanding of the theory, where many textbooks simply state the result and prove that it has the desired algebraic properties.
 
 
@@ -618,14 +612,14 @@ For a finite field extension of the rational numbers, $K/\Q$, an \textbf{order} 
 \begin{itemize}
     \item $\order$ is a subring of $K$
     \item $\order$ is a finitely generated $\Z$-module
-    \item the $\Q$-span of $\order$ is $K$ (ie. $\text{rank}(\order) = \deg(K:\Q)$)
+    \item the $\Q$-span of $\order$ is $K$ (i.e. $\text{rank}(\order) = [K:\Q]$)
 \end{itemize}
 Here, we are working with the definition of a ring that requires the existence of a multiplicative identity.
 
 Now, for $\Delta \equiv 0, 1 \pmod{4}$ where $\Delta$ is not a perfect square, let $K_\Delta = \Q(\sqrt\Delta)$, and define the \textbf{order of discriminant} $\mathbf{\Delta}$ to be 
 $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z.$$
-One might expect an extension of the integers to take the form $\Z + \sqrt\Delta \Z$, but this ring is not a ``integrally closed'' when $\Delta \equiv 1 \pmod{4}$.
-The integral closure of $\Q(\sqrt\Delta)$ is $\Z + \frac{1 + \sqrt\Delta}{2}\Z$ (see \cite[Ch.\,1\,\S\,2,\,Exercise\,4]{neukirch}).
+One might expect an extension of the integers to take the form $\Z + \sqrt\Delta \Z$, but this ring is not ``integrally closed'' when $\Delta \equiv 1 \pmod{4}$.
+If $\Delta$ is square-free (except for a possible factor of 4), the integral closure of $\Q(\sqrt\Delta)$ is $\Z + \frac{1 + \sqrt\Delta}{2}\Z$ (see \cite[Ch.\,1\,\S\,2,\,Exercise\,4]{neukirch}).
 As a result, $\order_\Delta$ is a Dedekind domain when $\Delta$ is a ``fundamental discriminant'' \cite[Thm.\,14]{marcus}, which means that ideals of $\order_\Delta$ factorise uniquely into products of prime ideals \cite[Thm.\,16]{marcus}.
 The definition of $\order_\Delta$ given is equivalent to
 $$\order_\Delta = \begin{cases}
@@ -656,13 +650,13 @@ except the chosen definition avoids dealing with multiple cases.
 \begin{lemma}\label{lemma-ideal-lattice}
     Any nonzero ideal $I \trianglelefteq \order_\Delta$ can be uniquely written in the form
     $$I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$$
-    where $l, m, n$ are positive integers, $m \equiv n\Delta \pmod{2}$, and $0 \leq m < 2l$.
+    where $l, m, n$ are integers such that $l, n > 0$, $m \equiv n\Delta \pmod{2}$, and $0 \leq m < 2l$.
 \end{lemma}
 
 \begin{proof}
-    First, let $l$ be the smallest positive integer in $\order_\Delta$.
-    We know that $\order_\Delta$ must contain at least one integer, since for any nonzero $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$, we have 
-    $$\order_\Delta \ni x + \Delta y - \frac{\Delta + \sqrt\Delta}{2}y = x + \frac{\Delta - \sqrt\Delta}{2}y.$$
+    First, let $l$ be the smallest positive integer in $I$.
+    We know that $I$ must contain at least one integer, since for any nonzero $x + \frac{\Delta + \sqrt\Delta}{2}y \in I$, we have 
+    $$I \ni x + \Delta y - \frac{\Delta + \sqrt\Delta}{2}y = x + \frac{\Delta - \sqrt\Delta}{2}y.$$
     Since $I$ is an ideal we have
     \begin{align*}
         I &\ni \left( x + \frac{\Delta + \sqrt\Delta}{2}y \right) \left( x + \frac{\Delta - \sqrt\Delta}{2}y \right) \\
@@ -674,7 +668,7 @@ except the chosen definition avoids dealing with multiple cases.
     Likewise, choose $n$ to be the minimal positive integer such that $x + \frac{\Delta + \sqrt\Delta}{2}n \in I$.
     Since $I$ is closed under addition, we can add multiples of $l$ to this element while staying in $I$.
     For an integer $k$, we have
-    $$I \ni kl + x + \frac{\Delta + \sqrt\Delta}{2}n = \frac{(2kl + 2x n\Delta) + n\sqrt\Delta}{2}.$$
+    $$I \ni kl + x + \frac{\Delta + \sqrt\Delta}{2}n = \frac{(2kl + 2x + n\Delta) + n\sqrt\Delta}{2}.$$
     We can choose $k$ so that
     $$0 \leq 2kl + 2x + n\Delta < 2l.$$
     Set $m = 2kl + 2x + n\Delta$, noting that $m \equiv n\Delta \pmod{2}$.
@@ -690,9 +684,10 @@ except the chosen definition avoids dealing with multiple cases.
     \end{align*}
     Now, we can subtract multiples of $\frac{m + n\sqrt\Delta}{2}$ to get $x + \frac{n\Delta - m}{2}y_0 \in I$. 
     This is an integer, since $m \equiv n\Delta \pmod{2}$, so it must be divisible by $l$, or else we could add a multiple of $l$ to get a positive integer smaller than $l$, a contradiction with the choice of $l$.
-    Hence, letting $x + \frac{n\Delta - my_0}{2} = lx_0$, we have
+    Hence, letting $x + \frac{n\Delta - m}{2}y_0 = lx_0$, we have
     $$z = lx_0 + \frac{m + n\sqrt\Delta}{2}y_0 \in l\Z + \frac{m + n\sqrt\Delta}{2}\Z.$$
-    This gives $I \subseteq l\Z + \frac{m + n\sqrt\Delta}{2}\Z$, so the result is proved.
+    This gives $I \subseteq l\Z + \frac{m + n\sqrt\Delta}{2}\Z$.
+    It is clear to see that these are the only possible choices for $l, m,$ and $n$ meeting the required conditions.
 \end{proof}
 
 \vspace{2mm}
@@ -746,7 +741,7 @@ except the chosen definition avoids dealing with multiple cases.
 
 We also need to define the norm of an ideal.
 For a nonzero ideal $I \trianglelefteq \order_\Delta$, the \textbf{norm} is defined as
-$$N(I) = \left| R / I \right|.$$
+$$N(I) = \left| \order_\Delta / I \right|.$$
 
 \vspace{2mm}
 \begin{lemma}\label{lemma-ideal-norm}
@@ -764,8 +759,8 @@ $$N(I) = \left| R / I \right|.$$
     $$z \sim x' + \frac{\Delta + \sqrt\Delta}{2}y' \rnote{0 \leq y' < n.}$$
     Next, by subtracting multiples of $l$, we get
     $$z \sim x'' + y'\frac{\Delta + \sqrt\Delta}{2} \rnote{0 \leq x'' < l.}$$
-    So every element is represented by the given classes.
-    None of these classes can be equal, since adding any multiple of $l$ would force the integer part outside of the allowed range, which cannot be rectified by adding a multiple of $\frac{m + n\sqrt\Delta}{2}$, or else the coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ would be forced outside of the allowed range.
+    So every element is represented by the given cosets.
+    None of these cosets can be equal, since adding any multiple of $l$ would force the integer part outside of the allowed range, which cannot be rectified by adding a multiple of $\frac{m + n\sqrt\Delta}{2}$, or else the coefficient of $\frac{\Delta + \sqrt\Delta}{2}$ would be forced outside of the allowed range.
 \end{proof}
 
 Finally, we will define the norm of an element of a number field.
@@ -778,7 +773,7 @@ This can be positive or negative, and is zero if and only if $x = y = 0$, since 
 \begin{lemma}
     The norms of elements are multiplicative.
     That is,
-    $$N(xy) = N(x)N(y).$$
+    $$N(\alpha \beta) = N(\alpha)N(\beta) \rnote{\forall \alpha, \beta \in \order_\Delta.}$$
 \end{lemma}
 \begin{proof}
     Let $x_1, x_2, y_1, y_2 \in \Q$.
@@ -793,23 +788,23 @@ This can be positive or negative, and is zero if and only if $x = y = 0$, since 
 \end{proof}
 
 \noindent
-The same is true of the norms of ideals, although the proof is not so elementary.
+The same is true of the norms of invertible ideals, although the proof is not so elementary.
 For a proof of this fact, see \cite[Thm.\,5.37]{jarvis}.
 
 \vspace{2mm}
 \begin{lemma} \label{lemma-norm-relation}
-    For any nonzero $z \in \order_\Delta$, we have
-    $$N(\langle z \rangle) = \left| N(z) \right|.$$
+    For any nonzero $\alpha \in \order_\Delta$, we have
+    $$N(\langle \alpha \rangle) = \left| N(\alpha) \right|.$$
 \end{lemma}
 \noindent
-A proof of this remark can be found in \cite[Lemma\,5.35]{jarvis}.
+A proof of this lemma can be found in \cite[Lemma\,5.35]{jarvis}.
 
 
 
 \pagebreak
 \section{Ideal Correspondence}\label{s-comp-ideals}
 We now seek to use the findings of \Cref{s-comp-algebraic} to develop a notion of equivalence between ideals of $\order_\Delta$ and binary quadratic forms of discriminant $\Delta$.
-To do this, consider an ideal $I = l\Z + \frac{m + n\Delta}{2}\Z \trianglelefteq \order_\Delta$, where $l, n > 0$ and $0 \leq m < 2l$.
+To do this, consider an ideal $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z \trianglelefteq \order_\Delta$, where $l, n > 0$ and $0 \leq m < 2l$.
 The norm of a general element of $I$ is given by
 \begin{align*}
     \hspace{-5mm} N\left(lx + \frac{m + n\sqrt\Delta}{2}y\right)
@@ -824,15 +819,15 @@ By \Cref{lemma-discriminant-under-multiple}, if we can divide the form by $N(I) 
 That is,
 $$\frac{N \left( lx + \frac{m + n\sqrt\Delta}{2}y \right)}{N \left( I \right)} = \frac{l}{n}x^2 + \frac{m}{n}xy + \frac{m^2 - n^2\Delta}{4ln}y^2.$$
 The divisibility conditions of \Cref{lemma-lattice-divisibility-conditions} show each coefficient to be an integer, hence this is a binary quadratic form of discriminant $\Delta$.
-We can therefore define a function $\bar{\Theta}$ from ideals of $\order_\Delta$ to forms of discriminant $\Delta$:
-$$\bar{\Theta} : l\Z + \frac{m + n\sqrt\Delta}{2}\Z \longmapsto \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right).$$
+We can therefore define a function $\Theta$ from ideals of $\order_\Delta$ to forms of discriminant $\Delta$:
+$$\Theta : l\Z + \frac{m + n\sqrt\Delta}{2}\Z \longmapsto \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right).$$
 We want a map which is invertible, so that we can take forms to corresponding ideals, multiply the ideals, then transform the resulting ideal back into a form, inducing a binary operation on forms.
 To achieve this, we quotient the domain and codomain into equivalence classes.
 Defining ideals of $\order_\Delta$ to be \textbf{narrowly equivalent} if they differ by a scalar multiple in $\Q(\sqrt\Delta)$ of positive norm, we have:
 
 \hspace{2mm}
 \begin{theorem} \label{thm-ideal-correspondence}
-    The map $\bar{\Theta}$ induces a bijection, $\Theta$, between narrow equivalence classes of ideals of $\order_\Delta$ and proper equivalence classes of forms of discriminant $\Delta$.
+    The map $\Theta$ induces a bijection, $\bar{\Theta}$, between narrow equivalence classes of ideals of $\order_\Delta$ and proper equivalence classes of forms of discriminant $\Delta$.
 \end{theorem}
 \hspace{2mm}
 
@@ -848,7 +843,7 @@ $\left[ \begin{smallmatrix} 0 & 1 \\ 1 & 0 \end{smallmatrix} \right]$,
 which corresponds to reordering the basis elements, to get a matrix in $\SL_2(\Z)$.
 Let us therefore say $\phi \in \SL_2(\Z)$.
 What happens if we take the norm of a generic element expressed with this new basis? 
-Would we have reached a different formulation of $\bar{\Theta}$?
+Would we have reached a different formulation of $\Theta$?
 A general element of $I$ as a sum of the new basis is
 $$\left( \phi \bmat{l \\ \frac{m + n\sqrt\Delta}{2}} \right) \cdot \bmat{x \\ y}.$$
 The norm of such an element is given by
@@ -865,12 +860,12 @@ This is properly equivalent to the form that we found when using our canonical b
 We already had the sense that properly equivalent forms contain the same data, since they represent the same numbers.
 We now have a new way of thinking of this --- equivalent forms describe the norms of elements of the same ideal using different bases.
 
-If we now allow any basis to be chosen to represent an ideal, a bijection innduced by $\Theta$ must necessarily map into equivalence classes of forms ---
-since $\Theta(I)$ maps into different (but equivalent) forms depending on the choice of basis.
+If we now allow any basis to be chosen to represent an ideal, a bijection induced by $\bar{\Theta}$ must necessarily map into equivalence classes of forms ---
+since $\bar{\Theta}(I)$ maps into different (but equivalent) forms depending on the choice of basis.
 By taking the codomain to be proper equivalence classes of forms, the function remains well defined.
 
 When choosing a basis for $I$, there exists a $\GL_2(\Z)$ transformation $\phi$ from the canonical basis to the chosen basis.
-If $\phi \notin \SL_2(\Z)$ (ie. $\det(\phi) = -1$), then we can compose $\phi$ with the matrix 
+If $\phi \notin \SL_2(\Z)$ (i.e. $\det(\phi) = -1$), then we can compose $\phi$ with the matrix 
 $$\bmat{0 & 1 \\ 1 & 0} : \bmat{x \\ y} \longmapsto \bmat{y \\ x}$$
 to get a $\SL_2(\Z)$ transformation which gives the same basis in the reversed order.
 So given a basis for $I$, how do we determine the ``correct'' ordering of elements?
@@ -890,16 +885,16 @@ We have therefore shown
 \vspace{2mm}
 \begin{lemma} \label{lemma-basis-orientation}
     For an ideal $I \trianglelefteq \order_\Delta$ with a basis $\{ \alpha_1 + \alpha_2 \sqrt\Delta , \beta_1 + \beta_2 \sqrt\Delta \}$ such that $\alpha_1 \beta_2 - \alpha_2 \beta_1 > 0$, we have a proper equivalence of forms
-    $$\bar{\Theta}(I) \sim \frac{N \left( (\alpha_1 + \alpha_2 \sqrt\Delta)x + (\beta_1 + \beta_2 \sqrt\Delta)y \right) }{N(I)}.$$
+    $$\Theta(I) \sim \frac{N \left( (\alpha_1 + \alpha_2 \sqrt\Delta)x + (\beta_1 + \beta_2 \sqrt\Delta)y \right) }{N(I)}.$$
 \end{lemma}
 \vspace{2mm}
 
-We must now take equivalence classes of the domain of $\bar{\Theta}$ so that we get an injective function.
+We must now take equivalence classes of the domain of $\Theta$ so that we get an injective function.
 Note the effect of taking an integer multiple of an ideal.
-In particular, consdier $kI = kl\Z + k\frac{m + n\sqrt\Delta}{2}\Z$, where $k \in \Z$.
+In particular, consider $kI = kl\Z + k\frac{m + n\sqrt\Delta}{2}\Z$, where $k$ is a nonzero integer.
 The corresponding form is
-$$\bar{\Theta}(kI) = \left( \frac{kl}{kn}, \frac{km}{kn}, \frac{k^2m^2 - k^2n^2\Delta}{4k^2ln} \right) = \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right) = \bar{\Theta}(I).$$
-So $\bar{\Theta}$ maps ideals which vary by an integer multiple to the same form.
+$$\Theta(kI) = \left( \frac{kl}{kn}, \frac{km}{kn}, \frac{k^2m^2 - k^2n^2\Delta}{4k^2ln} \right) = \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right) = \Theta(I).$$
+So $\Theta$ maps ideals which vary by an integer multiple to the same form.
 What about ideals which vary by a constant multiple which isn't necessarily rational?
 Let $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$ and $\alpha \in \order_\Delta$.
 Then a $\Z$-basis for $\alpha I$ is 
@@ -907,69 +902,69 @@ $$\left\{\alpha l, \hspace{2mm} \alpha \frac{m + n\sqrt\Delta}{2}\right\}$$
 and a generic element of this ideal is $\alpha l x + \alpha \frac{m + n\sqrt\Delta}{2} y$.
 A form corresponding to this ideal is given by
 \begin{align*}
-    \bar{\Theta}(\alpha I) &= \frac{N \left( \alpha l x + \alpha \frac{m + n\sqrt\Delta}{2} y \right)}{N(\alpha I)} \\
+    \Theta(\alpha I) &= \frac{N \left( \alpha l x + \alpha \frac{m + n\sqrt\Delta}{2} y \right)}{N(\alpha I)} \\
     &= \frac{N \left(\alpha \cdot \left( l x + \frac{m + n\sqrt\Delta}{2} y \right) \right)}{N(\langle \alpha \rangle \cdot I)} \\
     &= \frac{N(\alpha)}{N(\langle \alpha \rangle)} \cdot \frac{N \left( l x + \frac{m + n\sqrt\Delta}{2} y \right) }{N(I)} \\
-    &= \frac{N(\alpha)}{\left| N(\alpha) \right|} \cdot \bar{\Theta}(I) \rnote{\text{using \Cref{lemma-norm-relation}.}}
+    &= \frac{N(\alpha)}{\left| N(\alpha) \right|} \cdot \Theta(I) \rnote{\text{using \Cref{lemma-norm-relation}.}}
 \end{align*}
 So $I$ and $\alpha I$ are mapped to the same form so long as $N(\alpha) > 0$.
-We therefore desire that such forms be equivalent so that $\Theta$ may be injective --- but we must be careful when formalising the equivalence relation.
+We therefore desire that such forms be equivalent so that $\bar{\Theta}$ may be injective --- but we must be careful when formalising the equivalence relation.
 We cannot simply say that ideals are equivalent if they vary by a positive-norm scalar multiple in $\order_\Delta$, as this would not be a transitive relation;
 we would have $I \sim 2I$ and $I \sim 3I$, but $2I \nsim 3I$, since $\frac{2}{3} \notin \order_\Delta$.
 So it is clear that we should allow $\alpha$ to be in the field of fractions of $\order_\Delta$, which is $\Q(\sqrt\Delta)$.
 This provides a motivation for the definition of narrow equivalence of ideals.
 
-To show that $\Theta$ is a isomorphism, we will construct its inverse.
-A natural candidate resembling an inverse of $\bar{\Theta}$ is
-$$\bar{\Psi} : (a, b, c) \longmapsto a\Z + \frac{b + \sqrt\Delta}{2}\Z.$$
+To show that $\bar{\Theta}$ is a bijection, we will construct its inverse.
+A natural candidate resembling an inverse of $\Theta$ is
+$$\Psi : (a, b, c) \longmapsto a\Z + \frac{b + \sqrt\Delta}{2}\Z.$$
 We assume that $a$ is positive in order to preserve the basis orientation condition.
 For indefinite forms, $a$ may be negative, but we can always find an equivalent form where $a > 0$.
-Of course, $\bar{\Psi}$ is not an inverse to $\bar{\Theta}$, which is not injective and therefore has no inverse.
-However, we will show that $\bar{\Psi}$ induces an inverse function to $\Theta$.
+Of course, $\Psi$ is not an inverse to $\Theta$, which is not injective and therefore has no inverse.
+However, we will show that $\Psi$ induces an inverse function to $\bar{\Theta}$.
 
-First, we must show that $\bar{\Psi}$ is well defined --- 
+First, we must show that $\Psi$ is well defined --- 
 that is, that the output truly is an ideal of $\order_\Delta$.
 We show this using \Cref{lemma-lattice-divisibility-conditions}.
 Conditions 1 and 3 are trivial, since we have chosen $n = 1$, while conditions 2 and 4 are enforced by $\Delta = b^2 - 4ac$.
-We have hence shown that $\bar{\Psi}$ is well-defined.
+We have hence shown that $\Psi$ is well-defined.
 
-Now, we will show that $\bar{\Psi}$ induces a function $\Psi$ from proper equivalence classes of forms to narrow equivalence classes of ideals.
-To do this, we must show that $\Psi$ is well defined by showing that $\bar{\Psi}$ takes equivalent forms to equivalent ideals.
-First, observe where $\bar{\Psi}$ maps the form $f = (a, b, c)$ after a $T$-transformation:
+Now, we will show that $\Psi$ induces a function $\bar{\Psi}$ from proper equivalence classes of forms to narrow equivalence classes of ideals.
+To do this, we must show that $\bar{\Psi}$ is well defined by showing that $\Psi$ takes equivalent forms to equivalent ideals.
+First, observe where $\Psi$ maps the form $f = (a, b, c)$ after a $T$-transformation:
 \begin{align*}
-    \bar{\Psi} : (a, b + 2a, c + b + a) &\mapsto a\Z + \frac{b + 2a + \sqrt\Delta}{2}\Z \\
+    \Psi : (a, b + 2a, c + b + a) &\mapsto a\Z + \frac{b + 2a + \sqrt\Delta}{2}\Z \\
     &= a\Z + \frac{b + \sqrt\Delta}{2}\Z.
 \end{align*}
 Next, observe where it sends $f$ after an $S$-transformation:
 \begin{align*}
-    \bar{\Psi} : (c, -b, a) &\mapsto c\Z + \frac{- b + \sqrt\Delta}{2}\Z \\
+    \Psi : (c, -b, a) &\mapsto c\Z + \frac{- b + \sqrt\Delta}{2}\Z \\
     &\sim \frac{b + \sqrt\Delta}{2} \left( c\Z + \frac{- b + \sqrt\Delta}{2}\Z \right) \\
-    &= c \frac{b + \sqrt\Delta}{2} \Z + \frac{\Delta^2 - b^2}{4}\Z  \\
-    &= c \frac{b + \sqrt\Delta}{2} \Z + \frac{4ac}{4}\Z  \\
+    &= c \frac{b + \sqrt\Delta}{2} \Z + \frac{\Delta - b^2}{4}\Z  \\
+    &= c \frac{b + \sqrt\Delta}{2} \Z - \frac{4ac}{4}\Z  \\
     &= c \left( \frac{b + \sqrt\Delta}{2} \Z + a\Z \right) \\
     &\sim a\Z + \frac{b + \sqrt\Delta}{2}\Z.
 \end{align*}  
-So applying an $S$ or $T$ transformation to a form doesn't change the class of ideals that it is sent to by $\bar{\Psi}$ --- 
-and since all $\SL_2(\Z)$ transfomations are compositions of $S$ and $T$, we conclude that $\Psi$ is well-defined.
+So applying an $S$ or $T$ transformation to a form doesn't change the class of ideals that it is sent to by $\Psi$ --- 
+and since all $\SL_2(\Z)$ transformations are compositions of $S$ and $T$, we conclude that $\bar{\Psi}$ is well-defined.
 
-Finally, we are ready to prove \Cref{thm-ideal-correspondence} by showing that $\Psi$ is an inverse function to $\Theta$.
+Finally, we are ready to prove \Cref{thm-ideal-correspondence} by showing that $\bar{\Psi}$ is an inverse function to $\bar{\Theta}$.
 
 \begin{proof}[Proof of \Cref{thm-ideal-correspondence}]
-First we show $\Theta \circ \Psi$ is the identity by considering its action on a generic class of forms $\bar{f}$.
+First we show $\bar{\Theta} \circ \bar{\Psi}$ is the identity by considering its action on a generic class of forms $\bar{f}$.
 Let $f = (a, b, c)$ be a representative of $\bar{f}$, chosen such that $a > 0$.
 \begin{align*}
-    \Theta \circ \Psi ((a, b, c)) &= \Theta \left( a\Z + \frac{b + \sqrt\Delta}{2} \Z \right) \\
+    \bar{\Theta} \circ \bar{\Psi} ((a, b, c)) &= \bar{\Theta} \left( a\Z + \frac{b + \sqrt\Delta}{2} \Z \right) \\
     &= (a, b, c) = f.
 \end{align*}
 Likewise, for any narrow ideal class $\bar{I}$, choose a class representative with canonical representation $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$. 
 Then we have
 \begin{align*}
-    \Psi \circ \Theta \left( l\Z + \frac{m + n\sqrt\Delta}{2}\Z \right) 
-    &= \Psi \left( \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right) \right) \\
+    \bar{\Psi} \circ \bar{\Theta} \left( l\Z + \frac{m + n\sqrt\Delta}{2}\Z \right) 
+    &= \bar{\Psi} \left( \left( \frac{l}{n}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4ln} \right) \right) \\
     &= \frac{l}{n}\Z + \frac{m/n + \sqrt\Delta}{2} \Z \\
     &\sim n \cdot \left( \frac{l}{n}\Z + \frac{m/n + \sqrt\Delta}{2} \Z \right) = I.
 \end{align*}
-Hence, $\Psi$ is an inverse to $\Theta$, which means that these functions are bijections between proper equivalence classes of forms and narrow equivalence classes of ideals.
+Hence, $\bar{\Psi}$ is an inverse to $\bar{\Theta}$, which means that these functions are bijections between proper equivalence classes of forms and narrow equivalence classes of ideals.
 \end{proof}
 
 
@@ -986,8 +981,8 @@ which is narrowly equivalent to the ideal $II'$.
 Hence we see that ideal multiplication is a well-defined operation on narrow equivalence classes.
 We can hence use this to induce a binary operation on proper equivalence classes of forms.
 
-Let $f = (a, b, c)$ and $g = (a', b', c')$ be forms of discriminant $\Delta$.
-These correspond to ideals of $\mathcal{O}_\Delta$:
+Let $f = (a, b, c)$ and $g = (a', b', c')$ be forms of discriminant $\Delta$ where $a$ and $a'$ are positive.
+These correspond to ideals of $\order_\Delta$:
 $$I_f = a\Z + \frac{b + \sqrt\Delta}{2}\Z, \hspace{5mm} I_g = a'\Z + \frac{b' + \sqrt\Delta}{2}\Z.$$
 The product of these ideals is given by
 $$I = I_f \cdot I_g = aa'\Z + a\frac{b' + \sqrt\Delta}{2}\Z + a'\frac{b + \sqrt\Delta}{2}\Z + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}\Z.$$
@@ -995,6 +990,7 @@ By \Cref{lemma-ideal-lattice}, we can express this product in the form $l\Z + \f
 We know that $n$ is the minimal positive coefficient of $\frac{\sqrt\Delta}{2}$ among elements of $I$, so we have
 $$n = \gcd\left(a, a', \frac{b+b'}{2}\right)$$
 noting that we will always take the gcd to be positive. 
+Also note that $\frac{b + b'}{2}$ is an integer, since $b$ and $b'$ are both congruent to $\Delta$ mod 2.
 Using B\'ezout's identity, there exist $u, v, w \in \Z$ such that
 $$au + a'v + \frac{b+b'}{2}w = n.$$
 These allow us to find an element of $I$ which satisfies the minimal condition on $n$:
@@ -1004,7 +1000,8 @@ These allow us to find an element of $I$ which satisfies the minimal condition o
 \end{align*}
 Hence,
 $$m = ab'u + a'bv + \frac{bb' + \Delta}{2}w.$$
-Note that this isn't necessarily our canonial choice for $m$, since we haven't added a multiple of $l$ to enforce $0 \leq m < 2l$, but the ideal is unchanged by this choice.
+Note that this isn't necessarily our canonical choice for $m$, since we haven't added a multiple of $l$ to enforce $0 \leq m < 2l$, but the ideal is unchanged by this choice.
+Different choices for $m$ (which can arise by different choices for B\'ezout coefficients $u, v,$ and $w$) simply correspond to a different basis for the ideal, so we will find a different, but equivalent form.
 
 We can find $l$ by considering the norms of ideals; 
 the norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, hence, the norm of $I$ must be $aa'$.
@@ -1015,6 +1012,7 @@ But by \Cref{lemma-ideal-norm}, we have
 \end{gather*}
 Hence, with the given choices of $m$ and $n$, the form corresponding to the resulting ideal is
 $$(a, b, c) \cdot (a', b', c') = \left( \frac{aa'}{n^2}, \frac{m}{n}, \frac{m^2 - n^2\Delta}{4aa'} \right).$$
+By the divisibility conditions of \Cref{lemma-lattice-divisibility-conditions} applied to $I$ and $I'$, we can see that each term of the resulting form is an integer.
 We have derived the following algorithm:
 \begin{algorithm}
     \caption{Composition formula} \label{alg-composition}
@@ -1047,16 +1045,16 @@ Optimisations to this algorithm are given by Cohen \cite[Alg.\,5.4.7]{cohen}.
 Now that we have a well defined binary operation on classes of forms, we seek to find an identity element and inverses to complete our understanding of the induced group.
 The identity is straightforward --- regardless of $\Delta$, the ideal of $\order_\Delta$ which acts as the identity is $\order_\Delta$ itself, since it has 1 as an element.
 The corresponding form is
-$$\Theta(\order_\Delta) = \Theta \left( 1\Z + 1\frac{\Delta + \sqrt\Delta}{2} \right) = \left(1, \Delta, \frac{\Delta^2 - \Delta}{4} \right).$$
+$$\bar{\Theta}(\order_\Delta) = \bar{\Theta} \left( 1\Z + 1\frac{\Delta + \sqrt\Delta}{2} \right) = \left(1, \Delta, \frac{\Delta^2 - \Delta}{4} \right).$$
 By applying a $T$ transformation, we get the reduced \textbf{principal form}:
 $$\text{id}_\Delta = \begin{cases}
     \left( 1, 0, \frac{-\Delta}{4} \right) & \Delta \equiv 0 \pmod{4} \\
-    \left( 1, 1, \frac{1 - \Delta}{4} \right) & \Delta \equiv 1 \pmod{4}. \\
+    \left( 1, 1, \frac{1 - \Delta}{4} \right) & \Delta \equiv 1 \pmod{4}
 \end{cases}$$
 
-To find the inverse of a form, consider the inverse of an ideal.
-The identity amongst ideals are the ideals which are narrowly equivalent to $\order_\Delta$.
-Ideals which vary from the whole ring by a scalar multiple are precisely the principal ideals --- so the inverse of an ideal is an ideal such that the product is principal.
+To find the inverse of a form, consider the inverse of an ideal class.
+The identity amongst ideal classes is given by ideals which are narrowly equivalent to $\order_\Delta$.
+Ideals which vary from the whole ring by a scalar multiple are precisely the principal ideals --- so the inverse (at the level of classes) of an ideal $I$ is an ideal $I'$ such that the product $II'$ is principal.
 For an ideal $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$, a natural candidate might be given by conjugating the generators:
 \begin{align*}
     &\hspace{-10mm} \left( l\Z + \frac{m + n\sqrt\Delta}{2}\Z \right) \cdot \left( l\Z + \frac{m - n\sqrt\Delta}{2}\Z \right) \\
@@ -1075,15 +1073,15 @@ This is principal, and is therefore narrowly equivalent to the identity.
 Hence, we have verified that an ideal is inverted by taking its conjugate.
 Now consider a form $f = (a, b, c)$.
 This corresponds to the ideal
-$$\Theta^{-1}(f) = a\Z + \frac{b + \sqrt\Delta}{2}\Z.$$
+$$\bar{\Theta}^{-1}(f) = a\Z + \frac{b + \sqrt\Delta}{2}\Z.$$
 The inverse of this ideal is
 $$a\Z + \frac{b - \sqrt\Delta}{2}\Z = a\Z + \frac{-b + \sqrt\Delta}{2}\Z.$$
 Note that we have taken the negative of the second generator to ensure $n$ is positive.
 Finally, the form corresponding to this inverse is
-$$\Theta \left( a\Z + \frac{-b + \sqrt\Delta}{2}\Z \right) = (a, -b, c) = f^{-1}.$$
+$$\bar{\Theta} \left( a\Z + \frac{-b + \sqrt\Delta}{2}\Z \right) = (a, -b, c) = f^{-1}.$$
 
 We now know that there are finitely many proper equivalence classes of fixed discriminant $\Delta$ (\Cref{theorem-class-number-finite}), that composition is a well-defined binary operation on this set, that there is an identity class which acts trivially on other classes, and that each class has an inverse.
-Hence, the set of classes of forms of fixed discriminant $\Delta$ form a finite group under the operation of composition.
+Hence, the set of classes of primitive forms of fixed discriminant $\Delta$ form a finite group under the operation of composition.
 We call this the \textbf{class group}, denoted $\Cl_\Delta$.
 
 
@@ -1094,16 +1092,17 @@ We call this the \textbf{class group}, denoted $\Cl_\Delta$.
 
 \chapter{Factoring}\label{s-factor}
 A key practical application of number theory is the factoring algorithms that its theory allows.
-Factoring is a deceptively difficult task to perform efficiently.
-As a baseline for comparison, let us consider the most primitive factoring algorithm - trial division.
+Integer factorisation is a deceptively difficult task to perform efficiently.
+As a baseline for comparison, let us consider the most elementary factoring algorithm - trial division.
 
 \begin{algorithm}
     \caption{Factoring by trial division}
     \DontPrintSemicolon
     \vspace{1mm}
-    \KwIn{$n \in \Z$.}
+    \KwIn{$n \in \Z$ where $n$ is composite.}
     \KwOut{$x \in \Z$ where $x$ is a nontrivial factor of $n$ (if such a factor exists).}
     \algosep
+    $n \gets |n|$\;
     $x \gets 2$\;
     \While {$x \leq \sqrt{n}$}{
         \eIf {$n \equiv 0 \pmod{x}$}{
@@ -1114,8 +1113,8 @@ As a baseline for comparison, let us consider the most primitive factoring algor
     }
 \end{algorithm}
 \noindent
-We will use big-$O$ notation to analyse the complexity of factoring algorithms.
-Trial division has a complexity of $O(\sqrt{n})$.
+We will use big-$O$ notation to analyse the complexity of algorithms.
+Trial division has a complexity of $O(\sqrt{n})$ arithmetic operations.
 If one considers the complexity not as a function of the size of the number being factored, but instead by the length of its binary representation,
 we have that trial division scales exponentially with the length of the input that we are trying to factor.
 For this reason, such an algorithm will sometimes be called \textbf{exponential} in some contexts.
@@ -1124,7 +1123,6 @@ For this reason, such an algorithm will sometimes be called \textbf{exponential}
 \section{Ambiguous forms}\label{s-factor-amb}
 The key insight which bridges the theory of binary quadratic forms into the realm of factoring comes from considering forms of order 2 - that is, forms which are their own inverses. 
 Such forms are called \textbf{ambiguous forms}.
-These are properly equivalent to the same forms that they are improperly equivalent to, so it is ``ambiguous'' which proper equivalence class they belong to.
 
 \vspace{2mm}
 \begin{lemma}
@@ -1140,7 +1138,7 @@ These are properly equivalent to the same forms that they are improperly equival
     For a reduced form to be properly equivalent to its inverse, we have
     $$(a, b, c) \equiv (a, -b, c).$$
     When is this possible?
-    The clearest case where the equility holds is when $b = 0$, but there are other possibilities.
+    The clearest case where the equality holds is when $b = 0$, but there are other possibilities.
     If $b \neq 0$, the only way for the equivalence to hold is if $(a, -b, c)$ is not fully reduced.
     Since $(a, b, c)$ is reduced, we know that $|b| \leq a \leq c$, 
     so the only way for $(a, -b, c)$ not to be reduced is if $-b < 0$ and $a = |-b|$ or $a = c$.
@@ -1181,7 +1179,7 @@ The theorem immediately follows:
 \vspace{2mm}
 
 \noindent
-Therefore, if we want to find a factorisiation of some number $N$, we can do this by finding ambiguous forms of discriminant $\Delta = -N$
+Therefore, if we want to find a factorisation of some number $N$, we can do this by finding ambiguous forms of discriminant $\Delta = -N$
 (or $\Delta = -4N$ if $-N$ is congruent to 2 or 3 mod 4).
 
 Suppose we devise a method to randomly sample reduced ambiguous forms of discriminant $\Delta$.
@@ -1190,7 +1188,7 @@ We will show that this is the case.
 
 \vspace{2mm}
 \begin{theorem} \label{thm-ambiguous-factorisations}
-    If $N > 1$ is an odd composite integer, then at least half of all reduced ambiguous forms of discriminant $\Delta$ lead to nontrivial factorisations of $N$, where
+    If $N > 1$ is an odd composite integer which is not a perfect square, then at least one third of all reduced ambiguous forms of discriminant $\Delta$ lead to nontrivial factorisations of $N$, where
     $$\Delta = \begin{cases}
         -N & -N \equiv 1 \pmod{4} \\
         -4N & -N \equiv 3 \pmod{4}.
@@ -1224,14 +1222,14 @@ We will show that this is the case.
         Next, since $a$ is positive, we compute $a = \frac{N - 1}{4}$.
         This gives the ambiguous form
         $$\left( \frac{N - 1}{4}, \frac{N + 1}{2}, \frac{N - 1}{4} \right).$$
-        This is reduced when $b \leq a$, ie. $N \leq 3$, which is never the case.
+        This is reduced when $b \leq a$, i.e. $N \leq 3$, which is never the case.
     \end{adjustwidth}
     \vspace{2mm}
     We therefore see that there is only one reduced ambiguous form which gives a trivial factorisation.
     Now, since $N$ is composite, there exists some nontrivial factorisation $N = xy$, where $x \leq y$.
-    Checking each kind of reduced form in a similar manner yeilds the forms
+    Checking each kind of reduced form in a similar manner yields the forms
     $$\left(x, x, \frac{x + y}{4}\right) \text{ and } \left( \frac{x + y}{4}, \frac{y - x}{2}, \frac{x + y}{4} \right).$$
-    Note that $\Delta = -xy \equiv 1 \pmod{4}$, which means $-x$ and $y$ are both either 1 or 3 mod 4, so $x - y$ is divisible by 4, and $x + y$ is even ---
+    Note that $\Delta = -xy \equiv 1 \pmod{4}$, which means $-x$ and $y$ are both either 1 or 3 mod 4, so $x + y$ is divisible by 4, and $x - y$ is even ---
     so the entries in the above forms are integers.
     These forms are reduced when $3x \leq y$ and $3x \geq y$, respectively.
     So there is always at least one reduced form which gives the factorisation $N = xy$.
@@ -1256,7 +1254,7 @@ We will show that this is the case.
         \noindent
         \llap{\textbf{(3)} \hspace{2mm}} \hspace{-3mm}
         A form $(a, b, a)$ gives $\Delta = (b + 2a)(b - 2a)$, so $b$ is the midpoint of the two factors.
-        For $b$ to be an integer, one factor must be even and the other odd, so we either have $-2 \cdot 2N$ or $2 \cdot -2N$.
+        For $b$ to be an integer, the factors must be congruent mod 2, so we either have $-2 \cdot 2N$ or $2 \cdot -2N$.
         For such a form to be reduced, $b$ must be positive, so we are in the prior case, where $b = N - 1$.
         This gives 
         $$b - 2a = -2 \implies a = \frac{N + 1}{2}.$$
@@ -1266,13 +1264,18 @@ We will show that this is the case.
     \end{adjustwidth}
     \vspace{2mm}
     So there are precisely two reduced ambiguous forms which lead to trivial factorisations.
-    Again, letting $N = xy$ be a nontrivial factorisation where $x \leq y$, we immediately obtain the form $(x, 0, y)$ which gives a nontrivial factorisation.
+    Again, let $N = xy$ be a nontrivial factorisation, this time asserting that $x \neq y$ (which is possible, since $N$ is not a perfect square).
+    Choose these such that $x < y$. 
+    We immediately obtain the form $(x, 0, y)$ which gives a nontrivial factorisation.
     By further examining the 2nd and 3rd kinds of ambiguous forms, we get
     $$\left( 2x, 2x, \frac{x + y}{2} \right) \text{ and } \left( \frac{x + y}{2}, y - x, \frac{x + y}{2} \right).$$
     Since $N$ is odd, both $x$ and $y$ are odd, so $x + y$ is divisible by 2, meaning that these forms have integer coefficients.
-    These forms are reduced when $N \leq 3$ and $N \geq 3$, respectively, so there are always at least two reduced ambiguous forms which give the factorisation $N = xy$.
+    These forms are reduced when $3x \leq y$ and $3x \geq y$, respectively, so there are always at least two reduced ambiguous forms which give the factorisation $N = xy$.
+    Since we asserted $x \neq y$, neither form can be $(x, 0, y)$.
     Since only two reduced forms give trivial factorisations, at least half of all reduced ambiguous forms give nontrivial factorisations.
 \end{proof}
+
+\todo{note square factors correspond to non-principal forms}
 
 In order to factor $N$, we desire to find a method for sampling ambiguous forms.
 Suppose we can generate a random reduced ambiguous form using some algorithm. 
@@ -1291,7 +1294,7 @@ That is, for a form $f$, there exists some $d \in \N$ such that
 $$f^d \sim id_\Delta.$$
 If $d$ happens to be even, then we have
 $$(f^{d/2})^2 \sim id_\Delta.$$
-Hence, $(f^{d/2})$ must be an ambiguous form, which gives a factorisation of the discriminant.
+Hence, $f^{d/2}$ must be an ambiguous form, which gives a factorisation of the discriminant.
 We will postpone discussing how uniformly this process samples the set of ambiguous forms until \Cref{s-sampling-forms}.
 For now, suppose that we can choose a random reduced form, we hope that there is a reasonable probability that its order is even.
 Fortunately, this is the case ---
@@ -1303,7 +1306,7 @@ in fact, we claim the following:
 \end{theorem}
 
 \begin{proof}
-    We fist claim that $\Cl_\Delta$ contains at least one ambiguous form which is not the identity.
+    We first claim that $\Cl_\Delta$ contains at least one ambiguous form which is not the identity.
     We already saw in the proof of \Cref{thm-ambiguous-factorisations} that $\Cl_\Delta$ contains a reduced ambiguous form which is not the identity, which has order 2.
     Since the order of each element divides the order of the group, $\Cl_\Delta$ has even order.
     \todo{invoke structure theorem}
@@ -1388,10 +1391,10 @@ So instead of multiplying $f$ by itself $d$ times, we take repeated squares $\lc
 \end{algorithm}
 
 \noindent
-This allows us to compute $f^{d/2}$ in $O(\log_2(H))$ composition operations.
+This allows us to compute $f^{d/2}$ in $O(\log_2(H))$ composition operations and hash table operations.
 
 We will see that the slowest step in the method of factoring that we are developing is computing the order of an arbitrary element.
-This depends on the bound $H$, so the lower we can make this bound, the faster our factoring method will be.
+This depends on the bound $H$, so the smaller we can make this bound, the faster our factoring method will be.
 One's first thought may be to use a counting argument to bound the number of reduced forms.
 For reduced positive definite forms, we have shown $|b| \leq \sqrt{|\Delta|/3}$.
 Note that $b \equiv \Delta \pmod{2}$, so only half of the values of $b$ in this range are valid candidate choices.
@@ -1400,8 +1403,8 @@ $$\frac{b^2 - \Delta}{4} \leq \frac{\frac{| \Delta |}{3} + | \Delta |}{4} = \fra
 The number of ways to split this term into two factors is bounded above by
 $$2 \cdot \sqrt{\frac{|\Delta|}{3}}.$$
 So the total number of reduced forms is bounded by
-$$h_\Delta \leq \sqrt{\frac{|\Delta|}{3}} \cdot 2 \cdot \sqrt{\frac{|\Delta|}{3}} = \frac{2\Delta}{3}.$$
-This bound allows us to compute the order of a form of discriminant $\Delta$ with time complexity $O(\sqrt\Delta)$.
+$$h_\Delta \leq \sqrt{\frac{|\Delta|}{3}} \cdot 2 \cdot \sqrt{\frac{|\Delta|}{3}} = \frac{2 |\Delta|}{3}.$$
+This bound allows us to compute the order of a form of discriminant $\Delta$ with time complexity $O(\sqrt{|\Delta|})$.
 This bound gives an algorithm which is in a growth class no faster than trial division.
 As such, we will need a better bound.
 
@@ -1415,11 +1418,11 @@ In the factoring method outlined by Shanks, one attempts to compute the precise 
 \begin{theorem}
     For $\Delta < -4$, the class number is given by
     $$h_\Delta = \frac{\sqrt{|\Delta|}}{\pi} L(1, \chi_\Delta) \hspace{5mm}$$
-    where $L(s, \chi) = \sum_{n = 1}^{\infty} \frac{\chi(n)}{n^s}$, and $\chi_\Delta(n) = (\Delta / n)$ is is the Kroenecker symbol.
+    where $L(s, \chi) = \sum_{n = 1}^{\infty} \frac{\chi(n)}{n^s}$, and $\chi_\Delta(n) = (\Delta / n)$ is the Kronecker symbol.
 \end{theorem}
 \vspace{2mm}
 For a proof of this theorem, see \cite[\S\,10.5]{jarvis}.
-Shanks approximates this with a product over primes $p$ \cite[\S\,2]{shanks}:
+Shanks approximates this using a product over primes $p$ \cite[\S\,2]{shanks}:
 $$h_\Delta \approx \frac{\sqrt{|\Delta|}}{\pi} \prod_{p=2}^{P} \frac{p}{p - (\Delta / p)}$$
 where $P$ is suitably large.
 He then takes further steps to verify that his approximation is likely to be correct.
@@ -1439,22 +1442,22 @@ We will take a different approach, simply finding an upper bound for the $L$-ser
     $$\left| \sum_{n = 1}^{|\Delta|} \frac{\chi_\Delta(n)}{n} \right| \leq 1 + \sum_{n = 2}^{|\Delta|} \frac{1}{n} \leq 1 + \int_{1}^{|\Delta|} \frac{dx}{x} = 1 + \ln|\Delta|.$$
     To bound the second sum, we will use Abel summation.
     First, define
-    $$A(N) = \sum_{n = |\Delta| + 1}^{N} \chi_\Delta(n).$$
-    Since $\chi_\Delta$ is a Dirichlet mod $|\Delta|$, it has the property
-    $$\sum_{n = k}^{k + \Delta} \chi_\Delta(n) = 0 \rnote{\forall k \in \Z.}$$
-    So $A(k|\Delta|) = 0$ for all integers $k$, and to bound $A(n)$ in general, note that the the sum of the first $k|\Delta|$ terms of the sum cancel, leaving at most $|\Delta| - 1$ terms in the sum, giving
+    $$A(N) = \sum_{n = 1}^{N} \chi_\Delta(n).$$
+    Since $\chi_\Delta$ is a Dirichlet character mod $|\Delta|$, it has the property
+    $$\sum_{n = k}^{k + |\Delta| - 1} \chi_\Delta(n) = 0 \rnote{\forall k \in \Z.}$$
+    So $A(k|\Delta|) = 0$ for all integers $k$, and to bound $A(n)$ in general, note that the sum of the first $k|\Delta|$ terms of the sum cancel, leaving at most $|\Delta| - 1$ terms in the sum, giving
     $$|A(n)| \leq |\Delta| - 1 \leq |\Delta|.$$
     Now, we can write $\chi_\Delta(n) = A(n) - A(n - 1)$, which gives
     \begin{align*}
         \sum_{n = |\Delta| + 1}^{N} \frac{\chi_\Delta(n)}{n} &= \sum_{n = |\Delta| + 1}^{N} \frac{A(n) - A(n - 1)}{n} \\
-        &= \sum_{n = |\Delta| + 1}^{N} \frac{A(n)}{n} - \sum_{n = |\Delta|}^{N - 1} \frac{A_n}{n + 1} \\
-        &= \frac{A(N)}{N} + \sum_{n = |\Delta| + 1}^{N} \left( \frac{A(n)}{n} - \frac{A_n}{n + 1} \right) - \frac{A(|\Delta|)}{|\Delta| + 1} \\
-        &= \frac{A(N)}{N} + \sum_{n = |\Delta| + 1}^{N} A(n) \left( \frac{1}{n} - \frac{1}{n + 1} \right) \\
-        &\leq \frac{|\Delta|}{N} + |\Delta| \sum_{n = |\Delta| + 1}^{N} \left( \frac{1}{n} - \frac{1}{n + 1} \right) \\
-        &= \frac{|\Delta|}{N} + |\Delta| \left( \frac{1}{1 + |\Delta|} - \frac{1}{N + 1} \right)
+        &= \sum_{n = |\Delta| + 1}^{N} \frac{A(n)}{n} - \sum_{n = |\Delta|}^{N - 1} \frac{A(n)}{n + 1} \\
+        &= \frac{A(N)}{N} + \sum_{n = |\Delta| + 1}^{N - 1} \left( \frac{A(n)}{n} - \frac{A(n)}{n + 1} \right) - \frac{A(|\Delta|)}{|\Delta| + 1} \\
+        &= \frac{A(N)}{N} + \sum_{n = |\Delta| + 1}^{N - 1} A(n) \left( \frac{1}{n} - \frac{1}{n + 1} \right) \\
+        \llap{$\implies$} \left| \sum_{n = |\Delta| + 1}^{N} \frac{\chi_\Delta(n)}{n} \right| &\leq \frac{|\Delta|}{N} + |\Delta| \sum_{n = |\Delta| + 1}^{N - 1} \left( \frac{1}{n} - \frac{1}{n + 1} \right) \\
+        &= \frac{|\Delta|}{N} + |\Delta| \left( \frac{1}{1 + |\Delta|} - \frac{1}{N} \right)
     \end{align*}
     Taking the limit as $N \rightarrow \infty$, we have
-    $$\sum_{n = |\Delta| + 1}^{\infty} \leq 0 + \frac{|\Delta|}{1 + |\Delta|} - 0 < 1.$$
+    $$\left| \sum_{n = |\Delta| + 1}^{\infty} \frac{\chi_\Delta(n)}{n} \right| \leq 0 + \frac{|\Delta|}{1 + |\Delta|} - 0 < 1.$$
     Combining these bounds, we get
     $$L(1, \chi_{\Delta}) < \ln|\Delta| + 2.$$
     Substituting this into the analytic class number formula gives the desired bound.
@@ -1467,12 +1470,12 @@ We will take a different approach, simply finding an upper bound for the $L$-ser
 
 The last component missing from our factoring algorithm is a method for randomly sampling reduced forms.
 This isn't as easy as it might first seem - for instance, if one chooses some $b$ congruent to $\Delta$ mod 2, then it remains to find $a$ and $c$ satisfying $ac = \frac{b^2 - \Delta}{4}$.
-That is, we have to factor a number which is roughly the same size as $\Delta$.
+That is, we have to factor a number which is similar in size to $\Delta$.
 
 Shanks offers a better method.
 He suggests taking ``small'' primes $p$ such that $\Delta$ is a quadratic residue mod $p$ \cite[\S\,2]{shanks}.
 Then one can find $b$ such that $b^2 \equiv \Delta \pmod{p}$, which gives the form
-$$\left( p, b, \frac{\Delta - b^2}{4p} \right).$$
+$$\left( p, b, \frac{b^2 - \Delta}{4p} \right).$$
 Note that $\Delta - b^2 \equiv 0 \pmod{4}$, so the entries of the above form are integers (except perhaps when $p = 2$).
 This method is particularly convenient for Shanks, since he has already calculated $(\Delta / p)$ for many small primes, which is 1 precisely when $\Delta$ is a quadratic residue mod $p$.
 
@@ -1506,7 +1509,7 @@ To see this, we must understand what the prime ideals of $\order_\Delta$ look li
     Since $\order_\Delta$ is a Dedekind domain, this splits uniquely into prime ideal factors.
     Note that the norm of $\langle p \rangle$ is $p^2$.
     The norms of ideals are multiplicative, and the only ideal with norm 1 is the trivial ideal (all of $\order_\Delta)$, so the only possibilities for the splitting of $\langle p \rangle$ into prime ideals is that it is already prime, or $\langle p \rangle = \mathfrak{p}\mathfrak{p}'$ for prime ideals $\mathfrak{p}$ and $\mathfrak{p}'$.
-    In the prior case, $\langle p \rangle$ is a prime ideal of nrom $p^2$ sitting above $p\Z$.
+    In the former case, $\langle p \rangle$ is a prime ideal of norm $p^2$ sitting above $p\Z$.
     In the latter case, let
     $$\mathfrak{p} = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$$
     be the usual canonical representation of $\mathfrak{p}$.
@@ -1516,7 +1519,7 @@ To see this, we must understand what the prime ideals of $\order_\Delta$ look li
     \[ \langle p \rangle \cap \Z = \left( p\Z + \frac{m + \sqrt\Delta}{2}\Z \right) \cap \Z = p\Z. \qedhere \]
 \end{proof}
 
-We say that a prime $p$ is \textbf{inert} if there is only one prime ideal of norm $p^2$ above it, \textbf{split} if there are two distinct prime ideals or norm $p$ above it, and \textbf{ramified} if there is only one prime ideal above it satisfying $\mathfrak{p}^2 = \langle p \rangle$.
+We say that a prime $p$ is \textbf{inert} if there is only one prime ideal of norm $p^2$ above it, \textbf{split} if there are two distinct prime ideals of norm $p$ above it, and \textbf{ramified} if there is only one prime ideal above it satisfying $\mathfrak{p}^2 = \langle p \rangle$.
 Note that the ideals corresponding to inert primes are principal, and therefore correspond to the identity element of the class group.
 As such, we are not concerned with finding such ideals.
 
@@ -1543,12 +1546,12 @@ As such, we are not concerned with finding such ideals.
     \end{gather*}
     If condition 2 is satisfied, then $m^2 - \Delta \equiv 0 \pmod{4}$, which reduces condition 4 to
     $$\Delta \equiv m^2 \pmod{p}$$
-    ie $\Delta$ is a quadratic residue mod $p$.
+    i.e. $\Delta$ is a quadratic residue mod $p$.
     Suppose this is the case, and $b^2 \equiv \Delta \pmod{p}$.
     Then $b^2$ is one of 0 or 1 mod 4, while $(b+p)^2$ is the opposite.
-    One of these is a suitable choice for $p$ such that condition 2 is satisfied.
+    One of these is a suitable choice for $m$ such that condition 2 is satisfied.
     So we can find an ideal $\mathfrak{p}$ if and only if $\Delta$ is a quadratic residue mod $p$, so inert primes are those for which this is not the case.
-    If $m = 0$, (ie $p \divides \Delta$) then there is only one choice for $\mathfrak{p}$, which means we must have a ramified prime.
+    If $m = 0$, (i.e. $p \divides \Delta$) then there is only one choice for $\mathfrak{p}$, which means we must have a ramified prime.
     If $m \neq 0$, then $-m$ is also a valid choice which meets the divisibility conditions and defines a different ideal $\mathfrak{p}$.
     The existence of two prime ideals sitting above $p$ means that $p$ is a split prime.
 \end{proof}
@@ -1578,7 +1581,7 @@ This theorem states that prime ideals are uniformly distributed among classes.
 There are only finitely many ramified ideals, since only finitely many primes divide the discriminant, and all inert prime ideals belong to the principal class.
 Therefore, split prime ideals are equally distributed amongst classes, except perhaps for the principal class, which may be underrepresented.
 So by sampling primes until one is split over $\order_\Delta$, we are sampling from the ideal class group effectively uniformly ---
-the corresponding form is precisely the form $(p, b, c)$ described earler, which once reduced is effectively a uniform sample from the set of reduced principal forms of discriminant $\Delta$.
+the corresponding form is precisely the form $(p, b, c)$ described earlier, which once reduced is effectively a uniform sample from the set of reduced primitive forms of discriminant $\Delta$.
 The possibility that the principal form is underrepresented is advantageous, since this leads to a trivial factorisation of $\Delta$.
 
 \todo{discuss issue of factorising square numbers}
@@ -1591,7 +1594,7 @@ We will, however, observe computational evidence that this bound is likely suffi
 
 \pagebreak
 \section{The 2-Sylow Subgroup}
-Now we are able to (roughly) uniformly sample reduced primitive     `1forms.
+Now we are able to (roughly) uniformly sample reduced primitive forms.
 We previously suggested that we can sample a random reduced form $f$, compute its order $d$, and if $d$ is even we compute $f^{d/2}$, an ambiguous form.
 There remains a question of how uniformly this process samples the set of reduced ambiguous forms.
 In fact, this concern is well-founded, as there are cases where this method samples non-uniformly.
@@ -1625,16 +1628,16 @@ Now, we can adapt our method for finding ambiguous forms to a method for samplin
 \begin{proof}
     It is immediately clear that the output $s \in S_\Delta$, since 
     $$s^{2^A} = f^{B \cdot 2^A} = f^{\text{ord}(f)} = \text{id}_\Delta.$$
-    Now, consider that by the structure theorem for finite abelian groups, $\Cl_\Delta \simeq S_\Delta \times G$ for some group $G \subseteq CL_\Delta$.
+    By the structure theorem for finite abelian groups, $\Cl_\Delta \simeq S_\Delta \times G$ for some group $G \subseteq Cl_\Delta$.
     So for a form $f$, we can uniquely write $f = s'g$, where $s' \in S_\Delta, g \in G$.
 
     Now consider that the action $f \mapsto f^B$ is a permutation of $S_\Delta$ whenever $2 \nmid B$.
     It is injective, since 
     $$f^B = g^B \implies (fg^{-1})^B = \text{id}_\Delta$$
-    which implies the order of $fg^{-1}$ divides $B$, and can therefore only be 1 (ie $f = g$).
+    which implies the order of $fg^{-1}$ divides $B$, and can therefore only be 1 (i.e. $f = g$).
     The map is also surjective, by finiteness of $S_\Delta$.
 
-    Now, consider that sampling $f = s'g$ is equivalent to sampling some $g \in G$, and then sampling $s' \in S_\Delta$.
+    Now, sampling $f = s'g$ is equivalent to sampling some $g \in G$, and then sampling $s' \in S_\Delta$.
     Letting the order of this element be $2^A \cdot B$ where $2 \nmid B$, note that the value of $A$ is completely determined by $s'$, and the value of $B$ is completely determined by $g$.
     Therefore, if we first sample $g \in G$, then we can immediately determine $B$.
     Before even choosing $s'$, note that
@@ -1652,14 +1655,14 @@ Shanks claims that $\Delta = -4 \cdot 10721$ leads to this exact case, where out
 Shanks calls ambiguous forms which are overrepresented by our sampling algorithm \textbf{parasitic forms}.
 Fortunately, he also provides a method to mitigate their effect on the running time of our factoring algorithm.
 He suggests that if the same parasitic form is encountered many times, then it will arise as the square of distinct forms of order 4 (since we are commonly getting this form as $s^{2^{A-1}}$, so $s^{2^{A-2}}$ is a square root).
-Suppose two such distinct roots of the parasitic form $P$ are $f$ and $g$ which are not inverses of eachother, then consider the form $fg^{-1}$.
+Suppose two such distinct roots of the parasitic form $P$ are $f$ and $g$ which are not inverses of each other, then consider the form $fg^{-1}$.
 This is ambiguous, since
 $$(fg^{-1})^2 = f^2 (g^2)^{-1} = PP^{-1}  = \text{id}_\Delta.$$
 We know that $fg^{-1}$ is not the identity, since $f \neq g$.
 We also know that it is not $P$, since $f \neq g^{-1}$.
 So it seems that we have a way of generating ambiguous forms which are not the parasitic form.
 But there is still a problem ---
-What if we keep finding the same form which squares to $P$?
+what if we keep finding the same form which squares to $P$?
 Fortunately, the argument generalises.
 
 \todo{rewrite}
@@ -1679,7 +1682,7 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
 
 \begin{center}
 \makebox[\textwidth][r]{
-\clipbox{0pt 6.4cm 0pt 0pt}{
+\clipbox{0pt 7.4cm 0pt 0pt}{
 \begin{minipage}{\textwidth}
     
 \begin{algorithm}[H]
@@ -1696,16 +1699,21 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
     }
 
     \vspace{2mm}
-    $\Delta \gets \begin{cases} -N & -N \equiv 1 \pmod{4} \\ -4N & -N \equiv 3 \pmod{4} \end{cases}$\;
+    \If{$|N|$ is a perfect square} {
+        \Return{$\sqrt{|N|}$}
+    }
 
     \vspace{2mm}
-    Initialise a hash map $S$ which uses forms in the 2-Sylow subgroup as keys, storing their square roots.\;
+    $\Delta \gets \begin{cases} -|N| & -|N| \equiv 1 \pmod{4} \\ -4|N| & -|N| \equiv 3 \pmod{4} \end{cases}$\;
+
+    \vspace{2mm}
+    Initialise a hash map $S$ which uses forms in the 2-Sylow subgroup as keys, storing a form which squares to the key.\;
 
     \vspace{2mm}
     \While{no nontrivial factor has been found}{
 
         \vspace{2mm}
-        $p \gets$ random prime in $[3, |\Delta|]$, which can be chosen by sampling integers until one is found to be prime via a primality test such as the Rabin-Miller test \cite[Alg.\,8.2.2]{cohen}.\;
+        $p \gets$ random prime in $[3, |\Delta|]$, which can be chosen by sampling integers until one is found to be prime via a primality test such as the Miller-Rabin test \cite[Alg.\,8.2.2]{cohen}.\;
 
         \vspace{2mm}
         \If{$p \divides \Delta$}{
@@ -1725,7 +1733,7 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
         $\displaystyle f \gets \left( p, b, \frac{b^2 - \Delta}{4p} \right)$\;
 
         \vspace{2mm}
-        $d \gets$ order of $f$, computed using BSGS algorithm with the upper bound $H = \ln|D| + 2$.\;
+        $d \gets$ order of $f$, computed using BSGS algorithm with the upper bound $H = \frac{\sqrt{|\Delta|}}{\pi} (\ln|\Delta| + 2$).\;
 
         \vspace{2mm}
         \If{$d$ is odd}{
@@ -1759,7 +1767,7 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
             \vspace{2mm}
             \If{$h2$ is a key in $S$}{
                 $g \gets h^{-1} \cdot$ value at key $h2$ in $S$.\;
-                $x \gets$ factor extracted from $g'$, as before.
+                $x \gets$ factor extracted from $g$, as before.
 
                 \vspace{2mm}
                 \If{$x$ is nontrivial}{
@@ -1790,13 +1798,16 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
     \While{}{
 
         \vspace{2mm}
+        $h \gets f^{B}$\;
+
+        \vspace{2mm}
         \While {$h \neq \text{id}_\Delta$}{
             $h2 \gets h^2$\;
 
             \vspace{2mm}
             \If{$h2$ is a key in $S$}{
                 $g \gets h^{-1} \cdot$ value at key $h2$ in $S$.\;
-                $x \gets$ factor extracted from $g'$, as before.
+                $x \gets$ factor extracted from $g$, as before.
 
                 \vspace{2mm}
                 \If{$x$ is nontrivial}{
@@ -1821,7 +1832,7 @@ Note that the suggested Miller-Rabin test is probabilistic, and can return false
 But even if this occurs, no real harm is done.
 We can add a step to check that $f$ is a primitive form by computing the gcd of its coefficients.
 If this is not 1, compositions using $f$ are not defined, and we cannot proceed ---
-however, the gcd of the coefficints of $f$ divides the discriminant of $f$, so in this case we have found a factor of $D$ which may be nontrivial.
+however, the gcd of the coefficients of $f$ divides the discriminant of $f$, so in this case we have found a factor of $D$ which may be nontrivial.
 
 \todo{improve}
 Let us consider the time complexity of this algorithm, starting with the prime sampling step.
@@ -1832,7 +1843,7 @@ By Chebyshev's theorem \cite[Thm.\,5.1]{shoup}, there is about a $1/\ln|\Delta|$
 The Tonelli-Shanks algorithm has time complexity $O(\ln^2|\Delta|)$.
 Reducing a form with coefficients as large as $|\Delta|$ has time complexity $O(\ln|\Delta|)$ \cite[Prop.\,5.4.3]{buell}.
 
-Computing the order of a form using BSGS involves $O(|\Delta|^{1/4})$ composition operactions (\red{check time complexity of composition}).
+Computing the order of a form using BSGS involves $O(|\Delta|^{1/4})$ composition operations (\red{check time complexity of composition}).
 
 Taking a power of a form up to an exponent of $|\Delta|^{1/2}$ involves $O(\ln|\Delta|)$ composition operations \cite[\S\,1.2]{buell}.
 
@@ -1873,13 +1884,13 @@ If we divide by the number of times the BSGS algorithm was called when each numb
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{factoring time fourth root.png}
-        \caption{\centering Time per BSGS step taken to factor $|\Delta|^4$.}
+        \caption{\centering Fourth power of time per BSGS step.}
         \label{fig-factoring-time-fourth-root}
     \end{minipage}
 \end{figure}
 
 \noindent
-This is fairly strong evidence that the algorithm truly has time complexity $O(N^{1/4})$.
+This is fairly strong evidence that the algorithm has time complexity $O(N^{1/4 + \varepsilon})$.
 
 \pagebreak
 We can also use these results to verify that the BSGS algorithm isn't being called more often than expected.
@@ -1895,7 +1906,7 @@ First, we can check that the distribution of BSGS calls made to factor each numb
     \end{minipage}
 \end{figure}
 
-Finally, we should check that the number of BSGS calls made isn't increasing as the numbers that we are factoring becomes larger.
+Finally, we should check that the number of BSGS calls made isn't increasing as the numbers that we are factoring become larger.
 We can see that this is the case in the following figure:
 \vspace{-5mm}
 \begin{figure}[ht]
@@ -1909,7 +1920,7 @@ We can see that this is the case in the following figure:
 \end{figure}
 
 \noindent
-There is no clear indication that this is continuing to increase as the numbers being factored becomes larger, so it seems that our method for avoiding parasitic forms is effective.
+There is no clear indication that this is continuing to increase as the numbers being factored become larger, so it seems that our method for avoiding parasitic forms is effective.
 
 \todo{check known parasitic case}
 
