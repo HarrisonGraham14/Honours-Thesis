@@ -131,7 +131,7 @@ agreeing to the statements and conditions above.
 Signed: \rule{7cm}{0.25pt} \hfill Date: \rule{4cm}{0.25pt} 
 
 
-Acknowledgements
+% Acknowledgements
 \pagebreak
 \prefacesection{Acknowledgements}
 \bigskip \noindent 
@@ -153,6 +153,8 @@ I would like to thank Professor David Harvey for the time and effort he has inve
 \pagebreak
 \chapter*{Introduction}\label{s-intro}
 \addcontentsline{toc}{chapter}{Introduction}
+
+\todo{finish}
 
 The goal of this paper is to develop methods for factoring integers using the theory of binary quadratic forms.
 The paper is written with the intention of providing motivated explanations to the reader. 
@@ -186,7 +188,7 @@ For our purposes, we are usually working over the integers.
 Since $x$ and $y$ are variables, the behaviour of a given form is wholly dependent on the values of $a$, $b$ and $c$,
 which motivates a shorthand notation of the same form; $(a, b, c)$.
 We will impose that $a, c \neq 0$, or else $x$ or $y$ would be reduced to a linear factor.
-Allowing this would serve no purpose beyond comlicating proofs with the added work of edge case considerations.
+Allowing this would serve no purpose beyond complicating proofs with the added work of edge case considerations.
 
 A form is called \textbf{primitive} if $\text{gcd}(a, b, c) = 1$. 
 Primitive forms are of primary concern, as he behaviour of a nonprimitive form can be more simply understood by removing the common factor to work with simpler coefficients.
@@ -195,9 +197,9 @@ Primitive forms are of primary concern, as he behaviour of a nonprimitive form c
 \section{Representation}\label{s-forms-rep}
 
 A form $f(x, y)$ is said to \textbf{represent} a number $n$ if there exists an integer solution
-$$f(x_0, y_0) = n \rnote{x_0, y_0 \in \Z.}$$
-For example, consider the form $(2, 1, 5)$, or $f(x, y) = 2x^2 + xy + 5y^2$. 
-This form represents the number 2, since $f(1, 0) = 2$.
+$$f(x_0, y_0) = n$$
+where $x_0, y_0 \in \Z$.
+For example, the form $(2, 1, 5)$ (ie. $f(x, y) = 2x^2 + xy + 5y^2$) represents the number 2, since $f(1, 0) = 2$.
 The form does not represent the number 1, though it is not immediately clear how to prove a result of this kind.
 
 The questions which historically motivated the study of forms were as follows \cite[Ch.\,1]{buell};
@@ -254,12 +256,12 @@ We will come to see that this classification is far more powerful than simply be
 
 \begin{proof}
     The discriminant of $(ak, bk, ck)$ is given By
-    $$(bk)^2 - 4(ak)(ck) = b^2k^2 - 4ack^2 = \Delta k^2.$$
+    \[ (bk)^2 - 4(ak)(ck) = b^2k^2 - 4ack^2 = \Delta k^2. \qedhere \]
 \end{proof}
 
 
 \section{Equivalence}\label{s-forms-eq}
-Given a form $f(x, y) = ax^2 + bxy + cy^2$, one can generate new forms which represent the same set of integers by changing the input space;
+Given a form $f(x, y) = ax^2 + bxy + cy^2$, one can find more forms which represent the same set of integers by changing the input space;
 take some invertible function $\phi : \Z^2 \rightarrow \Z^2$, and let $g(x, y) = f \circ \phi(x, y)$.
 Then for any $x_0, y_0 \in \Z$
 $$f(x_0, y_0) = n \implies g(\phi(x_0, y_0)) = n$$
@@ -286,7 +288,7 @@ This gives
         + \left[ aq^2 + bqs + cs^2 \right] y^2
 \end{align*}
 which gives $g$ to be a binary quadratic form, as required. 
-We require that $\phi$ is invertible, so that this is a symmetric relationship.
+We require that $\phi$ is invertible so that this is a symmetric relationship.
 Note that $\phi$ can be understood as a matrix multiplication
 $$\phi \left( \bmat{x \\ y} \right) = \bmat{p & q \\ r & s} \bmat{x \\ y}.$$
 So it is clear to see that the valid choices of $\phi$ are the invertible elements of $M_2(\Z)$ --- that is, $\GL_2(\Z)$.
@@ -340,7 +342,7 @@ Since all $SL_2(\Z)$ transformations are obtainable by composing $S$ and $T$, an
     If $g$ represents $n$, then there exist integers $x_0, y_0 \in \Z$ such that
     \begin{align*}
         g(x_0, y_0) &= n \\
-        \implies f \circ \phi(x_0, y_0) &= n.
+        \llap{$\implies$} f \circ \phi(x_0, y_0) &= n.
     \end{align*}
     But $\phi$ is a function from $\Z^2 \rightarrow \Z^2$, so we see that $f$ also represents $n$.
     The converse argument, $f$ represents $n$ $\implies$ $g$ represesnts $n$, is identical.
@@ -348,13 +350,13 @@ Since all $SL_2(\Z)$ transformations are obtainable by composing $S$ and $T$, an
 \end{proof}
 
 
-\pagebreak
+
 \section{Reduction}\label{s-forms-red}
 Now that we have an equivalence relation, we would like to be able to find a suitable representative element of a given class.
 This will not only prove useful for simplifying computations by choosing a representative with small values of $a$, $b$, and $c$,
 but will also give us a method for checking whether two forms belong to the same class by evaluating and comparing their canonical representatives.
 
-A basis for $\SL_2(\Z)$ is
+We have a basis for $\SL_2(\Z)$ given by
 $$S = \bmat{0 & -1 \\ 1 & 0}, \hspace{5mm} T = \bmat{1 & 1 \\ 0 & 1}.$$
 Note that
 $$S^4 = I, \hspace{5mm} T^k = \bmat{1 & k \\ 0 & 1}.$$
@@ -624,7 +626,7 @@ Now, for $\Delta \equiv 0, 1 \pmod{4}$ where $\Delta$ is not a perfect square, l
 $$\order_\Delta = \Z + \frac{\Delta + \sqrt\Delta}{2}\Z.$$
 One might expect an extension of the integers to take the form $\Z + \sqrt\Delta \Z$, but this ring is not a ``integrally closed'' when $\Delta \equiv 1 \pmod{4}$.
 The integral closure of $\Q(\sqrt\Delta)$ is $\Z + \frac{1 + \sqrt\Delta}{2}\Z$ (see \cite[Ch.\,1\,\S\,2,\,Exercise\,4]{neukirch}).
-As a result, $\order_\Delta$ is a Dedekind domain \cite[Thm.\,14]{marcus}, which means that ideals of $\order_\Delta$ factorise uniquely into products of prime ideals \cite[Thm.\,16]{marcus}.
+As a result, $\order_\Delta$ is a Dedekind domain when $\Delta$ is a ``fundamental discriminant'' \cite[Thm.\,14]{marcus}, which means that ideals of $\order_\Delta$ factorise uniquely into products of prime ideals \cite[Thm.\,16]{marcus}.
 The definition of $\order_\Delta$ given is equivalent to
 $$\order_\Delta = \begin{cases}
     \Z + \sqrt\Delta \Z & \Delta \equiv 0 \pmod{4} \\
@@ -746,6 +748,7 @@ We also need to define the norm of an ideal.
 For a nonzero ideal $I \trianglelefteq \order_\Delta$, the \textbf{norm} is defined as
 $$N(I) = \left| R / I \right|.$$
 
+\vspace{2mm}
 \begin{lemma}\label{lemma-ideal-norm}
     The norm of $I = l\Z + \frac{m + n\sqrt\Delta}{2} \Z \trianglelefteq \order_\Delta$ is given by
     $$ N(I) = ln .$$
@@ -862,7 +865,7 @@ This is properly equivalent to the form that we found when using our canonical b
 We already had the sense that properly equivalent forms contain the same data, since they represent the same numbers.
 We now have a new way of thinking of this --- equivalent forms describe the norms of elements of the same ideal using different bases.
 
-If we now allow any basis to be chosen to represent an ideal, a bijection from ideals to forms, $\Theta$, must necessarily map into equivalence classes of forms ---
+If we now allow any basis to be chosen to represent an ideal, a bijection innduced by $\Theta$ must necessarily map into equivalence classes of forms ---
 since $\Theta(I)$ maps into different (but equivalent) forms depending on the choice of basis.
 By taking the codomain to be proper equivalence classes of forms, the function remains well defined.
 
@@ -1298,20 +1301,12 @@ in fact, we claim the following:
 \begin{theorem}
     If $N > 1$ is an odd composite integer, then at least half of all elements of $\Cl_\Delta$ have even order, where $\Delta$ is $-N$ or $-4N$ as before.
 \end{theorem}
-\red{change to half of all reduced forms}
 
 \begin{proof}
     We fist claim that $\Cl_\Delta$ contains at least one ambiguous form which is not the identity.
-    We already saw this in the proof of \Cref{thm-ambiguous-factorisations} that $\Cl_\Delta$ contains a reduced ambiguous form which is not the identity, which has order 2.
-    Call one such form $f$, and its equivalence class $\bar{f}$.
-    Now, consider all classes of forms $\bar{g} \in \Cl_\Delta$ which have odd order.
-    Each such $\bar{g}$ determines a unique $\bar{h} = \bar{f} \cdot \bar{g}$.
-    Let the order of $\bar{g}$ be $d$, which is odd, and the order of $\bar{h}$ be $d'$.
-    Then
-    $$\text{id}_\Delta = (\bar{h}^{d'})^d = \bar{f}^{dd'} \cdot (\bar{g}^d)^{d'} = \bar{f}^{dd'}.$$
-    So the order of $\bar{f}$, which is 2, divides $dd'$, and since $d$ is odd, $d'$ must be even.
-    Therefore, for each $\bar{g} \in \Cl_\Delta$ with odd order, we can find a unique $\bar{h} \in \Cl_\Delta$ with even order.
-    So at least half of the elements in $\Cl_\Delta$ have even order.
+    We already saw in the proof of \Cref{thm-ambiguous-factorisations} that $\Cl_\Delta$ contains a reduced ambiguous form which is not the identity, which has order 2.
+    Since the order of each element divides the order of the group, $\Cl_\Delta$ has even order.
+    \todo{invoke structure theorem}
 \end{proof}
 
 So if we can sample a random reduced form $f$, the order of $f$ will be even at least half of the time, allowing us to find an ambiguous form.
@@ -1321,9 +1316,9 @@ BSGS uses a ``meet in the middle'' strategy, which requires we have some bound o
 We call the order of the class group the \textbf{class number}, $h_\Delta = |\Cl_\Delta|$.
 Suppose we have an upper bound $H \geq h_\Delta$ (we will find such a bound in \Cref{s-class-number-formula}).
 We first compute the first $\lceil \sqrt{H} \rceil$ powers of $f$ (``baby steps'').
-If this process hits the identity, we are done. 
+If this process produces the identity, we are done. 
 Otherwise, we compute the first $\lceil \sqrt{H} \rceil$ powers of $f^{\lceil \sqrt{H} \rceil}$ (``giant steps'').
-All powers of $f$ from $\lceil \sqrt{H} \rceil + 1$ up to $H$ are given by multiplying a baby step with a giant step, and the order of $f$ cannot be larger than $h_\Delta$, so one of these products must be the identity.
+All powers of $f$ from $\lceil \sqrt{H} \rceil + 1$ up to $H$ are given by multiplying a baby step with a giant step, and the order of $f$ cannot be larger than $H$, so one of these products must be the identity.
 This means that one of the giant steps is an inverse to one of the baby steps.
 If we store our baby steps in a hash table, then as we calculate the giant steps, we can check if their inverses are in the hash table.
 Once a collision is found between the $i$-th baby step and the $j$-th giant step, we have found
@@ -1436,6 +1431,7 @@ We will take a different approach, simply finding an upper bound for the $L$-ser
 \end{theorem}
 
 \begin{proof}
+    \emph{This proof is based on a proof generated by ChatGPT.}
     We will construct a bound on $L(1, \chi_\Delta)$ using the fact that $\chi_\Delta$ is a Dirichlet character mod $|\Delta|$.
     First, we split the sum
     $$L(1, \chi_\Delta) = \sum_{n = 1}^{\infty} \frac{\chi_\Delta(n)}{n} = \sum_{n = 1}^{|\Delta|} \frac{\chi_\Delta(n)}{n} + \sum_{n = |\Delta| + 1}^{\infty} \frac{\chi_\Delta(n)}{n}.$$
@@ -1505,6 +1501,7 @@ To see this, we must understand what the prime ideals of $\order_\Delta$ look li
 \end{lemma}
 
 \begin{proof}
+    \todo{fix}
     Consider the ideal $\langle p \rangle \trianglelefteq \order_\Delta$.
     Since $\order_\Delta$ is a Dedekind domain, this splits uniquely into prime ideal factors.
     Note that the norm of $\langle p \rangle$ is $p^2$.
@@ -1525,25 +1522,44 @@ As such, we are not concerned with finding such ideals.
 
 \vspace{2mm}
 \begin{lemma}
-    Over $\order_\Delta$, a prime $p \in \Z$ is
+    Over $\order_\Delta$, an odd prime $p \in \Z$ is
     \begin{itemize}
-        \item \textbf{Inert} if $(\Delta / p) = -1$
-        \item \textbf{Split} if $(\Delta / p) = 1$
-        \item \textbf{Ramified} if $(\Delta / p) = 0$ (ie. $p \divides \Delta$).
+        \item \textbf{Inert} if $\Delta$ is not a quadratic residue mod $p$.
+        \item \textbf{Split} if $\Delta$ is a quadratic residue mod $p$ and $p \nmid \Delta$.
+        \item \textbf{Ramified} if $p \divides \Delta$.
     \end{itemize}
-    Where $(n / p)$ is the Kroenecker symbol.
 \end{lemma}
-\vspace{2mm}
 
-\noindent
-\todo{prove or cite}
+\begin{proof}
+    Suppose there exists an ideal $\mathfrak{p} \trianglelefteq \order_\Delta$ of prime norm $p \in \Z$.
+    We saw in the previous proof that
+    $$\mathfrak{p} = p\Z + \frac{m + \sqrt\Delta}{2}\Z.$$
+    We must check if there is a suitable choice for $m$ such that this is an ideal.
+    Checking the conditions of \Cref{lemma-lattice-divisibility-conditions}, conditions 1 and 3 follow immediately from $n = 1$.
+    The other conditions require
+    \begin{gather*}
+        \lnote{\textbf{2.}} m \equiv \Delta \pmod{2} \\
+        \lnote{\textbf{4.}} 4p \divides m^2 - \Delta
+    \end{gather*}
+    If condition 2 is satisfied, then $m^2 - \Delta \equiv 0 \pmod{4}$, which reduces condition 4 to
+    $$\Delta \equiv m^2 \pmod{p}$$
+    ie $\Delta$ is a quadratic residue mod $p$.
+    Suppose this is the case, and $b^2 \equiv \Delta \pmod{p}$.
+    Then $b^2$ is one of 0 or 1 mod 4, while $(b+p)^2$ is the opposite.
+    One of these is a suitable choice for $p$ such that condition 2 is satisfied.
+    So we can find an ideal $\mathfrak{p}$ if and only if $\Delta$ is a quadratic residue mod $p$, so inert primes are those for which this is not the case.
+    If $m = 0$, (ie $p \divides \Delta$) then there is only one choice for $\mathfrak{p}$, which means we must have a ramified prime.
+    If $m \neq 0$, then $-m$ is also a valid choice which meets the divisibility conditions and defines a different ideal $\mathfrak{p}$.
+    The existence of two prime ideals sitting above $p$ means that $p$ is a split prime.
+\end{proof}
 
-If we sample primes $p$ on the interval $[3, |\Delta|]$ randomly, rejecting $p$ whenever $\Delta$ is not a quadratic residue mod $p$ or $p \divides \Delta$, we are randomly sampling split primes in $\order_\Delta$ whose corresponding ideals have norm no greater than $|\Delta|$.
-To compute these ideals, we must find $b \in \Z$ such that $b^2 \equiv \Delta \pmod{p}$, which can be achieved using an algorithm such as the Tonelli-Shanks algorithm \cite[Alg.\,1.5.1]{cohen}.
-Then, we have
-$$\mathfrak{p} = p\Z + \frac{b + \sqrt\Delta}{2}$$
-is a corresponding prime ideal.
-The other, given by choosing $-b$, is in the inverse ideal class.
+For our factoring algorithm, we will sample primes $p$ on the interval $[3, |\Delta|]$.
+Whenever $\Delta$ is not a quadratic residue mod $p$, this corresponds to sampling an inert prime ideal, which is principal and therefore corresponds to the principal form (which gives the trivial factorisation of the discriminant, $\Delta = 1 \cdot \Delta$).
+Whenever $p \divides \Delta$, this corresponds to sampling a ramified prime ideal ---
+but more importantly, we have immediately found a nontrivial factor of $\Delta$ and can cease the algorithm.
+When $\Delta$ is a quadratic residue mod $p$, this corresponds to sampling a split prime ideal.
+It is therefore natural to ask, how are split prime ideals distributed among the class group?
+To answer this, we have a useful density theorem:
 
 \vspace{2mm}
 \begin{theorem}
@@ -1556,7 +1572,17 @@ The other, given by choosing $-b$, is in the inverse ideal class.
 \noindent
 This theorem comes from using class field theory to realise the class group as a Galois group, at which point the Chebotarev density theorem can be applied.
 The details of such a proof are beyond the scope of this paper ---
-for verification of this theorem, one can see \red{cite Cl as galois group} \cite[Cor.\,8.18]{cox}.
+for verification of this theorem, one can see \todo{cite Cl as galois group} \cite[Cor.\,8.18]{cox}.
+
+This theorem states that prime ideals are uniformly distributed among classes.
+There are only finitely many ramified ideals, since only finitely many primes divide the discriminant, and all inert prime ideals belong to the principal class.
+Therefore, split prime ideals are equally distributed amongst classes, except perhaps for the principal class, which may be underrepresented.
+So by sampling primes until one is split over $\order_\Delta$, we are sampling from the ideal class group effectively uniformly ---
+the corresponding form is precisely the form $(p, b, c)$ described earler, which once reduced is effectively a uniform sample from the set of reduced principal forms of discriminant $\Delta$.
+The possibility that the principal form is underrepresented is advantageous, since this leads to a trivial factorisation of $\Delta$.
+
+\todo{discuss issue of factorising square numbers}
+
 Note that the Chebotarev density theorem considers the density of all prime ideals, while we only sample prime ideals of norm no greater than $|\Delta|$.
 We will not prove formally that this is sufficient --- 
 such a proof would involve a finite-bounded version of the density theorem.
@@ -1565,7 +1591,7 @@ We will, however, observe computational evidence that this bound is likely suffi
 
 \pagebreak
 \section{The 2-Sylow Subgroup}
-Now we are able to (roughly) uniformly sample reduced forms.
+Now we are able to (roughly) uniformly sample reduced primitive     `1forms.
 We previously suggested that we can sample a random reduced form $f$, compute its order $d$, and if $d$ is even we compute $f^{d/2}$, an ambiguous form.
 There remains a question of how uniformly this process samples the set of reduced ambiguous forms.
 In fact, this concern is well-founded, as there are cases where this method samples non-uniformly.
@@ -1636,7 +1662,7 @@ But there is still a problem ---
 What if we keep finding the same form which squares to $P$?
 Fortunately, the argument generalises.
 
-\red{rewrite}
+\todo{rewrite}
 Suppose of all of the forms with order $2^A$, a form $P$ is overrepresented by our sampling method.
 Then either there are several distinct forms with order $2^{A-1}$ which square to $P$, or else there is only one (and its inverse) which is itself overrepresented when sampling forms of order $2^{A-1}$.
 We can follow this chain until we find an overrepresented $P$ of the largest order, which must always have several square roots, or else uniform sampling of $S_\Delta$ could not cause it to become overrepresented.
