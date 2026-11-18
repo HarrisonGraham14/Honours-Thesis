@@ -1277,7 +1277,7 @@ We will show that this is the case.
 
 \todo{note square factors correspond to non-principal forms}
 
-In order to factor $N$, we desire to find a method for sampling ambiguous forms.
+In order to factor $N$, we desire to find a method for sampling reduced ambiguous forms.
 Suppose we can generate a random reduced ambiguous form using some algorithm. 
 There is at least 50\% chance that the form we generate gives a nontrivial factorisation, otherwise we sample again.
 Let the expected number of samples needed be $E$.
@@ -1294,7 +1294,7 @@ That is, for a form $f$, there exists some $d \in \N$ such that
 $$f^d \sim id_\Delta.$$
 If $d$ happens to be even, then we have
 $$(f^{d/2})^2 \sim id_\Delta.$$
-Hence, $f^{d/2}$ must be an ambiguous form, which gives a factorisation of the discriminant.
+Hence, $f^{d/2}$ must be an ambiguous form, which gives a (possibly trivial) factorisation of the discriminant.
 We will postpone discussing how uniformly this process samples the set of ambiguous forms until \Cref{s-sampling-forms}.
 For now, suppose that we can choose a random reduced form, we hope that there is a reasonable probability that its order is even.
 Fortunately, this is the case ---
@@ -1362,8 +1362,8 @@ As an algorithm, we have
 \end{algorithm}
 
 \noindent
-This algorithm computes the order of an element in $O(\sqrt{H})$ composition operations.
-Once we have computed the order of $f$, we can efficiently raise $f$ to a power using a binary algorithm:
+This algorithm computes the order of an element in $O(\sqrt{H})$ composition and hash table operations.
+Once we have computed the order of $f$, we can efficiently raise $f$ to a power using a binary powering algorithm:
 we consider the binary expansion of $d$, ie
 $$d = a_0 \cdot 2^0 + a_1 \cdot 2^1 + a_2 \cdot 2^2 + \dots \rnote{(a_i \in \{0, 1\}).}$$
 Then we have
@@ -1395,7 +1395,7 @@ This allows us to compute $f^{d/2}$ in $O(\log_2(H))$ composition operations and
 
 We will see that the slowest step in the method of factoring that we are developing is computing the order of an arbitrary element.
 This depends on the bound $H$, so the smaller we can make this bound, the faster our factoring method will be.
-One's first thought may be to use a counting argument to bound the number of reduced forms.
+Suppose we simply use a counting argument to bound the number of reduced forms.
 For reduced positive definite forms, we have shown $|b| \leq \sqrt{|\Delta|/3}$.
 Note that $b \equiv \Delta \pmod{2}$, so only half of the values of $b$ in this range are valid candidate choices.
 Once we fix $b$, the choices for $a$ and $c$ are given by factor pairs of 
@@ -1469,7 +1469,8 @@ We will take a different approach, simply finding an upper bound for the $L$-ser
 \section{Sampling Forms} \label{s-sampling-forms}
 
 The last component missing from our factoring algorithm is a method for randomly sampling reduced forms.
-This isn't as easy as it might first seem - for instance, if one chooses some $b$ congruent to $\Delta$ mod 2, then it remains to find $a$ and $c$ satisfying $ac = \frac{b^2 - \Delta}{4}$.
+This isn't as easy as it might first seem --- 
+for instance, if one chooses some $b$ congruent to $\Delta$ mod 2, then it remains to find $a$ and $c$ satisfying $ac = \frac{b^2 - \Delta}{4}$.
 That is, we have to factor a number which is similar in size to $\Delta$.
 
 Shanks offers a better method.
@@ -1566,7 +1567,7 @@ To answer this, we have a useful density theorem:
 
 \vspace{2mm}
 \begin{theorem}
-    Prime ideals of $\order_\Delta$ are equally distributed among narrow equivalence classes.
+    Invertible prime ideals of $\order_\Delta$ are equally distributed among narrow equivalence classes of invertible ideals.
     That is, for a class $C$,
     $$\lim_{N \rightarrow \infty} \frac{|\{ \text{prime } \mathfrak{p} \in C : N(\mathfrak{p}) \leq N \}|}{|\{ \text{prime } \mathfrak{p} \trianglelefteq \order_\Delta : N(\mathfrak{p}) \leq N \}|} = \frac{1}{h_\Delta}.$$
 \end{theorem}
@@ -1647,15 +1648,15 @@ Now, we can adapt our method for finding ambiguous forms to a method for samplin
 \end{proof}
 
 Now, consider sampling $s \in S_\Delta$, computing its order $d$, and then getting the ambiguous form $s^{d/2}$, we have claimed that this method does not uniformly sample the set of reduced ambiguous forms.
-To see this, consider the case that $S_\Delta \simeq \Z_2 \times \Z_64$.
-Denoting the elements of this group as $(a, b)$, with $a \in \Z_2, b \in \Z_64$, the square of every element is of the form $(0, b)$.
+To see this, consider the case that $S_\Delta \simeq \Z_2 \times \Z_{64}$.
+Denoting the elements of this group as $(a, b)$, with $a \in \Z_2, b \in \Z_{64}$, the square of every element is of the form $(0, b)$.
 This means the ambiguous forms $(1, 0)$ and $(1, 32)$ cannot be found by any $s^{d/2}$ except for when $s$ is itself ambiguous.
 Shanks claims that $\Delta = -4 \cdot 10721$ leads to this exact case, where out of 128 elements of the 2-Sylow subgroup, 125 of them lead to the same ambiguous form, $(2, 2, 5361)$, which corresponds to a trivial factorisation of the discriminant \cite[\S\,7]{shanks}.
 
 Shanks calls ambiguous forms which are overrepresented by our sampling algorithm \textbf{parasitic forms}.
 Fortunately, he also provides a method to mitigate their effect on the running time of our factoring algorithm.
 He suggests that if the same parasitic form is encountered many times, then it will arise as the square of distinct forms of order 4 (since we are commonly getting this form as $s^{2^{A-1}}$, so $s^{2^{A-2}}$ is a square root).
-Suppose two such distinct roots of the parasitic form $P$ are $f$ and $g$ which are not inverses of each other, then consider the form $fg^{-1}$.
+Suppose two such distinct ``square roots'' of the parasitic form $P$ are $f$ and $g$ which are not inverses of each other, then consider the form $fg^{-1}$.
 This is ambiguous, since
 $$(fg^{-1})^2 = f^2 (g^2)^{-1} = PP^{-1}  = \text{id}_\Delta.$$
 We know that $fg^{-1}$ is not the identity, since $f \neq g$.
@@ -1673,6 +1674,8 @@ We therefore have found several roots of $P$ in order to determine that it is ov
 If $f$ is fixed, then of all possible choices for $g$, only one gives the same ambiguous form as we would have gotten by taking $P$ to the power of half of its order.
 Since there are many choices for $g$, we are more likely to get a new ambiguous form.
 
+\todo{note comparison of methods}
+
 
 
 \pagebreak
@@ -1686,7 +1689,7 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
 \begin{minipage}{\textwidth}
     
 \begin{algorithm}[H]
-    \caption{Factoring via Ambiguous Forms}
+    \caption{Factoring via Ambiguous Forms} \label{alg-factor}
     \DontPrintSemicolon
     \vspace{1mm}
     \KwIn{$N \in \N$, a composite integer.}
@@ -1837,7 +1840,7 @@ however, the gcd of the coefficients of $f$ divides the discriminant of $f$, so 
 \todo{improve}
 Let us consider the time complexity of this algorithm, starting with the prime sampling step.
 The Miller-Rabin primality test is $O(\ln^3|\Delta|)$.
-By Chebyshev's theorem \cite[Thm.\,5.1]{shoup}, there is about a $1/\ln|\Delta|$ chance that each sample is prime.
+By the prime number theorem, there is about a $1/\ln|\Delta|$ chance that each sample is prime.
 (\red{Wolfram alpha gives $O(\ln^2|\Delta|$) expected samples needed}).
 
 The Tonelli-Shanks algorithm has time complexity $O(\ln^2|\Delta|)$.
@@ -1920,10 +1923,43 @@ We can see that this is the case in the following figure:
 \end{figure}
 
 \noindent
-There is no clear indication that this is continuing to increase as the numbers being factored become larger, so it seems that our method for avoiding parasitic forms is effective.
+There is no clear indication that this is continuing to increase as the numbers being factored become larger, so it seems that the algorithm isn't being slowed down significantly by parasitic forms ---
+or perhaps these are simply too rare to notice in such a test.
 
-\todo{check known parasitic case}
+To get a better idea of how effective our treatment of parasitic forms is, we factor the number 10721, which is known to have a highly problematic corresponding 2-Sylow subgroup.
+This has been simulated 10,000 times using three different approaches ---
+once using the factoring algorithm above but omitting our treatment of parasitic forms entirely, again using only Shanks' suggestion for treating parasitic forms by storing forms of order 4, and a final time with the generalised fix (which is included in \Cref{alg-factor}).
 
+\vspace{-5mm}
+\begin{figure}[ht]
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{parasitic histogram naive.png}
+        \caption{\centering Distribution of BSGS calls made without handling parasitic forms.}
+        \label{fig-histogram-naive}
+    \end{minipage}
+    \hfill
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{parasitic histogram shanks.png}
+        \caption{\centering Distribution of BSGS calls made with Shanks' fix.}
+        \label{fig-histogram-shanks}
+    \end{minipage}
+    
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{parasitic histogram general.png}
+        \caption{\centering Distribution of BSGS calls made with the generalised fix.}
+        \label{fig-histogram-general}
+    \end{minipage}
+\end{figure}
+
+\noindent
+With no attempt made to handle parasitic forms, the BSGS algorithm was used an average of 58.62 times while factoring 10721.
+Implementing Shanks' proposed fix, this improves to 28.23, and the mode drops from 6 to 2.
+This is a noticable improvement, but the generalised fix is significantly better again, decresing he mean number of BSGS usages to 5.34, with no more than 23 ever being made across 10,000 simulations.
 
 
 %===============================================================================================================================%
