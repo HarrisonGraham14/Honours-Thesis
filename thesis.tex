@@ -19,12 +19,9 @@
 \usepackage[nameinlink]{cleveref}
 \usepackage{changepage}
 \usepackage{adjustbox}
+\usepackage{thmtools}
 
 \hypersetup{citecolor=[rgb]{0, 0.5, 0}}
-
-%\numberwithin{algocf}{section}
-\crefname{algocf}{algorithm}{algorithms}
-\Crefname{algocf}{Algorithm}{Algorithms}
 
 % Macros
 \newcommand{\N}{\mathbb{N}} % Natural numbers
@@ -86,6 +83,9 @@
 \let\thealgocf\thetheorem
 \makeatother
 
+\crefname{algocf}{algorithm}{algorithms}
+\Crefname{algocf}{Algorithm}{Algorithms}
+
 
 %===============================================================================================================================%
 %                                                            PREFACE                                                            %
@@ -125,7 +125,12 @@ this declaration I am
 agreeing to the statements and conditions above.
 
 \bigskip \noindent
-Signed: \rule{7cm}{0.25pt} \hfill Date: \rule{4cm}{0.25pt} 
+Signed: \rule{7cm}{0.25pt}
+\hfill Date: 19/11/2026
+
+\vspace{-10mm}
+\hspace{20mm} \includegraphics[scale=0.1]{signature.png} 
+
 
 
 % Acknowledgements
@@ -797,7 +802,8 @@ This can be positive or negative, and is zero if and only if $x = y = 0$, since 
 
 \noindent
 There exists a similar result for the norms of ideals, although with a condition.
-First, define an \textbf{invertible ideal} of $\order_\Delta$ to be an ideal $I \in \order_\Delta$ such that there is some ideal $I' \in \order_\Delta$ for which $II'$ is principal (this is technically the definition of an invertible \emph{fractional} ideal (\red{cite}), but we have avoided discussing fractional ideals for simplicity).
+First, define an \textbf{invertible ideal} of $\order_\Delta$ to be an ideal $I \in \order_\Delta$ such that there is some ideal $I' \in \order_\Delta$ for which $II'$ is principal 
+(this is technically the definition of an invertible \emph{fractional} ideal \cite[Prop.\,8.4.11]{buchmann}, but we have avoided discussing fractional ideals for simplicity).
 Now we can state:
 
 \vspace{2mm}
@@ -814,8 +820,7 @@ A proof of this is given by \cite[Prop.\,4.6.8]{cohen}.
     $$N(\langle \alpha \rangle) = \left| N(\alpha) \right|.$$
 \end{lemma}
 \noindent
-A proof of this lemma can be found in \cite[Lemma\,5.35]{jarvis}.
-\todo{check cited proof applies to non-maximal orders}
+A proof of this is given by \cite[Exercise 7.14-7.15]{cox}.
 
 
 
@@ -1001,7 +1006,7 @@ Hence we see that ideal multiplication is a well-defined operation on narrow equ
 This gives us a semigroup of narrow equivalence classes, which can be turned into a group if we restrict to classes of invertible ideals.
 We can hence use this to induce a group operation on proper equivalence classes of forms which correspond to invertible ideals.
 
-\begin{theorem}
+\begin{theorem} \label{thm-invertible-primitive}
     Let $f$ be a form and $I$ be an ideal such that $\Theta(I) = f$. Then $I$ is inveritible if and only if $f$ is primitive.
 \end{theorem}
 
@@ -1009,8 +1014,21 @@ We can hence use this to induce a group operation on proper equivalence classes 
     Consider a form $f = (a, b, c)$.
     The corresponding ideal is $I = a\Z + \frac{b + \sqrt\Delta}{2}\Z$.
     A natural candidate for an ideal $I'$ such that $II'$ is principal would be to take the conjugate of $I$ in hopes that the generators cancel nicely.
-    Letting $I' = a\Z + \frac{b + \sqrt\Delta}{2}\Z$, we have
-    \todo{finish}
+    Letting $I' = a\Z + \frac{b - \sqrt\Delta}{2}\Z$, we have
+    \begin{align*}
+        II' &= \left( a\Z + \frac{b + \sqrt\Delta}{2}\Z \right) \left( a\Z + \frac{b - \sqrt\Delta}{2}\Z \right) \\
+        &= a^2\Z + a\frac{b + \sqrt\Delta}{2}\Z + a\frac{b - \sqrt\Delta}{2}\Z + \frac{b^2 - \Delta}{4}\Z \\
+        &= a^2\Z + a\frac{b + \sqrt\Delta}{2}\Z + a\frac{2b}{2}\Z + \frac{b^2 - b^2 + 4ac}{4}\Z \\
+        &= a(a\Z + b\Z + c\Z) + a\frac{b + \sqrt\Delta}{2}\Z
+    \end{align*}
+    If $f$ is primitive, then $\gcd(a, b, c) = 1$, so we have
+    $$II' = a \left( \Z + \frac{b + \sqrt\Delta}{2}\Z \right) = a \order_\Delta = \langle a \rangle.$$
+    So $I$ is invertible. If $f$ is not primitive, we have
+    $$II' = a \left( \gcd(a, b, c) \Z + \frac{b + \sqrt\Delta}{2}\Z \right).$$
+    To prove that this cannot be principal, we use \Cref{lemma-ideal-lattice} to find
+    $$N(II') = a^2 \cdot \gcd(a, b, c), \hspace{5mm} N(I) = a, \hspace{5mm} N(I') = a.$$
+    That is, $N(II') \neq N(I)N(I')$.
+    So by \Cref{invertible-norm-multiplicative}, $I$ cannot be invertible.
 \end{proof}
 
 So we seek to induce a group operation on classes of primitive forms of fixed discriminant.
@@ -1076,46 +1094,24 @@ Optimisations to this algorithm are given by Cohen \cite[Alg.\,5.4.7]{cohen}.
 
 \pagebreak
 \section{Identity and Inverses}\label{s-comp-idinv}
-Now that we have a well defined binary operation on classes of forms, we seek to find an identity element and inverses to complete our understanding of the induced group.
-The identity is straightforward --- regardless of $\Delta$, the ideal of $\order_\Delta$ which acts as the identity is $\order_\Delta$ itself, since it has 1 as an element.
+Now that we have a well defined binary operation on classes of forms, we seek to find an identity element and inverses.
+The identity of ideal classes is given by ideals which multiply others without affecting their equivalence class - that is, the class of principal forms.
+One such ideal is $\langle 1 \rangle = \order_\Delta$.
 The corresponding form is
-$$\bar{\Theta}(\order_\Delta) = \bar{\Theta} \left( 1\Z + 1\frac{\Delta + \sqrt\Delta}{2} \right) = \left(1, \Delta, \frac{\Delta^2 - \Delta}{4} \right).$$
+$$\Theta(\order_\Delta) = \Theta \left( 1\Z + 1\frac{\Delta + \sqrt\Delta}{2} \right) = \left(1, \Delta, \frac{\Delta^2 - \Delta}{4} \right).$$
 By applying a $T$ transformation, we get the reduced \textbf{principal form}:
 $$\text{id}_\Delta = \begin{cases}
     \left( 1, 0, \frac{-\Delta}{4} \right) & \Delta \equiv 0 \pmod{4} \\
     \left( 1, 1, \frac{1 - \Delta}{4} \right) & \Delta \equiv 1 \pmod{4}
 \end{cases}$$
 
-\todo{improve}
-To find the inverse of a form, consider the inverse of an invertible ideal class.
-The identity amongst ideal classes is given by ideals which are narrowly equivalent to $\order_\Delta$.
-Ideals which vary from the whole ring by a scalar multiple are precisely the principal ideals --- so the inverse (at the level of classes) of an ideal $I$ is an ideal $I'$ such that the product $II'$ is principal.
-For an ideal $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$, a natural candidate might be given by conjugating the generators:
-\begin{align*}
-    &\hspace{-10mm} \left( l\Z + \frac{m + n\sqrt\Delta}{2}\Z \right) \cdot \left( l\Z + \frac{m - n\sqrt\Delta}{2}\Z \right) \\
-    &= l^2\Z + l \left( \frac{m + n\sqrt\Delta}{2} \right)\Z + l \left( \frac{m - n\sqrt\Delta}{2} \right)\Z + \frac{m^2 - n^2\Delta}{4}\Z \\
-    &= l^2\Z + lm\Z + l \left( \frac{m + n\sqrt\Delta}{2} \right)\Z + \frac{m^2 - n^2\Delta}{4}\Z \tag{$\ast$}
-\end{align*}
-We know by \Cref{lemma-ideal-lattice} that we can reduce this to two $\Z$-generators, one of which is the smallest integer in the ideal.
-This integer is 
-$$\gcd \left( l^2, lm, \frac{m^2 - n^2\Delta}{4} \right) = l \cdot \gcd\left( l, m, n\frac{m^2 - n^2\Delta}{4ln} \right) = lk$$
-for some $k \in \Z$.
-We can see that $k$ divides each of $l$, $m$, and $n$, so the product of ideals is contained within
-$$lk \left( \Z + \frac{\Delta + \sqrt\Delta}{2} \Z \right) = \langle lk \rangle$$
-since each coefficient in ($\ast$) is divisible by $lk$.
-Since $lk$ is contained in ($\ast$), the ideal product must be all of $\langle lk \rangle$.
-This is principal, and is therefore narrowly equivalent to the identity.
-Hence, we have verified that an ideal is inverted by taking its conjugate.
-Now consider a form $f = (a, b, c)$.
-This corresponds to the ideal
-$$\bar{\Theta}^{-1}(f) = a\Z + \frac{b + \sqrt\Delta}{2}\Z.$$
-The inverse of this ideal is
-$$a\Z + \frac{b - \sqrt\Delta}{2}\Z = a\Z + \frac{-b + \sqrt\Delta}{2}\Z.$$
-Note that we have taken the negative of the second generator to ensure $n$ is positive.
-Finally, the form corresponding to this inverse is
-$$\bar{\Theta} \left( a\Z + \frac{-b + \sqrt\Delta}{2}\Z \right) = (a, -b, c) = f^{-1}.$$
+Now, consider a primitive form $f = (a, b, c)$, which has the corresponding ideal $I = a\Z + \frac{b + \Delta}{2}\Z$.
+We saw in the proof of \Cref{thm-invertible-primitive} that the inverse of this ideal class is given by
+$$I' = a\Z + \frac{b - \Delta}{2}\Z = I = a\Z + \frac{-b + \Delta}{2}\Z.$$
+The form corresponding to this ideal is $\Theta(I') = (a, -b, c)$.
 
 We now know that there are finitely many proper equivalence classes of fixed discriminant $\Delta$ (\Cref{theorem-class-number-finite}), that composition is a well-defined binary operation on this set, that there is an identity class which acts trivially on other classes, and that each class has an inverse.
+We also have closure under the operation of composition, since the product of invertible ideals is clearly invertible (if $I$ is inverted by $I'$ and $J$ is inverted by $J'$, then $IJ$ is inverted by $I'J'$).
 Hence, the set of classes of primitive forms of fixed discriminant $\Delta$ form a finite group under the operation of composition.
 We call this the \textbf{class group}, denoted $\Cl_\Delta$.
 
@@ -1548,90 +1544,88 @@ To see this, we must understand what the prime ideals of $\order_\Delta$ look li
     So we must have $\mathfrak{p} \cap \Z = p\Z$ for a prime integer $p$.
 \end{proof}
 
-\vspace{2mm}
-\begin{lemma}
-    For each prime $p \in \Z$, there is at least one prime ideal $\mathfrak{p} \trianglelefteq \order_\Delta$ sitting above $p\Z$.
-    Such an ideal has norm $p$ or $p^2$.
-\end{lemma}
-
-\begin{proof}
-    \todo{fix}
-    Consider the ideal $\langle p \rangle \trianglelefteq \order_\Delta$.
-    Since $\order_\Delta$ is a Dedekind domain, this splits uniquely into prime ideal factors.
-    Note that the norm of $\langle p \rangle$ is $p^2$.
-    The norms of ideals are multiplicative, and the only ideal with norm 1 is the trivial ideal (all of $\order_\Delta)$, so the only possibilities for the splitting of $\langle p \rangle$ into prime ideals is that it is already prime, or $\langle p \rangle = \mathfrak{p}\mathfrak{p}'$ for prime ideals $\mathfrak{p}$ and $\mathfrak{p}'$.
-    In the former case, $\langle p \rangle$ is a prime ideal of norm $p^2$ sitting above $p\Z$.
-    In the latter case, let
-    $$\mathfrak{p} = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$$
-    be the usual canonical representation of $\mathfrak{p}$.
-    Then $p = N(\mathfrak{p}) = ln$.
-    Since $n \divides l$, the only possibility is that $n = 1, l = p$.
-    Hence,
-    \[ \langle p \rangle \cap \Z = \left( p\Z + \frac{m + \sqrt\Delta}{2}\Z \right) \cap \Z = p\Z. \qedhere \]
-\end{proof}
-
-\todo{check}
-We say that a prime $p$ is \textbf{inert} if there is only one prime ideal of norm $p^2$ above it, \textbf{split} if there are two distinct prime ideals of norm $p$ above it, and \textbf{ramified} if there is only one prime ideal above it satisfying $\mathfrak{p}^2 = \langle p \rangle$.
-Note that the ideals corresponding to inert primes are principal, and therefore correspond to the identity element of the class group.
-As such, we are not concerned with finding such ideals.
+\noindent
+Over $\order_\Delta$, an odd prime $p \in \Z$ is
+\begin{itemize}
+    \item \textbf{Inert} if $\Delta$ is not a quadratic residue mod $p$.
+    \item \textbf{Split} if $\Delta$ is a quadratic residue mod $p$ and $p \nmid \Delta$.
+    \item \textbf{Ramified} if $p \divides \Delta$.
+\end{itemize}
 
 \vspace{2mm}
-\begin{lemma}
-    Over $\order_\Delta$, an odd prime $p \in \Z$ is
-    \begin{itemize}
-        \item \textbf{Inert} if $\Delta$ is not a quadratic residue mod $p$.
-        \item \textbf{Split} if $\Delta$ is a quadratic residue mod $p$ and $p \nmid \Delta$.
-        \item \textbf{Ramified} if $p \divides \Delta$.
-    \end{itemize}
-\end{lemma}
+\noindent
+We will say that a prime ideal is inert/split/ramified if it sits above an integer prime ideal $p\Z$, where $p$ is inert/split/ramified over $\order_\Delta$.
+We now attempt to understand the distribution of invertible prime ideals.
+Note that if a prime ideal $\mathfrak{p}$ sits over $p\Z$, then in the canonical representation
+$$\mathfrak{p} = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$$
+so we must have $l = p$.
+We must check if there is a suitable choice for $m$ such that $\mathfrak{p}$ is an ideal.
+Checking the conditions of \Cref{lemma-lattice-divisibility-conditions}, we know that $n \divides p$, so $n$ is either $p$ or 1.
+$n = p$ corresponds to the principal ideal $\langle p \rangle$ (which isn't necessarily principal), let us consider the case when $n = 1$.
+Conditions 1 and 3 of \Cref{lemma-lattice-divisibility-conditions} follow immediately from $n = 1$.
+The other conditions require
+\begin{gather*}
+    \lnote{\textbf{2.}} m \equiv \Delta \pmod{2} \\
+    \lnote{\textbf{4.}} 4p \divides m^2 - \Delta
+\end{gather*}
+If condition 2 is satisfied, then $m^2 - \Delta \equiv 0 \pmod{4}$, which reduces condition 4 to
+$$\Delta \equiv m^2 \pmod{p}$$
+i.e. $\Delta$ is a quadratic residue mod $p$.
+Suppose this is the case, and $b^2 \equiv \Delta \pmod{p}$.
+Then $b^2$ is one of 0 or 1 mod 4, while $(b+p)^2$ is the opposite.
+One of these is a suitable choice for $m$ such that condition 2 is satisfied.
+So we can find an ideal $\mathfrak{p}$ if and only if $\Delta$ is a quadratic residue mod $p$, so inert primes can only have $\langle p \rangle$ as possible prime ideals sitting above them.
+If $m = 0$, (i.e. $p \divides \Delta$, $p$ is ramified) then there is only one choice for $\mathfrak{p}$.
+If $m \neq 0$, $p$ is split, and $-m$ is also a valid choice which meets the divisibility conditions and defines a different ideal $\mathfrak{p}$.
+
+\vspace{2mm}
+\begin{theorem}
+    Let $p \in \Z$ be an odd prime and $b$ be a nonzero integer such that $b^2 \equiv \Delta \pmod 4p$.
+    Then
+    $$\mathfrak{p} = p\Z + \frac{b + \sqrt\Delta}{2}\Z$$
+    is a prime ideal of $\order_\Delta$.
+\end{theorem}
 
 \begin{proof}
-    Suppose there exists an ideal $\mathfrak{p} \trianglelefteq \order_\Delta$ of prime norm $p \in \Z$.
-    We saw in the previous proof that
-    $$\mathfrak{p} = p\Z + \frac{m + \sqrt\Delta}{2}\Z.$$
-    We must check if there is a suitable choice for $m$ such that this is an ideal.
-    Checking the conditions of \Cref{lemma-lattice-divisibility-conditions}, conditions 1 and 3 follow immediately from $n = 1$.
-    The other conditions require
-    \begin{gather*}
-        \lnote{\textbf{2.}} m \equiv \Delta \pmod{2} \\
-        \lnote{\textbf{4.}} 4p \divides m^2 - \Delta
-    \end{gather*}
-    If condition 2 is satisfied, then $m^2 - \Delta \equiv 0 \pmod{4}$, which reduces condition 4 to
-    $$\Delta \equiv m^2 \pmod{p}$$
-    i.e. $\Delta$ is a quadratic residue mod $p$.
-    Suppose this is the case, and $b^2 \equiv \Delta \pmod{p}$.
-    Then $b^2$ is one of 0 or 1 mod 4, while $(b+p)^2$ is the opposite.
-    One of these is a suitable choice for $m$ such that condition 2 is satisfied.
-    So we can find an ideal $\mathfrak{p}$ if and only if $\Delta$ is a quadratic residue mod $p$, so inert primes are those for which this is not the case.
-    If $m = 0$, (i.e. $p \divides \Delta$) then there is only one choice for $\mathfrak{p}$, which means we must have a ramified prime.
-    If $m \neq 0$, then $-m$ is also a valid choice which meets the divisibility conditions and defines a different ideal $\mathfrak{p}$.
-    The existence of two prime ideals sitting above $p$ means that $p$ is a split prime.
+    We will show that $\mathfrak{p}$ is maximal and therefore prime.
+    Consider some 
+    $$z = x + y\frac{\Delta + \sqrt\Delta}{2} \in \order_\Delta \backslash \mathfrak{p}.$$
+    Then consider the ideal generated by $\mathfrak{p}$ and $z$, that is $I = \langle p, \frac{b + \sqrt\Delta}{2}, z \rangle$.
+    Note that
+    $$y\frac{b + \sqrt\Delta}{2} \in \mathfrak{p} \implies z - y\frac{b + \sqrt\Delta}{2} = x + y\frac{\Delta - b}{2} \notin \mathfrak{p}$$
+    but this element is in $I$.
+    This element is an integer, and it must not be divisible by $p$, since it is not in $\mathfrak{p}$.
+    But that means that $I$ contains $p$ as well as an integer which is coprime to $p$, so it contains 1, and therefore is all of $\order_\Delta$.
+    Therefore, we cannot add another element to $\mathfrak{p}$ without getting all of $\order_\Delta$, so $\mathfrak{p}$ is maximal and therefore prime.
 \end{proof}
 
 For our factoring algorithm, we will sample primes $p$ on the interval $[3, |\Delta|]$.
-Whenever $\Delta$ is not a quadratic residue mod $p$, this corresponds to sampling an inert prime ideal, which is principal and therefore corresponds to the principal form (which gives the trivial factorisation of the discriminant, $\Delta = 1 \cdot \Delta$).
-Whenever $p \divides \Delta$, this corresponds to sampling a ramified prime ideal ---
-but more importantly, we have immediately found a nontrivial factor of $\Delta$ and can cease the algorithm.
-When $\Delta$ is a quadratic residue mod $p$, this corresponds to sampling a split prime ideal.
-It is therefore natural to ask, how are split prime ideals distributed among the class group?
+Whenever $\Delta$ is not a quadratic residue mod $p$, we sample again. 
+About half of the samples $p$ will satisfy this condition if we sample primes on a large enough range \cite[Exercise\,11.3.5]{}.
+Whenever $p \divides \Delta$, we have immediately found a nontrivial factor of $\Delta$ and can cease the algorithm.
+Otherwise, when $\Delta$ is a quadratic residue mod $p$, we can compute $b$ such that $b^2 \equiv \Delta \pmod{p}$, which corresponds to sampling a split prime ideal.
+Note that we have two choices for $b$, but one choice gives the inverse class to the other ---
+the two resulting forms will land on the same ambiguous form in our factoring method, so it doesn't matter if we differentiate between choices of $b$.
+
+It is now natural to ask, how are split prime ideals distributed among the class group?
 To answer this, we have a useful density theorem:
 
 \vspace{2mm}
 \begin{theorem}
     Invertible prime ideals of $\order_\Delta$ are equally distributed among narrow equivalence classes of invertible ideals.
-    That is, for a class $C$,
-    $$\lim_{N \rightarrow \infty} \frac{|\{ \text{prime } \mathfrak{p} \in C : N(\mathfrak{p}) \leq N \}|}{|\{ \text{prime } \mathfrak{p} \trianglelefteq \order_\Delta : N(\mathfrak{p}) \leq N \}|} = \frac{1}{h_\Delta}.$$
+    That is, for an invertible class $C$,
+    $$\lim_{N \rightarrow \infty} \frac{|\{ \text{prime } \mathfrak{p} \in C : N(\mathfrak{p}) \leq N \}|}{|\{ \text{invertible prime } \mathfrak{p} \trianglelefteq \order_\Delta : N(\mathfrak{p}) \leq N \}|} = \frac{1}{h_\Delta}.$$
 \end{theorem}
 \vspace{2mm}
 
 \noindent
-This theorem comes from using class field theory to realise the class group as a Galois group, at which point the Chebotarev density theorem can be applied.
+This theorem comes from using class field theory to realise the class group as a Galois group \cite[Equation 9.1]{cox}, at which point the Chebotarev density theorem can be applied \cite[Equation 1.1]{lagarias}.
 The details of such a proof are beyond the scope of this paper ---
-for verification of this theorem, one can see \todo{cite Cl as galois group} \cite[Cor.\,8.18]{cox}.
+for verification of this theorem, see the references above.
 
 This theorem states that invertible prime ideals are uniformly distributed among classes of invertible ideals.
-There are only finitely many ramified ideals, since only finitely many primes divide the discriminant, and all inert prime ideals belong to the principal class.
-Therefore, split prime ideals are equally distributed amongst classes (except perhaps for the principal class, which may be underrepresented, which is not a problem for our factoring altorithm).
+There are only finitely many ramified invertible prime ideals, since only finitely many primes divide the discriminant, and all inert prime ideals belong to the principal class.
+Therefore, split invertible prime ideals are equally distributed amongst classes (except perhaps for the principal class, which may be underrepresented, which is not a problem for our factoring altorithm).
 So by sampling primes until one is split over $\order_\Delta$, we are sampling from the ideal class group effectively uniformly ---
 the corresponding form is precisely the form $(p, b, c)$ described earlier, which once reduced is effectively a uniform sample from the set of reduced primitive forms of discriminant $\Delta$.
 
@@ -1892,18 +1886,22 @@ We can add a step to check that $f$ is a primitive form by computing the gcd of 
 If this is not 1, compositions using $f$ are not defined, and we cannot proceed ---
 however, the gcd of the coefficients of $f$ divides the discriminant of $f$, so in this case we have found a factor of $D$ which may be nontrivial.
 
-\todo{finish}
-Let us briefly consider the time complexity of this algorithm, starting with the prime sampling step.
-The Miller-Rabin primality test is $O(\ln^3|\Delta|)$ \cite[\S\,8.2]{cohen}.
-By the prime number theorem, there is about a $1/\ln|\Delta|$ chance that each sample is prime, so we will need an average of $\ln|\Delta|$ samples before one is found to be prime.
-Hence, this part of the algorithm has running time $O(\ln^4|\Delta|)$
+Let us briefly consider the time complexity of this algorithm:
+\begin{itemize}
+    \item The Miller-Rabin primality test is $O(\ln^3|\Delta|)$ \cite[\S\,8.2]{cohen}.
+    By the prime number theorem, there is about a $1/\ln|\Delta|$ chance that each sample is prime, so we will need an average of $\ln|\Delta|$ samples before one is found to be prime.
+    Hence, this part of the algorithm has running time $O(\ln^4|\Delta|)$
 
-The Tonelli-Shanks algorithm has expected time complexity $O(\ln^4|\Delta|)$ \cite[\S\,1.5.1]{cohen}.
-Reducing a form with coefficients as large as $|\Delta|$ takes $O(\ln|\Delta|)$ steps \cite[Prop.\,5.4.3]{cohen}, each of which involves a bounded number of operations, so for our puroses, reduction has time complexity $O(\ln|\Delta|)$.
+    \item The Tonelli-Shanks algorithm has expected time complexity of $O(\ln^4|\Delta|)$ \cite[\S\,1.5.1]{cohen}.
+    Reducing a form with coefficients as large as $|\Delta|$ takes $O(\ln|\Delta|)$ steps \cite[Prop.\,5.4.3]{cohen}, each of which involves a bounded number of operations, so for our puroses, reduction has time complexity $O(\ln|\Delta|)$.
 
-Computing the order of a form using BSGS involves $O(|\Delta|^{1/4 + \varepsilon})$ composition and hash table operations. (\red{check time complexity of composition}).
+    \item Using the binary power algorithm to compute exponents up to $|\Delta|^{1/2}$ involves $O(\ln|\Delta|)$ composition operations \cite[\S\,1.2]{buell}. 
+    Composition is just a Euclidean algorithm (or two) combined with a constant number of arithmetic operations.
+    As such, its running time is $O(\ln^2|\Delta|)$ per composition \cite[\S\,1.3.1]{cohen}, totalling $O(\ln^3|\Delta|)$.
 
-Using the binary power algorithm to compute exponents up to $|\Delta|^{1/2}$ involves $O(\ln|\Delta|)$ composition operations \cite[\S\,1.2]{buell}.
+    \item Computing the order of a form using BSGS involves $O(|\Delta|^{1/4 + \varepsilon})$ composition and hash table operations, which is $O(|\Delta|^{1/4 + \varepsilon})$ arithmetic operations.
+    This is the dominant term in our algorithm.
+\end{itemize}
 
 We claim that each step which can cause us to restart from the sampling step adds a constant factor to the time complexity.
 Although parasitic forms make this uncertain, we assume that our treatment of this issue is effective, and returns us to an inconsequential error term.
