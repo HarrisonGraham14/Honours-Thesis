@@ -161,7 +161,7 @@ The paper is written with the intention of providing motivated explanations to t
 
 \Cref{s-forms} briefly introduces binary quadratic forms as algebraic objects, and shows that forms of a fixed discriminant can be separated into finitely many equivalence classes.
 In \Cref{s-comp}, we derive a binary operation on the equivalence classes, called ``composition'' of forms, to create a finite group (which does not necessarily contain the full set of classes of forms, only those which are ``primitive'').
-The majority of literature which simply states an algorithm for composing forms and then proves that it has the desired properties, we opt for a more motivated approach.
+While the majority of literature simply states an algorithm for composing forms and then proves that it has the desired properties, we opt for a more motivated approach.
 
 The method of factoring derived in \Cref{s-factor} closely follows Daniel Shanks' class group method \cite{shanks}.
 The key idea is that we leverage the finite abelian group structure of the class group to search for ``ambiguous forms,'' which immediately lead to factorisations of the discriminant.
@@ -229,7 +229,7 @@ Hence we see that $f(x, y)$ and $g(\tfrac{x}{y})$ have the same sign, with the e
 Now, the zeroes of $g(t)$ are given by
 $$t = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.$$
 If $b^2 -4ac$ is negative, then $g$ has no real zeroes, meaning that $g$ must be either positive everywhere or negative everywhere (except the origin).
-Since $f(x, y)$ agrees up with $g(\tfrac{x}{y})$ up to sign, then $f$ must also have a fixed sign for its entire range of outputs - except possibly when $y=0$.
+Since $f(x, y)$ agrees with $g(\tfrac{x}{y})$ up to sign, then $f$ must also have a fixed sign for its entire range of outputs - except possibly when $y=0$.
 However, note that $f$ can be extended to a continuous function over $\R^2$ and that $f(x, 0) = ax^2$, which can only be zero when $x$ is zero (since $a \neq 0$).
 Combining these facts, we can argue that the line $y=0$ must have the same sign as the rest of function, with the exception of the trivial zero.
 
@@ -267,8 +267,8 @@ We will come to see that this classification is far more powerful than simply be
 Given a form $f(x, y) = ax^2 + bxy + cy^2$, one can find more forms which represent the same set of integers by changing the input space;
 take some invertible function $\phi : \Z^2 \rightarrow \Z^2$, and let $g(x, y) = f \circ \phi(x, y)$.
 Then for any $x_0, y_0 \in \Z$
-$$f(x_0, y_0) = n \implies g(\phi(x_0, y_0)) = n$$
-$$g(x_0, y_0) = m \implies f(\phi^{-1}(x_0, y_0)) = m.$$
+$$f(x_0, y_0) = n \implies g(\phi^{-1}(x_0, y_0)) = n$$
+$$g(x_0, y_0) = m \implies f(\phi(x_0, y_0)) = m.$$
 That is, all integers represented by $f$ are also represented by $g$, and vice versa. 
 However, we must also ensure that our choice of $\phi$ gives $g$ to be a form.
 Consider the choice $\phi(x, y) = (x+1, y)$.
@@ -348,7 +348,7 @@ Since all $SL_2(\Z)$ transformations are obtainable by composing $S$ and $T$, an
         \llap{$\implies$} f \circ \phi(x_0, y_0) &= n.
     \end{align*}
     But $\phi$ is a function from $\Z^2 \rightarrow \Z^2$, so we see that $f$ also represents $n$.
-    The converse argument, $f$ represents $n$ $\implies$ $g$ represesnts $n$, is identical.
+    The converse argument, $f$ represents $n$ $\implies$ $g$ represents $n$, is identical.
     Hence, $f$ represents $n$ if and only if $g$ represents $n$.
 \end{proof}
 
@@ -467,7 +467,7 @@ We say that a positive definite form is \textbf{reduced} if it satisfies
     which would cause the determinant of $\phi$ to be zero.
     But the determinant of $\phi$ is known to be 1, so, since $p, r \in \Z$, we have that $a'$ is at least $a$.
 
-    By the same argument as above (swapping $f$ for $f'$), we also have $a' \geq a$ --- together these results imply $a = a'$.
+    By the same argument as above (swapping $f$ for $f'$), we also have $a \geq a'$ --- together these results imply $a = a'$.
     That is, properly equivalent reduced forms must have the same leading coefficient.
     
     Now we must show that if $\phi$ fixes $a$, then the action of $\phi$ on $f$ is trivial.
@@ -506,7 +506,7 @@ We say that a positive definite form is \textbf{reduced} if it satisfies
         &= S \cdot \bmat{\delta & 0 \\ 0 & \delta} \cdot T^{\delta s}.
     \end{align*}
     As before, we can ignore the action of the negative identity matrix.
-    Also note that the action of $T^{-s}$ is the same as the action of $T^s$.
+    We can also ignore $\delta$, absorbing it into the variable $s$.
     Hence we see that the action of $\phi$ is given by
     $$ST^s : (a, b, a) \mapsto (as^2 + bs + a, - 2as - b, a).$$
     Recall that the leading term must be equal to $a$ in order for this form to be reduced.
@@ -930,7 +930,7 @@ A form corresponding to this ideal is given by
     &= \frac{N(\alpha)}{N(\langle \alpha \rangle)} \cdot \frac{N \left( l x + \frac{m + n\sqrt\Delta}{2} y \right) }{N(I)} \\
     &= \frac{N(\alpha)}{\left| N(\alpha) \right|} \cdot \Theta(I).
 \end{align*}
-Here, we have used \Cref{lemma-norm-relation}, since principal ideals are clearly invertible (via multiplication by any other principle ideal).
+Here, we have used \Cref{lemma-norm-relation}, since principal ideals are clearly invertible (via multiplication by any other principal ideal).
 So $I$ and $\alpha I$ are mapped to the same form so long as $N(\alpha) > 0$.
 We therefore desire that such forms be equivalent so that $\bar{\Theta}$ may be injective --- but we must be careful when formalising the equivalence relation.
 We cannot simply say that ideals are equivalent if they vary by a positive-norm scalar multiple in $\order_\Delta$, as this would not be a transitive relation;
@@ -1007,7 +1007,7 @@ This gives us a semigroup of narrow equivalence classes, which can be turned int
 We can hence use this to induce a group operation on proper equivalence classes of forms which correspond to invertible ideals.
 
 \begin{theorem} \label{thm-invertible-primitive}
-    Let $f$ be a form and $I$ be an ideal such that $\Theta(I) = f$. Then $I$ is inveritible if and only if $f$ is primitive.
+    Let $f$ be a form and $I$ be an ideal such that $\Theta(I) = f$. Then $I$ is invertible if and only if $f$ is primitive.
 \end{theorem}
 
 \begin{proof}
@@ -1107,7 +1107,7 @@ $$\text{id}_\Delta = \begin{cases}
 
 Now, consider a primitive form $f = (a, b, c)$, which has the corresponding ideal $I = a\Z + \frac{b + \Delta}{2}\Z$.
 We saw in the proof of \Cref{thm-invertible-primitive} that the inverse of this ideal class is given by
-$$I' = a\Z + \frac{b - \Delta}{2}\Z = I = a\Z + \frac{-b + \Delta}{2}\Z.$$
+$$I' = a\Z + \frac{b - \sqrt\Delta}{2}\Z = I = a\Z + \frac{-b + \sqrt\Delta}{2}\Z.$$
 The form corresponding to this ideal is $\Theta(I') = (a, -b, c)$.
 
 We now know that there are finitely many proper equivalence classes of fixed discriminant $\Delta$ (\Cref{theorem-class-number-finite}), that composition is a well-defined binary operation on this set, that there is an identity class which acts trivially on other classes, and that each class has an inverse.
@@ -1353,7 +1353,7 @@ in fact, we claim the following:
     We first claim that $\Cl_\Delta$ contains at least one ambiguous form which is not the identity.
     We already saw in the proof of \Cref{thm-ambiguous-factorisations} that $\Cl_\Delta$ contains a reduced ambiguous form which is not the identity, which has order 2.
     Since the order of each element divides the order of the group, $\Cl_\Delta$ has even order.
-    By the structure theorem for finite abelian groups, $\Cl_\Delta$ can be written as the product of a groups, one of which has order equal to a power of 2.
+    By the structure theorem for finite abelian groups, $\Cl_\Delta$ can be written as the product of two groups, one of which has order equal to a power of 2.
     All elements with a nonzero component in this group have even order, which is at least half of all elements.
 \end{proof}
 
@@ -1625,11 +1625,11 @@ for verification of this theorem, see the references above.
 
 This theorem states that invertible prime ideals are uniformly distributed among classes of invertible ideals.
 There are only finitely many ramified invertible prime ideals, since only finitely many primes divide the discriminant, and all inert prime ideals belong to the principal class.
-Therefore, split invertible prime ideals are equally distributed amongst classes (except perhaps for the principal class, which may be underrepresented, which is not a problem for our factoring altorithm).
+Therefore, split invertible prime ideals are equally distributed amongst classes (except perhaps for the principal class, which may be underrepresented, which is not a problem for our factoring algorithm).
 So by sampling primes until one is split over $\order_\Delta$, we are sampling from the ideal class group effectively uniformly ---
 the corresponding form is precisely the form $(p, b, c)$ described earlier, which once reduced is effectively a uniform sample from the set of reduced primitive forms of discriminant $\Delta$.
 
-Note that the Chebotarev density theorem considers the density of all invertiable prime ideals, while we only sample prime ideals of norm no greater than $|\Delta|$.
+Note that the Chebotarev density theorem considers the density of all invertible prime ideals, while we only sample prime ideals of norm no greater than $|\Delta|$.
 We will not prove formally that this is sufficient --- 
 such a proof would involve a finite-bounded version of the density theorem.
 We will, however, observe computational evidence that this bound is likely sufficient for our purposes in \Cref{s-factoring-algorithm}.
@@ -1879,7 +1879,7 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
 
 \vspace{2mm}
 \noindent
-A python implementation of this algorithm can be found at \url{https://github.com/HarrisonGraham14/Factoring}.
+A Python implementation of this algorithm can be found at \url{https://github.com/HarrisonGraham14/Factoring}.
 Note that the suggested Miller-Rabin test is probabilistic, and can return false positives for the primality of $p$. 
 But even if this occurs, no real harm is done.
 We can add a step to check that $f$ is a primitive form by computing the gcd of its coefficients.
@@ -1893,7 +1893,7 @@ Let us briefly consider the time complexity of this algorithm:
     Hence, this part of the algorithm has running time $O(\ln^4|\Delta|)$
 
     \item The Tonelli-Shanks algorithm has expected time complexity of $O(\ln^4|\Delta|)$ \cite[\S\,1.5.1]{cohen}.
-    Reducing a form with coefficients as large as $|\Delta|$ takes $O(\ln|\Delta|)$ steps \cite[Prop.\,5.4.3]{cohen}, each of which involves a bounded number of operations, so for our puroses, reduction has time complexity $O(\ln|\Delta|)$.
+    Reducing a form with coefficients as large as $|\Delta|$ takes $O(\ln|\Delta|)$ steps \cite[Prop.\,5.4.3]{cohen}, each of which involves a bounded number of operations, so for our purposes, reduction has time complexity $O(\ln|\Delta|)$.
 
     \item Using the binary power algorithm to compute exponents up to $|\Delta|^{1/2}$ involves $O(\ln|\Delta|)$ composition operations \cite[\S\,1.2]{buell}. 
     Composition is just a Euclidean algorithm (or two) combined with a constant number of arithmetic operations.
@@ -1909,7 +1909,7 @@ This assumption will be supported with evidence shortly.
 
 
 \pagebreak
-To verify the asymptotic behaviour of this algorithm, the python implementation was used to factor integers which are products of similarly sized primes (as these are typically the hardest numbers of their size to factor).
+To verify the asymptotic behaviour of this algorithm, the Python implementation was used to factor integers which are products of similarly sized primes (as these are typically the hardest numbers of their size to factor).
 The raw results are plotted in \Cref{fig-factoring-time-raw} below:
 \vspace{-5mm}
 \begin{figure}[ht]
@@ -2013,7 +2013,7 @@ once using the factoring algorithm above but omitting our treatment of parasitic
 \noindent
 With no attempt made to handle parasitic forms, the BSGS algorithm was used an average of 58.62 times while factoring 10721.
 Implementing Shanks' proposed fix, this improves to 28.23, and the mode drops from 6 to 2.
-This is a noticable improvement, but the generalised fix is significantly better again, decresing he mean number of BSGS usages to 5.34, with no more than 23 ever being made across 10,000 simulations.
+This is a noticeable improvement, but the generalised fix is significantly better again, decreasing the mean number of BSGS usages to 5.34, with no more than 23 ever being made across 10,000 simulations.
 
 
 %===============================================================================================================================%
