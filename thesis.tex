@@ -151,15 +151,16 @@ I would like to thank Professor David Harvey for the time and effort he has inve
 \chapter*{Introduction}\label{s-intro}
 \addcontentsline{toc}{chapter}{Introduction}
 
-\todo{finish}
-
-The goal of this paper is to develop methods for factoring integers using the theory of binary quadratic forms.
+The goal of this paper is to develop an algorithm for factoring integers using the theory of binary quadratic forms.
 The paper is written with the intention of providing motivated explanations to the reader. 
-This is most notably seen in \Cref{s-comp} where we give a motivated derivation of composition of forms, as opposed to the majority of literature which simply states an algorithm for composing forms and then proves that it has the desired properties.
 
-The method of factoring derived in \Cref{s-factor} is inspired by Daniel Shanks' class group method \cite{shanks}.
+\Cref{s-forms} briefly introduces binary quadratic forms as algebraic objects, and shows that forms of a fixed discriminant can be separated into finitely many equivalence classes.
+In \Cref{s-comp}, we derive a binary operation on the equivalence classes, called ``composition'' of forms, to create a finite group (which does not necessarily contain the full set of classes of forms, only those which are ``primitive'').
+The majority of literature which simply states an algorithm for composing forms and then proves that it has the desired properties, we opt for a more motivated approach.
+
+The method of factoring derived in \Cref{s-factor} closely follows Daniel Shanks' class group method \cite{shanks}.
 The key idea is that we leverage the finite abelian group structure of the class group to search for ``ambiguous forms,'' which immediately lead to factorisations of the discriminant.
-The largest difference from Shanks' approach is that we make no attempt to compute the class number, instead settling for a simple upper bound.
+We make several alterations to Shanks' method in order to simplify the process without sacrificing the asymptotic growth of the running time of the algorithm, which (with some assumptions) has an expected value of $O(N^{1/4 + \varepsilon})$ for any nonzero $\varepsilon$.
 
 
 
@@ -568,6 +569,13 @@ See \cite[\S\,3.1]{buell} for a complete handling of indefinite forms.
 %===============================================================================================================================%
 
 \chapter{Composition}\label{s-comp}
+\emph{
+    This chapter collects algebraic results from various sources as required, though several of the proofs are original.
+    The theory of composition of forms is informed by Buell \cite[Ch.\,6-7]{buell} and Buchmann \& Vollmer \cite[Ch.\,7]{buchmann}, though we take our own approach to the derivation.
+}
+
+\vspace{2mm}
+\noindent
 Now that we have seen that there are finitely many equivalence classes of forms of a fixed discriminant, we seek to equip them with a binary operation to form a group.
 We achieve this by showing a bijection between classes of forms and classes of ideals, under which the ideal multiplication structure gives a multiplicative structure to the corresponding classes of forms.
 
@@ -594,7 +602,7 @@ He defined a form $F$ to be a \textbf{composition} of $f$ and $g$ if there exist
 \end{gather*}
 Legendre was able to show that any two forms of the same discriminant can always be composed in this way, but his formulation was multi-valued, giving several options for the resulting form $F$.
 This was finally rectified by Gauss in 1801 in his \emph{Disquisitiones Arithmeticae} \cite{gauss}, where he refined Legendre's formulation to turn composition of forms into a well-defined function.
-This notion of composition gave a group structure to the set of proper equivalence classes of forms of a fixed discriminant.
+This notion of composition gave a group structure to the set of proper equivalence classes of primitive forms of a fixed discriminant.
 This group is called the \textbf{class group}.
 
 As the theory of ideals developed, it became apparent that there exists a bijection between certain classes of ideals of quadratic orders and the class group of quadratic forms \cite[Ch.\,1]{buell}.
@@ -788,8 +796,17 @@ This can be positive or negative, and is zero if and only if $x = y = 0$, since 
 \end{proof}
 
 \noindent
-The same is true of the norms of invertible ideals, although the proof is not so elementary.
-For a proof of this fact, see \cite[Thm.\,5.37]{jarvis}.
+There exists a similar result for the norms of ideals, although with a condition.
+First, define an \textbf{invertible ideal} of $\order_\Delta$ to be an ideal $I \in \order_\Delta$ such that there is some ideal $I' \in \order_\Delta$ for which $II'$ is principal (this is technically the definition of an invertible \emph{fractional} ideal (\red{cite}), but we have avoided discussing fractional ideals for simplicity).
+Now we can state:
+
+\vspace{2mm}
+\begin{lemma} \label{invertible-norm-multiplicative}
+    If $I$ and $I'$ are ideals of $\order_\Delta$ and $I$ is invertible, then
+    $$N(II') = N(I)N(I').$$
+\end{lemma}
+\noindent
+A proof of this is given by \cite[Prop.\,4.6.8]{cohen}.
 
 \vspace{2mm}
 \begin{lemma} \label{lemma-norm-relation}
@@ -798,6 +815,7 @@ For a proof of this fact, see \cite[Thm.\,5.37]{jarvis}.
 \end{lemma}
 \noindent
 A proof of this lemma can be found in \cite[Lemma\,5.35]{jarvis}.
+\todo{check cited proof applies to non-maximal orders}
 
 
 
@@ -905,8 +923,9 @@ A form corresponding to this ideal is given by
     \Theta(\alpha I) &= \frac{N \left( \alpha l x + \alpha \frac{m + n\sqrt\Delta}{2} y \right)}{N(\alpha I)} \\
     &= \frac{N \left(\alpha \cdot \left( l x + \frac{m + n\sqrt\Delta}{2} y \right) \right)}{N(\langle \alpha \rangle \cdot I)} \\
     &= \frac{N(\alpha)}{N(\langle \alpha \rangle)} \cdot \frac{N \left( l x + \frac{m + n\sqrt\Delta}{2} y \right) }{N(I)} \\
-    &= \frac{N(\alpha)}{\left| N(\alpha) \right|} \cdot \Theta(I) \rnote{\text{using \Cref{lemma-norm-relation}.}}
+    &= \frac{N(\alpha)}{\left| N(\alpha) \right|} \cdot \Theta(I).
 \end{align*}
+Here, we have used \Cref{lemma-norm-relation}, since principal ideals are clearly invertible (via multiplication by any other principle ideal).
 So $I$ and $\alpha I$ are mapped to the same form so long as $N(\alpha) > 0$.
 We therefore desire that such forms be equivalent so that $\bar{\Theta}$ may be injective --- but we must be careful when formalising the equivalence relation.
 We cannot simply say that ideals are equivalent if they vary by a positive-norm scalar multiple in $\order_\Delta$, as this would not be a transitive relation;
@@ -979,10 +998,24 @@ The product of these equivalent ideals is
 $$\alpha I \cdot \alpha' I' = \alpha \alpha' \cdot I I'$$
 which is narrowly equivalent to the ideal $II'$.
 Hence we see that ideal multiplication is a well-defined operation on narrow equivalence classes.
-We can hence use this to induce a binary operation on proper equivalence classes of forms.
+This gives us a semigroup of narrow equivalence classes, which can be turned into a group if we restrict to classes of invertible ideals.
+We can hence use this to induce a group operation on proper equivalence classes of forms which correspond to invertible ideals.
 
-Let $f = (a, b, c)$ and $g = (a', b', c')$ be forms of discriminant $\Delta$ where $a$ and $a'$ are positive.
-These correspond to ideals of $\order_\Delta$:
+\begin{theorem}
+    Let $f$ be a form and $I$ be an ideal such that $\Theta(I) = f$. Then $I$ is inveritible if and only if $f$ is primitive.
+\end{theorem}
+
+\begin{proof}
+    Consider a form $f = (a, b, c)$.
+    The corresponding ideal is $I = a\Z + \frac{b + \sqrt\Delta}{2}\Z$.
+    A natural candidate for an ideal $I'$ such that $II'$ is principal would be to take the conjugate of $I$ in hopes that the generators cancel nicely.
+    Letting $I' = a\Z + \frac{b + \sqrt\Delta}{2}\Z$, we have
+    \todo{finish}
+\end{proof}
+
+So we seek to induce a group operation on classes of primitive forms of fixed discriminant.
+Let $f = (a, b, c)$ and $g = (a', b', c')$ be primitive forms of discriminant $\Delta$ where $a$ and $a'$ are positive.
+These correspond to invertible ideals of $\order_\Delta$:
 $$I_f = a\Z + \frac{b + \sqrt\Delta}{2}\Z, \hspace{5mm} I_g = a'\Z + \frac{b' + \sqrt\Delta}{2}\Z.$$
 The product of these ideals is given by
 $$I = I_f \cdot I_g = aa'\Z + a\frac{b' + \sqrt\Delta}{2}\Z + a'\frac{b + \sqrt\Delta}{2}\Z + \frac{bb' + \Delta + (b + b')\sqrt\Delta}{4}\Z.$$
@@ -1003,8 +1036,9 @@ $$m = ab'u + a'bv + \frac{bb' + \Delta}{2}w.$$
 Note that this isn't necessarily our canonical choice for $m$, since we haven't added a multiple of $l$ to enforce $0 \leq m < 2l$, but the ideal is unchanged by this choice.
 Different choices for $m$ (which can arise by different choices for B\'ezout coefficients $u, v,$ and $w$) simply correspond to a different basis for the ideal, so we will find a different, but equivalent form.
 
-We can find $l$ by considering the norms of ideals; 
-the norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, hence, the norm of $I$ must be $aa'$.
+We can find $l$ by considering the norms of ideals.
+The norm of $I_f$ is $a$, and the norm of $I_g$ is $a'$, and each of these ideals are invertible, since they correspond to reduced forms.
+Hence, by \Cref{invertible-norm-multiplicative} the norm of $I$ must be $aa'$.
 But by \Cref{lemma-ideal-norm}, we have
 \begin{gather*}
     aa' = N(I) = ln \\
@@ -1018,7 +1052,7 @@ We have derived the following algorithm:
     \caption{Composition formula} \label{alg-composition}
     \DontPrintSemicolon
     \vspace{1mm}
-    \KwIn{$a, b, c, a', b', c' \in \Z$ such that $(a, b, c)$ and $(a', b', c')$ are forms with a common discriminant.}
+    \KwIn{$a, b, c, a', b', c' \in \Z$ such that $(a, b, c)$ and $(a', b', c')$ are reduced forms with a common discriminant.}
     \KwOut{$a, b, c \in \Z$ such that $(a, b, c)$ is the composition of the given forms.}
     \algosep
     $\Delta \gets b^2 - 4ac$\;
@@ -1052,7 +1086,8 @@ $$\text{id}_\Delta = \begin{cases}
     \left( 1, 1, \frac{1 - \Delta}{4} \right) & \Delta \equiv 1 \pmod{4}
 \end{cases}$$
 
-To find the inverse of a form, consider the inverse of an ideal class.
+\todo{improve}
+To find the inverse of a form, consider the inverse of an invertible ideal class.
 The identity amongst ideal classes is given by ideals which are narrowly equivalent to $\order_\Delta$.
 Ideals which vary from the whole ring by a scalar multiple are precisely the principal ideals --- so the inverse (at the level of classes) of an ideal $I$ is an ideal $I'$ such that the product $II'$ is principal.
 For an ideal $I = l\Z + \frac{m + n\sqrt\Delta}{2}\Z$, a natural candidate might be given by conjugating the generators:
@@ -1091,6 +1126,13 @@ We call this the \textbf{class group}, denoted $\Cl_\Delta$.
 %===============================================================================================================================%
 
 \chapter{Factoring}\label{s-factor}
+\emph{
+    This chapter follows a factoring method outlined by Daniel Shanks \cite{shanks}.
+    We take each of the components of his factoring algorithm, and adapt them to develop a similar, arguably simpler algorithm.
+}
+
+\vspace{2mm}
+\noindent
 A key practical application of number theory is the factoring algorithms that its theory allows.
 Integer factorisation is a deceptively difficult task to perform efficiently.
 As a baseline for comparison, let us consider the most elementary factoring algorithm - trial division.
@@ -1275,7 +1317,13 @@ We will show that this is the case.
     Since only two reduced forms give trivial factorisations, at least half of all reduced ambiguous forms give nontrivial factorisations.
 \end{proof}
 
-\todo{note square factors correspond to non-principal forms}
+Note, though, what happens if $N$ has a square component (other than 4).
+Let $\Delta = -s^2 r$, where $s$ and $r$ are positive and $s > 2$.
+Suppose we want to find an ambiguous form which gives us the factorisation $\Delta = s \cdot -sr$.
+Such a form is one of the following:
+$$\left( s, 0, \frac{-sr}{4} \right), \left(s, s, \frac{s - sr}{4}\right), \left(\frac{s - sr}{4}, \frac{sr - s}{2}, \frac{s - sr}{4}\right).$$
+In each case, the resulting form is non-primitive, since $s$ divides each term.
+One can see that an ambiguous form corresponding to $N = xy$ is non-primitive precisely when $x$ and $y$ have a common factor (this will be important later).
 
 In order to factor $N$, we desire to find a method for sampling reduced ambiguous forms.
 Suppose we can generate a random reduced ambiguous form using some algorithm. 
@@ -1309,7 +1357,8 @@ in fact, we claim the following:
     We first claim that $\Cl_\Delta$ contains at least one ambiguous form which is not the identity.
     We already saw in the proof of \Cref{thm-ambiguous-factorisations} that $\Cl_\Delta$ contains a reduced ambiguous form which is not the identity, which has order 2.
     Since the order of each element divides the order of the group, $\Cl_\Delta$ has even order.
-    \todo{invoke structure theorem}
+    By the structure theorem for finite abelian groups, $\Cl_\Delta$ can be written as the product of a groups, one of which has order equal to a power of 2.
+    All elements with a nonzero component in this group have even order, which is at least half of all elements.
 \end{proof}
 
 So if we can sample a random reduced form $f$, the order of $f$ will be even at least half of the time, allowing us to find an ambiguous form.
@@ -1363,8 +1412,9 @@ As an algorithm, we have
 
 \noindent
 This algorithm computes the order of an element in $O(\sqrt{H})$ composition and hash table operations.
+
 Once we have computed the order of $f$, we can efficiently raise $f$ to a power using a binary powering algorithm:
-we consider the binary expansion of $d$, ie
+we consider the binary expansion of $d$, i.e.
 $$d = a_0 \cdot 2^0 + a_1 \cdot 2^1 + a_2 \cdot 2^2 + \dots \rnote{(a_i \in \{0, 1\}).}$$
 Then we have
 $$f^d = (f)^{a_0} \cdot (f^2)^{a_1} \cdot (f^4)^{a_2} \cdot (f^8)^{a_3} \cdot \dots$$
@@ -1428,7 +1478,7 @@ where $P$ is suitably large.
 He then takes further steps to verify that his approximation is likely to be correct.
 We will take a different approach, simply finding an upper bound for the $L$-series.
 \vspace{2mm}
-\begin{theorem}
+\begin{theorem} \label{thm-h-bound}
     For $\Delta < -4$, the class number is bounded above by
     $$h_\Delta < \frac{\sqrt{|\Delta|}}{\pi}(\ln|\Delta| + 2).$$
 \end{theorem}
@@ -1520,6 +1570,7 @@ To see this, we must understand what the prime ideals of $\order_\Delta$ look li
     \[ \langle p \rangle \cap \Z = \left( p\Z + \frac{m + \sqrt\Delta}{2}\Z \right) \cap \Z = p\Z. \qedhere \]
 \end{proof}
 
+\todo{check}
 We say that a prime $p$ is \textbf{inert} if there is only one prime ideal of norm $p^2$ above it, \textbf{split} if there are two distinct prime ideals of norm $p$ above it, and \textbf{ramified} if there is only one prime ideal above it satisfying $\mathfrak{p}^2 = \langle p \rangle$.
 Note that the ideals corresponding to inert primes are principal, and therefore correspond to the identity element of the class group.
 As such, we are not concerned with finding such ideals.
@@ -1578,19 +1629,22 @@ This theorem comes from using class field theory to realise the class group as a
 The details of such a proof are beyond the scope of this paper ---
 for verification of this theorem, one can see \todo{cite Cl as galois group} \cite[Cor.\,8.18]{cox}.
 
-This theorem states that prime ideals are uniformly distributed among classes.
+This theorem states that invertible prime ideals are uniformly distributed among classes of invertible ideals.
 There are only finitely many ramified ideals, since only finitely many primes divide the discriminant, and all inert prime ideals belong to the principal class.
-Therefore, split prime ideals are equally distributed amongst classes, except perhaps for the principal class, which may be underrepresented.
+Therefore, split prime ideals are equally distributed amongst classes (except perhaps for the principal class, which may be underrepresented, which is not a problem for our factoring altorithm).
 So by sampling primes until one is split over $\order_\Delta$, we are sampling from the ideal class group effectively uniformly ---
 the corresponding form is precisely the form $(p, b, c)$ described earlier, which once reduced is effectively a uniform sample from the set of reduced primitive forms of discriminant $\Delta$.
-The possibility that the principal form is underrepresented is advantageous, since this leads to a trivial factorisation of $\Delta$.
 
-\todo{discuss issue of factorising square numbers}
-
-Note that the Chebotarev density theorem considers the density of all prime ideals, while we only sample prime ideals of norm no greater than $|\Delta|$.
+Note that the Chebotarev density theorem considers the density of all invertiable prime ideals, while we only sample prime ideals of norm no greater than $|\Delta|$.
 We will not prove formally that this is sufficient --- 
 such a proof would involve a finite-bounded version of the density theorem.
 We will, however, observe computational evidence that this bound is likely sufficient for our purposes in \Cref{s-factoring-algorithm}.
+
+Also note that we are only able to sample primitive forms in this way. 
+If the number we are trying to factor is $N = s^2r$ where $r$ is square-free, we are only able to find factors in $r$ using this method.
+There is a simple solution to this problem - we simply check if the number that we are trying to factor is a perfect square.
+If so, it is easy to find a factor (via the square root).
+Otherwise, we are still able to find factors dividing $r$ using the method that we have developed.
 
 
 \pagebreak
@@ -1642,7 +1696,7 @@ Now, we can adapt our method for finding ambiguous forms to a method for samplin
     Letting the order of this element be $2^A \cdot B$ where $2 \nmid B$, note that the value of $A$ is completely determined by $s'$, and the value of $B$ is completely determined by $g$.
     Therefore, if we first sample $g \in G$, then we can immediately determine $B$.
     Before even choosing $s'$, note that
-    $$f^B = s'^B g^B = s'^B.$$
+    $f^B = s'^B g^B = s'^B.$
     Our choice of $s'$ will simply be permuted when taken to the power of $B$.
     Hence, the result is a uniformly distributed sample from $S_\Delta$.
 \end{proof}
@@ -1664,18 +1718,19 @@ We also know that it is not $P$, since $f \neq g^{-1}$.
 So it seems that we have a way of generating ambiguous forms which are not the parasitic form.
 But there is still a problem ---
 what if we keep finding the same form which squares to $P$?
-Fortunately, the argument generalises.
+Fortunately, the argument generalises, although it is still only a heuristic result.
 
-\todo{rewrite}
-Suppose of all of the forms with order $2^A$, a form $P$ is overrepresented by our sampling method.
-Then either there are several distinct forms with order $2^{A-1}$ which square to $P$, or else there is only one (and its inverse) which is itself overrepresented when sampling forms of order $2^{A-1}$.
-We can follow this chain until we find an overrepresented $P$ of the largest order, which must always have several square roots, or else uniform sampling of $S_\Delta$ could not cause it to become overrepresented.
-We therefore have found several roots of $P$ in order to determine that it is overrepresented, letting two such distinct roots be $f$ and $g$, we again find that $fg^{-1}$ is an ambiguous form. 
-If $f$ is fixed, then of all possible choices for $g$, only one gives the same ambiguous form as we would have gotten by taking $P$ to the power of half of its order.
-Since there are many choices for $g$, we are more likely to get a new ambiguous form.
-
-\todo{note comparison of methods}
-
+When we sample a form $f$ and compute its order to be $2^A \cdot B$, then $h = f^B$ is a random uniform sample from $S_\Delta$.
+We will repeatedly square this element, and as we do, we will store each encountered element in a hash table, along with the element which squares to $s$.
+This way, when we take a new sample, if we ever encounter an element $s \in S_\Delta$ which we have seen before, we now have two distinct forms which square to that element (unless the first element, $h$, has been encountered before, which is unlikely since it was sampled uniformly).
+Calling these forms $g$ and $g'$, we now consider the form given by $g^{-1}g'$.
+This is ambiguous, since
+$$(g^{-1}g')^2 = (g^2)^{-1}g'\hspace{0.5mm}^2 = s^{-1}s = \text{id}_\Delta.$$
+If $g$ is fixed, there is only one choice for $g'$ which gives the same ambiguous form as if we simply increased the power of $s$ as usual.
+If $s$ is parasitic, then either it has lots of forms which square to $s$, or there is another parasitic form of higher order which squares to $s$.
+In the former case, there are lots of choices for $g'$, so $g^{-1}g'$ is likely to be a new ambiguous form.
+In the latter case, if we reached $s$ through its parasitic ``square root,'' then the argument is made for that square root instead (i.e. we likely hit that form by squaring different elements).
+The effectiveness of this method is tested computationally in \Cref{s-factoring-algorithm}.
 
 
 \pagebreak
@@ -1744,7 +1799,7 @@ The methods we have discussed in this chapter are sufficient to arrive at a fact
         }
 
         \vspace{2mm}
-        $g \gets f^{d/2}$ using the fast powering algorithm.\;
+        $g \gets f^{d/2}$ using the binary powering algorithm.\;
 
         \vspace{2mm}
         $x \gets$ factor extracted from $g$. 
@@ -1837,21 +1892,22 @@ We can add a step to check that $f$ is a primitive form by computing the gcd of 
 If this is not 1, compositions using $f$ are not defined, and we cannot proceed ---
 however, the gcd of the coefficients of $f$ divides the discriminant of $f$, so in this case we have found a factor of $D$ which may be nontrivial.
 
-\todo{improve}
-Let us consider the time complexity of this algorithm, starting with the prime sampling step.
-The Miller-Rabin primality test is $O(\ln^3|\Delta|)$.
-By the prime number theorem, there is about a $1/\ln|\Delta|$ chance that each sample is prime.
-(\red{Wolfram alpha gives $O(\ln^2|\Delta|$) expected samples needed}).
+\todo{finish}
+Let us briefly consider the time complexity of this algorithm, starting with the prime sampling step.
+The Miller-Rabin primality test is $O(\ln^3|\Delta|)$ \cite[\S\,8.2]{cohen}.
+By the prime number theorem, there is about a $1/\ln|\Delta|$ chance that each sample is prime, so we will need an average of $\ln|\Delta|$ samples before one is found to be prime.
+Hence, this part of the algorithm has running time $O(\ln^4|\Delta|)$
 
-The Tonelli-Shanks algorithm has time complexity $O(\ln^2|\Delta|)$.
-Reducing a form with coefficients as large as $|\Delta|$ has time complexity $O(\ln|\Delta|)$ \cite[Prop.\,5.4.3]{buell}.
+The Tonelli-Shanks algorithm has expected time complexity $O(\ln^4|\Delta|)$ \cite[\S\,1.5.1]{cohen}.
+Reducing a form with coefficients as large as $|\Delta|$ takes $O(\ln|\Delta|)$ steps \cite[Prop.\,5.4.3]{cohen}, each of which involves a bounded number of operations, so for our puroses, reduction has time complexity $O(\ln|\Delta|)$.
 
-Computing the order of a form using BSGS involves $O(|\Delta|^{1/4})$ composition operations (\red{check time complexity of composition}).
+Computing the order of a form using BSGS involves $O(|\Delta|^{1/4 + \varepsilon})$ composition and hash table operations. (\red{check time complexity of composition}).
 
-Taking a power of a form up to an exponent of $|\Delta|^{1/2}$ involves $O(\ln|\Delta|)$ composition operations \cite[\S\,1.2]{buell}.
+Using the binary power algorithm to compute exponents up to $|\Delta|^{1/2}$ involves $O(\ln|\Delta|)$ composition operations \cite[\S\,1.2]{buell}.
 
 We claim that each step which can cause us to restart from the sampling step adds a constant factor to the time complexity.
-Although parasitic forms make this uncertain, we assume that our treatment of this issue is effective, and returns us to a constant error term.
+Although parasitic forms make this uncertain, we assume that our treatment of this issue is effective, and returns us to an inconsequential error term.
+This assumption will be supported with evidence shortly.
 
 
 \pagebreak
@@ -1965,6 +2021,16 @@ This is a noticable improvement, but the generalised fix is significantly better
 %===============================================================================================================================%
 %                                                           REFERENCES                                                          %
 %===============================================================================================================================%
+
+\pagebreak
+\chapter*{AI Usage Acknowledgement}
+\addcontentsline{toc}{chapter}{AI Usage Acknowledgement}
+I acknowledge the use of Gemini and ChatGPT for discussing concepts from the thesis to build my intuition, finding sources to provide proofs of theorems/definitions that I’m aware of, and writing test code. 
+ChatGPT also generated a proof of \Cref{thm-h-bound}, which I adapted and credited in the text. 
+It was also used to proof read the thesis writeup, finding typographical mistakes and noting that the statement of \Cref{thm-ambiguous-factorisations} was incorrect without the added condition that N is not a perfect square. 
+By the time of this proof reading, I was already aware of a pervasive error throughout the paper (the discriminant was incorrectly treated as fundamental throughout, which caused issues in several proofs, and made certain claims too broad). 
+ChatGPT helped to filter which statements needed correction, and provided sources for where to find the corrected proofs. 
+No part of the final thesis written by AI or any other source, all of the writing is my own. 
 
 \pagebreak
 \bibliographystyle{amsalpha}
